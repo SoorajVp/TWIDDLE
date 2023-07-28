@@ -44,13 +44,11 @@ const SignupPage = () => {
     validationSchema: signupSchema,
     onSubmit: async(values) => {
       setLoading(true)
-      console.log("this is values --- ", values);
       const { name, email, password }: { name: string, email: string, password: string } = values;
       const userData = { name, email, password };
       const response: AuthResponse = await apiCalls.Register(userData);
       if(response.status == "success") {
-        const { user, token, message, status }: { user: userInterface, token: string, message: string, status: string }  = response;
-        console.log( user, token, message, status )
+        const { user, token }: { user: userInterface, token: string, message: string, status: string }  = response;
         toast.success( response.message, {
           position: toast.POSITION.TOP_CENTER,
           hideProgressBar: true,

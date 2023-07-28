@@ -25,7 +25,7 @@ export const userRouter = {
       element: <HomePage />,
     }, 
     {
-      path: "/profile",
+      path: "/:userName",
       element: <ProfilePage />,
     },
     {

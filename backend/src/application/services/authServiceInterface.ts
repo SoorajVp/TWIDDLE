@@ -18,7 +18,11 @@ export const authServiceInterface = ( service: authServiceReturn ) => {
         return service.comparePassword( pasword, hashedPassword )
     }
 
-    return { encryptPassword, verifyEmail, generateToken, comparePassword }
+    const createRandomName = ( name: string ) => {
+        return service.createRandomName( name );
+    }
+
+    return { encryptPassword, verifyEmail, generateToken, comparePassword, createRandomName }
     
 }
 

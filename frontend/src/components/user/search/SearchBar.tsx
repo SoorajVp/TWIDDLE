@@ -1,16 +1,22 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect, useState } from "react";
 import { apiCalls } from "../../../api/user/apiCalls";
 import { userInterface } from "../../../state/interface/userInterface";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [value, setValue] = useState<string>(null);
   const [users, setUser] = useState<[]>([]);
+  const navigate = useNavigate()
+
   useEffect(() => {
     console.log(value);
     if (value) {
@@ -26,6 +32,8 @@ const SearchBar = () => {
       setUser(response.users);
     }
   };
+
+  
   return (
     <>
       <div className=""> 
@@ -58,7 +66,7 @@ const SearchBar = () => {
             id="default-search"
             value={value}
             autoComplete="off"
-            onBlur={()=> setUser(null)}
+            // onBlur={()=> setUser(null)}
             onChange={(e) => setValue(e.target.value)}
             className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search user name..."
@@ -66,11 +74,12 @@ const SearchBar = () => {
         </div>
       </div>
 
-      { users && <div className="flex justify-center">
+      <div className="flex justify-center">
         <ul className="w-full md:w-[51%] absolute rounded-b-md shadow-sm bg-white">
+
           {users?.map((user: userInterface ) => {
             return (
-              <li className="py-2 pl-4 hover:bg-slate-500" key={user._id}>
+              <li className="py-2 pl-4 hover:bg-slate-200 cursor-pointer" key={user._id} onClick={()=> navigate(`/${user.name}`)}>
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
                     <img
@@ -80,7 +89,7 @@ const SearchBar = () => {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-medium text-gray-900 truncate">
+                    <p className="text-sm font-medium text-gray-900 truncate">
                       {user.name}
                     </p>
                   </div>
@@ -88,8 +97,9 @@ const SearchBar = () => {
               </li>
             );
           })}
+
         </ul>
-      </div>}
+      </div>
     </>
   );
 };

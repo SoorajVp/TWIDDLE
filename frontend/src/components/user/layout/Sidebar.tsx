@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import { setTheme } from "../../../state/slices/userSlice";
@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 const SideBar = () => {
   const { user, darkMode } =useSelector((store: RootState) => store.user )
-  const [subItems, setSubItems] = useState(false);
+  const [subItems, setSubItems] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const MenuLists = [
@@ -29,7 +29,7 @@ const SideBar = () => {
     { name: "Create", href: "/create", icon: <AiOutlinePlusSquare size={30} /> },
     { name: "Notification", href: "/", icon: <AiOutlineHeart size={30} /> },
     { name: "Messages", href: "/", icon: <RiMailSendLine size={28} /> },
-    { name: "Profile", href: "/profile", icon: <img src={user.profilePic} className="w-6 h-6 rounded-full border" alt="ProfilePic" /> },
+    { name: "Profile", href: `/${user.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 rounded-full border" alt="ProfilePic" /> },
   ];
 
  
@@ -67,7 +67,7 @@ const SideBar = () => {
             </li>
             <hr />
 
-            {MenuLists.map((item, index) => (
+            {MenuLists?.map((item, index) => (
               <li key={index}>
                 <Link to={item.href}
                   className={`${color} ${hover} cursor-pointer flex items-center p-2 rounded-lg group`}

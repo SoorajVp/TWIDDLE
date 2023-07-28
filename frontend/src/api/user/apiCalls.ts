@@ -33,6 +33,22 @@ export const apiCalls = {
   searchUser:async (payload: object) => {
     const response = await api.post("/user/search", payload);
     return response.data;
+  },
+
+  getUserByName:async ( name: string) => {
+    const response = await api.get(`/user/${name}`);
+    return response.data;
+  },
+
+  likePost:async ( id:string ) => {
+    const response = await api.put(`/post/${id}/like`);
+    return response.data;
+  },
+
+  unlikePost:async ( id:string ) => {
+    const response = await api.put(`/post/${id}/unlike`);
+    return response.data;
   }
+
   
 };

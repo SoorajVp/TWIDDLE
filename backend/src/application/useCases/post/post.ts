@@ -23,7 +23,6 @@ export const postCreate = async (
   return newPost;
 };
 
-
 export const getAllPosts = async (
   repository: ReturnType<postDbRepositoryType>
 ) => {
@@ -33,3 +32,30 @@ export const getAllPosts = async (
   }
   return posts;
 };
+
+export const getUserPosts = async (
+  userId: string,
+  repository: ReturnType<postDbRepositoryType>
+) => {
+  const posts = await repository.getUserPosts(userId);
+  return posts;
+};
+
+export const likePost = async (
+  req: CustomRequest,
+  repository: ReturnType<postDbRepositoryType>
+) => {
+  const postId: string = req.params.postId;
+  const userId = req.userId?.toString();
+  await repository.likePost(postId, userId);
+  const post = await repository.getPostById(postId);
+  return post;
+};
+
+export const unlikePost = async(req: CustomRequest, repository: ReturnType<postDbRepositoryType> ) => {
+  const postId: string = req.params.postId;
+  const userId = req.userId?.toString();
+  await repository.unlikePost(postId, userId);
+  const post = await repository.getPostById(postId);
+  return post;
+}

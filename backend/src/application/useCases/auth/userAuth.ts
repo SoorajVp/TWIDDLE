@@ -73,18 +73,28 @@ export const loginWithGoogle = async (
   userRepository: ReturnType<userDbInterface>,
   authService: ReturnType<authServiceInterfaceType>
 ) => {
-  const userData: any = await userRepository.getUserByEmail(user.email);
+
+  user.name = user.name.split(" ").join(""); 
+  const userData: any = await userRepository.getUserByEmail( user.email );
   if (!userData) {
+    user.googleUser = true;
+    user.name = await authService.createRandomName(user.name)
     const users = await userRepository.addUser(user);
     const userId = users._id;
     const token = await authService.generateToken(userId.toString());
     return { token, userData: users };
   }
-  if (userData?.isBlocked) {
-    throw new AppError("This account was blocked by admin ", HttpStatus.OK);
+  if(userData.googleUser) {
+    if (userData.isBlocked) {
+      throw new AppError("Action blocked", HttpStatus.OK);
+    }
+    const token = await authService.generateToken(userData._id);
+    return { token, userData };
+  } else {
+    throw new AppError("Email registered with password", HttpStatus.OK);
   }
-  const token = await authService.generateToken(userData._id);
-  return { token, userData };
+  
+
 };
 
 

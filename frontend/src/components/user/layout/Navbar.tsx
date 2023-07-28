@@ -17,7 +17,7 @@ const Navbar = () => {
     { name: "Message", href: "/", icon: <RiMailSendLine size={30} /> },
     { name: "Create", href: "/create", icon: <AiOutlinePlusSquare size={30} /> },
     { name: "Notification", href: "/", icon: <AiOutlineHeart size={30} /> },
-    { name: "Profile", href: "/profile", icon: <img src={user.profilePic} className="w-6 h-6 border rounded-full" alt="ProfilePic" />},
+    { name: "Profile", href: `/${user.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 border rounded-full" alt="ProfilePic" />},
   ];
 
   let color: string, bgColor: string, hover: string;
@@ -35,7 +35,7 @@ const Navbar = () => {
     <>
     <nav className={`${bgColor} ${color} fixed top-0 w-full border-b py-4 sm:hidden`}>
         <div className="container flex px-8 justify-between">
-           <div className="font-bold flex gap-2" > <BsGrid1X2 size={30} /> TWIDDLE</div> 
+           <div className="font-bold flex gap-2 text-blue-600" > <BsGrid1X2 size={30} /> TWIDDLE</div> 
             
            <div><Link to="/search"><AiOutlineSearch size={30} /> </Link></div> 
         </div>

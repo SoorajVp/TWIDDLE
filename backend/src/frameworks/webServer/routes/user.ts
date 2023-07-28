@@ -2,13 +2,17 @@ import express from "express"
 import userController from "../../../adapters/controllers/userController";
 import { userDbRepository } from "../../../application/repositories/userDbRepository";
 import { userRepositoryDb } from "../../database/repositories/userRepository";
-import authMiddleware from "../middlewares/authMiddleware";
+import { postDbRepository } from "../../../application/repositories/postDbRepository";
+import { PostRespository } from "../../database/repositories/postRepository";
 
 const userRouter = () => {
     const router = express.Router();
-    const constroller = userController(userDbRepository, userRepositoryDb );
+    const controller = userController(userDbRepository, userRepositoryDb, postDbRepository, PostRespository );
 
-    router.post("/search", authMiddleware, constroller.searchUser);
+    router.post("/search", controller.searchUser);
+
+    router.get("/:userName", controller.getUserByName )
+    
     
     return router;
 }

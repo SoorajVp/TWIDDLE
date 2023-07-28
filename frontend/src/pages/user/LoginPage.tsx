@@ -59,16 +59,13 @@ const LoginPage = () => {
         if (response.status == "success") {
           const {
             user,
-            token,
-            message,
-            status,
+            token
           }: {
             user: userInterface;
             token: string;
             message: string;
             status: string;
           } = response;
-          console.log(user, token, message, status);
           dispatch(setLogin({ user: user, token: token }));
           localStorage.setItem("token", token);
           navigate("/");
@@ -101,22 +98,22 @@ const LoginPage = () => {
       const {
         user,
         token,
-        message,
-        status,
       }: {
         user: userInterface;
         token: string;
         message: string;
         status: string;
       } = response;
-      console.log(user, token, message, status);
       dispatch(setLogin({ user: user, token: token }));
       localStorage.setItem("token", token);
       navigate("/");
     } else {
 
-      setLoading(false)
-      window.alert(response.message);
+      toast.error( response.message, {
+        position: toast.POSITION.TOP_CENTER,
+        hideProgressBar: true,
+      });
+     setLoading(false)
     }
   };
 
@@ -186,7 +183,7 @@ const LoginPage = () => {
                 onBlur={handleBlur}
                 placeholder="Your password"
               />
-              {errors.password && touched.password ? (
+              { errors.password && touched.password ? (
                 <p className="text-xs text-red-700">{errors.password}</p>
               ) : null}
               <div className="w-full text-right">
@@ -210,10 +207,9 @@ const LoginPage = () => {
 
           <div className="mt-3 flex justify-center ">
             <GoogleOAuthProvider clientId="173949417348-24u0t6a4g2rougvnmuea8ar64kg151un.apps.googleusercontent.com">
-              <GoogleLogin width="1000"
+              <GoogleLogin 
                 onSuccess={(credentialResponse) => {
                   var decoded: any = jwt_decode(credentialResponse.credential);
-                  console.log(decoded);
                   googleAuthSubmit(decoded);
                 }}
                 onError={() => {
@@ -222,6 +218,7 @@ const LoginPage = () => {
               />
             </GoogleOAuthProvider>
           </div>
+
         </div>
       </div>
     </div>

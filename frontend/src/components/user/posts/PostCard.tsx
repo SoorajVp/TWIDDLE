@@ -1,32 +1,71 @@
-import { useState } from "react";
-import { AiOutlineHeart } from "react-icons/ai";
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useEffect, useState } from "react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { HiOutlineChatBubbleLeft } from "react-icons/hi2";
 import { BsBookmark } from "react-icons/bs";
 import { SlOptionsVertical } from "react-icons/sl";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../state/interface/userInterface";
+import {
+  RootState,
+  userInterface,
+} from "../../../state/interface/userInterface";
+import { Link } from "react-router-dom";
+import { apiCalls } from "../../../api/user/apiCalls";
+import { lastTimeFormat } from "../../../utils/lastTimeFormat";
 
 const PostCard = ({
+  _id,
   createdAt,
   image,
   description,
+  likes,
+  userId,
 }: {
+  _id: string,
   createdAt: string;
   image: string;
   description: string;
+  likes: string[];
+  userId: userInterface;
 }) => {
   const [CommentBox, setCommentBox] = useState(false);
-  const theme = useSelector((store: RootState) => store.user.darkMode);
+  const [liked, setLiked] = useState<boolean>(false);
+  const [likeCount, setLikeCount ] = useState<number>(likes.length)
+  const { darkMode, user } = useSelector((store: RootState) => store.user);
+  useEffect(() => {
+    if (likes.includes(user._id)) {
+      setLiked(true);
+    }
+  }, []);
+
+  const lastTime: string = lastTimeFormat(createdAt)
+  console.log(lastTime)
+
+  const HandleLike = async(): Promise<void> => {
+    console.log("like - - - -")
+    setLiked(true)
+    setLikeCount(likeCount+1)
+    const response = await apiCalls.likePost(_id);
+    console.log("this is response --------", response)
+  }
+
+  const HandleUnlike = async(): Promise<void> => {
+    console.log("unlike - - - -")
+    setLiked(false)
+    setLikeCount(likeCount-1)
+    const response = await apiCalls.unlikePost(_id);
+    console.log("this is response --------", response)
+  }
 
   let color: string;
   let bgColor: string;
 
-  if (theme) {
-    (color = "text-slate-200"),
-      (bgColor = "bg-gray-950")
+  if (darkMode) {
+    (color = "text-slate-200"), (bgColor = "bg-gray-950");
   } else {
-    (color = "text-gray-950"),
-      (bgColor = "bg-white")
+    (color = "text-gray-950"), (bgColor = "bg-white");
   }
   return (
     <>
@@ -35,20 +74,23 @@ const PostCard = ({
       >
         <div className="flex pb-3 items-center justify-between">
           <div className="flex">
-            <a className="inline-block mr-4" href="#">
+            <Link to={`/${userId.name}`} className="inline-block mr-4">
               <img
-                className="rounded-full max-w-none w-10 h-10"
-                src="https://randomuser.me/api/portraits/men/35.jpg"
+                className="rounded-full max-w-none w-9 h-9"
+                src={userId?.profilePic}
                 alt="Profile"
               />
-            </a>
+            </Link>
             <div className="flex flex-col">
               <div>
-                <a className="inline-block text-base font-medium " href="#">
-                  Wade Warren
-                </a>
+                <Link
+                  to={`/${userId.name}`}
+                  className="inline-block text-sm font-medium"
+                >
+                  {userId?.name}
+                </Link>
               </div>
-              <div className="text-slate-500 text-xs ">{createdAt}</div>
+              <div className="text-slate-500 text-xs ">{lastTime}</div>
             </div>
           </div>
           <div className="pr-2">
@@ -58,23 +100,32 @@ const PostCard = ({
 
         <div className="pb-2">
           <div className="flex justify-between gap-1 mb-1">
-            <a className="flex" href="#">
+            <div
+              className="flex cursor-pointer"
+              style={{ width: "100%", height: "auto" }}
+            >
               <img
-                className="max-w-full bg-gray-200"
+                className="w-full h-full object-cover  bg-gray-200"
                 src={image}
                 alt="Image 1"
               />
-            </a>
+            </div>
           </div>
         </div>
         <p className="text-sm">{description}</p>
         <div className="flex justify-between">
           <div className="py-2">
             <div className="inline-flex items-center">
-              <span className="mr-2  cursor-pointer">
-                <AiOutlineHeart size={30} />
-              </span>
-              <span className="text-base text-gray-500">34</span>
+              {liked ? (
+                <span className="mr-2  cursor-pointer text-blue-500" onClick={HandleUnlike}>
+                  <AiFillHeart size={32} />
+                </span>
+              ) : (
+                <span className="mr-2  cursor-pointer " onClick={HandleLike}>
+                  <AiOutlineHeart size={32} />
+                </span>
+              )}
+              <span className="text-base text-gray-500">{likeCount}</span>
             </div>
 
             <div
@@ -96,14 +147,14 @@ const PostCard = ({
           </div>
         </div>
 
-        { CommentBox && (
+        {CommentBox && (
           <div className="relative">
             <input
               className={`${
-                theme ? "bg-slate-800" : "bg-slate-100"
+                darkMode ? "bg-slate-800" : "bg-slate-100"
               } pt-2 pb-2 pl-3 w-full h-11   rounded-lg placeholder:text-slate-500 pr-20`}
               type="text"
-              onBlur={() => setCommentBox(false)}
+              // onBlur={() => setCommentBox(false)}
               placeholder="Write a comment"
             />
             <span className="flex absolute right-3 top-2/4 -mt-3 items-center">

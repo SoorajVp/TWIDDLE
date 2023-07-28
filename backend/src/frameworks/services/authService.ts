@@ -30,8 +30,13 @@ export const authService = () => {
         return bcrypt.compare( pasword, hashedPassword )
     }
 
+    const createRandomName = ( name: string ) => {
+        const randomName = name + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
+        return randomName;
+    }
 
-    return { encryptPassword, verifyEmail, generateToken, verifyToken, comparePassword }
+
+    return { encryptPassword, verifyEmail, generateToken, verifyToken, comparePassword, createRandomName }
 
 }
 

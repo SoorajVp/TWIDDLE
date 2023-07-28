@@ -1,39 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { BiBookmark } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import { FiMoreVertical } from "react-icons/fi"
 import { RiTable2 } from "react-icons/ri";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../state/interface/userInterface";
 import { useState } from "react";
 import PostList from "../posts/PostList";
 
-
-const Posts = [
-  "https://images.all-free-download.com/images/graphiclarge/iphone_6_sample_photo_566464.jpg",
-  "https://images.all-free-download.com/images/graphiclarge/iphone_6_sample_photo_566464.jpg",
-  "https://images.all-free-download.com/images/graphiclarge/iphone_6_sample_photo_566464.jpg",
-  "https://images.all-free-download.com/images/graphiclarge/iphone_6_sample_photo_566464.jpg",
-  "https://images.all-free-download.com/images/graphiclarge/iphone_6_sample_photo_566464.jpg",
-
-]
-
 const Saved = [
-  "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80",
-  "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80",
-  "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80",
-  "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
+  { image: "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"},
+  { image: "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"},
+  { image: "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"},
+  { image: "https://images.unsplash.com/photo-1616020453784-a24fa9845b05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNhbXBsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"},
 ]
 
-const UserProfile = ({accountProfile}) => {
+const UserProfile = ({ accountProfile, userData, userPosts, darkMode }) => {
 
-  const { user, darkMode } =useSelector((store: RootState) => store.user )
-  // const [ accountProfile, setAccountProfile ] = useState<boolean>(true);
-  const [ postItems, setPostItems ] = useState<string[]>(Posts)
+  console.log(userData)
+  const [ postItems, setPostItems ] = useState(userPosts)
 
   let color: string, hover: string;
 
   const PostsClick = () => {
-    setPostItems(Posts)
+    setPostItems(userPosts)
   }
   const SavedClick = () => {
     setPostItems(Saved)
@@ -59,7 +48,7 @@ const UserProfile = ({accountProfile}) => {
           <div className=" flex md:justify-between px-8 justify-end">
             <div className="hidden sm:block">
               <h3 className="p-2 font-semibold text-sm md:text-base">
-                {user.name}
+                {userData?.name}
               </h3>
             </div>
             <div className="flex gap-2 ">
@@ -82,7 +71,7 @@ const UserProfile = ({accountProfile}) => {
           </div>
           <div className="col-span-3 flex justify-around text-center m-3">
             <p className="text-sm text-gray-500">
-              <span className={`${color} font-semibold text-base`}>13</span><br />Posts
+              <span className={`${color} font-semibold text-base`}>{userPosts.length}</span><br />Posts
             </p>
             <p className="text-sm text-gray-500">
               <span className={`${color} font-semibold text-base`}>500</span><br />Followers
@@ -94,8 +83,8 @@ const UserProfile = ({accountProfile}) => {
         </div>
       </div>
       <div className="pl-2 pt-4" >
-        <p className="text-sm ">Sooraj Vp</p>
-        <p className="text-xs py-2 pb-5">Full stack developer </p>
+        <p className="text-sm ">{userData?.name}</p>
+        <p className="text-xs py-2 pb-5">{userData?.description} </p>
       </div>
       <hr />
       <div className="flex justify-around  py-2">

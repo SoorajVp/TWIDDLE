@@ -12,6 +12,9 @@ const postRouter = () => {
 
     router.post('/',upload.single("image"), controller.createPost);
     router.get('/', controller.getPosts);
+    router.put('/:postId/like', controller.postLike);
+    router.put('/:postId/unlike', controller.postUnlike);
+
 
     return router;
 }

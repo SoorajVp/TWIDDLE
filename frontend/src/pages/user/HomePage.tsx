@@ -8,22 +8,23 @@ import { useEffect, useState } from "react";
 import PostCard from "../../components/user/posts/PostCard";
 import { apiCalls } from "../../api/user/apiCalls";
 import PostShimmer from "../../components/shimmer/postShimmer";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [ posts, setPosts ] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(()=> {
-    console.log("heyyy")
+    if(!localStorage.getItem("token")) {
+      navigate("/login");
+    }
     fetchAllPosts()
   },[])
 
   const fetchAllPosts = async() => {
     const response: any = await apiCalls.getAllPosts();
-    console.log("Response fetched - - - -")
-    console.log(response)
-
     if(response.status == "success") {
       setPosts(response.posts);
-      console.log(posts)
     }
   }
   if(posts.length === 0 ) {
