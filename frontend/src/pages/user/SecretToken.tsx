@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../../components/user/Loading";
+import Loading from "../../components/shimmer/Loading";
 
 type Params = {
   id: string | undefined;

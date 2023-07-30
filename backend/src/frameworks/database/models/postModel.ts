@@ -1,5 +1,11 @@
 import { Schema, model } from "mongoose";
 
+const commentSchema = new Schema({
+    userId: { type: Schema.Types.ObjectId, ref: 'User' },
+    comment: String,
+    createdAt: Date,
+  });
+
 const postSchema = new Schema({
     userId:{
         type: String,
@@ -14,11 +20,11 @@ const postSchema = new Schema({
         type: String
     },
     likes: [],
-    comments: [],
+    comments: [commentSchema],
     report: [],
     createdAt: {
         type: Date,
-        default: new Date() 
+        default: Date.now 
      }
 })
 

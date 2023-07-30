@@ -1,13 +1,17 @@
 export interface userInterface {
-  bio: string;
-  displayPicture: string;
+  _id: string;
+  bio?: string;
   email: string;
   isBlocked: boolean;
   name: string;
-  password: string;
+  password?: string;
   profilePic: string;
   __v: number;
-  _id: string;
+  followers?: string[];
+  following?: string[];
+  saved?: string[];
+
+
 }
 
 export interface AuthState {
@@ -48,3 +52,5 @@ export interface AdminState {
   admin: AdminInterface | null;
   token: string | null;
 }
+
+

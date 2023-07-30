@@ -11,7 +11,12 @@ const userRouter = () => {
 
     router.post("/search", controller.searchUser);
 
-    router.get("/:userName", controller.getUserByName )
+    router.get("/:userName", controller.getUserByName );
+
+    router.put("/:id/follow", controller.userFollow);
+
+    router.put("/:postId/save", controller.postSave);
+
     
     
     return router;

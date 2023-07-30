@@ -1,3 +1,4 @@
+import Comment from "../models/commentModel";
 import Post from "../models/postModel"
 
 export const PostRespository = () => {
@@ -8,7 +9,7 @@ export const PostRespository = () => {
     }
 
     const getAllPosts = async () => {
-        return await Post.find().populate('userId').sort({_id: -1})
+        return await Post.find().populate('userId').populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
     }
 
     const getUserPosts = async ( id: string ) => {
@@ -24,11 +25,22 @@ export const PostRespository = () => {
     }
 
     const unlikePost = async ( postId: string, userId?: string ) => {
-        console.log("unlike")
         return await Post.findByIdAndUpdate(postId, {$pull: {likes: userId}}, { new: true })
     }
 
-    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById };
+    const commentPost = async ( comment: { userId?: string, comment: string}, postId: string ) => {
+        return await Post.findByIdAndUpdate({ _id: postId}, {$push: {comments: comment}}, { new: true })
+    }
+
+    const getComments = async( postId: string ) => {
+        return await Post.findById({ _id: postId}).populate({ path: 'comments.userId', select: 'name profilePic' })
+    }
+
+    
+
+
+
+    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments };
 }
 
 export type PostRespositoryType = typeof PostRespository;

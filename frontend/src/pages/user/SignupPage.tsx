@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../state/slices/userSlice";
 import { useEffect, useState } from "react";
-import Loading from "../../components/user/Loading";
+import Loading from "../../components/shimmer/Loading";
 import { ToastContainer, toast } from "react-toastify";
 
 const signupSchema = Yup.object({

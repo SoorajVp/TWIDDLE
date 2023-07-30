@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -7,7 +6,7 @@ import { ChangeEvent, useState } from "react";
 import Cropper from "react-easy-crop";
 import { dataURLtoFile } from "../../../utils/ImageCropDialog";
 import { apiCalls } from "../../../api/user/apiCalls";
-import Loading from "../Loading";
+import Loading from "../../shimmer/Loading";
 import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
@@ -77,12 +76,12 @@ const CreatePost = () => {
     <div>
       { loading && <Loading /> }
       <div className="flex my-2 justify-between">
-        <div className="font-semibold text-xl pt-4 pl-1">New Post</div>
+        <div className="font-medium text-lg pt-4 pl-1">New Post</div>
         <div
-          className="p-2 px-4 mt-3  bg-blue-600 text-white font-semibold hover:bg-blue-500 cursor-pointer rounded-md"
+          className="p-2 px-4 mt-3 text-sm bg-blue-600 text-white hover:bg-blue-500 cursor-pointer rounded"
           onClick={handleCreatePost}
         >
-          Create post
+          CREATE POST
         </div>
       </div>
       <div className="flex items-center justify-center w-full">

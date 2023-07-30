@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Explore from "../../components/user/search/Explore";
 import SearchBar from "../../components/user/search/SearchBar";
 import { apiCalls } from "../../api/user/apiCalls";
+import { PageLoading } from "../../components/shimmer/Loading";
 
 const SearchPage = () => {
   const [posts, setPosts] = useState([]);
@@ -21,6 +22,11 @@ const SearchPage = () => {
       setPosts(response.posts);
     }
   };
+
+  if(posts.length === 0 ) {
+    return <PageLoading />
+  }
+
   return (
     <div>
       <SearchBar />

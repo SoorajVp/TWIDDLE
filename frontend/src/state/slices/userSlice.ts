@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -18,6 +19,9 @@ const userSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
+    setSavePost: ( state, action ) => {
+      state.user.saved.push(action.payload.postId)
+    },
     setLogout: ( state ) => {
       state.user = null;
       state.token = null;
@@ -29,5 +33,5 @@ const userSlice = createSlice({
 });
 
 
-export const { setLogin, setLogout, setTheme } = userSlice.actions;
+export const { setLogin, setSavePost, setLogout, setTheme } = userSlice.actions;
 export default userSlice.reducer;

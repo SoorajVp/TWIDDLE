@@ -5,7 +5,9 @@ import { Request, Response } from "express";
 import { cloudServiceType } from "../../application/services/cloudServiceInterface";
 import { s3ServiceType } from "../../frameworks/services/s3CloudService";
 import {
+  commentPost,
   getAllPosts,
+  getComments,
   likePost,
   postCreate,
   unlikePost,
@@ -38,20 +40,34 @@ const postController = (
   });
 
   const postLike = asyncHandler(async (req: CustomRequest, res: Response) => {
-    console.log(req.params.postId, "--------", req.userId);
     const post = await likePost(req, dbRepositoryPost);
-    console.log(" this is single post by id  - - -", post);
     res.status(200).json({ status: "liked" });
   });
 
   const postUnlike = asyncHandler(async(req: CustomRequest, res: Response) => {
-    console.log(req.params.postId, "--------", req.userId);
     const post = await unlikePost(req, dbRepositoryPost);
-    console.log(" this is single post by id  - - -", post);
     res.status(200).json({ status: "unliked" });
   })
 
-  return { createPost, getPosts, postLike, postUnlike };
+  const PostComment = asyncHandler(async (req: CustomRequest, res: Response) => {
+    // const comment: { postId: string, userId?: string, comment: string} = { postId: req.params.postId, userId: req.userId, comment: req.body.comment } 
+    const comment: { userId?: string, comment: string, createdAt: Date} = { userId: req.userId, comment: req.body.comment, createdAt:  new Date()}
+    const result = await commentPost( comment, req.params.postId, dbRepositoryPost );
+    res.status(200).json({status: "success"});
+  })
+
+  const getPostComments = asyncHandler(async(req: Request, res: Response ) => {
+    console.log("this is actual working function - - - - - -")
+    const comments = await getComments(req.params.postId, dbRepositoryPost );
+    console.log("this is post comments list - - - - -", comments)
+    res.status(200).json({status: "success", comments: comments})
+  })
+
+
+
+
+
+  return { createPost, getPosts, postLike, postUnlike, PostComment, getPostComments };
 };
 
 export default postController;

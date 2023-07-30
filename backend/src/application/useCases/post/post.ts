@@ -27,6 +27,7 @@ export const getAllPosts = async (
   repository: ReturnType<postDbRepositoryType>
 ) => {
   const posts = await repository.getAllPosts();
+  console.log("this is all posts ----", posts)
   if (!posts) {
     throw new AppError("Something went wrong !", HttpStatus.BAD_REQUEST);
   }
@@ -59,3 +60,15 @@ export const unlikePost = async(req: CustomRequest, repository: ReturnType<postD
   const post = await repository.getPostById(postId);
   return post;
 }
+
+export const commentPost = async ( comment: {userId?: string, comment: string}, postId: string, repository: ReturnType<postDbRepositoryType> ) => {
+  console.log("function - 2")
+  const result = await repository.commentPost(comment, postId );
+  return result;
+}
+
+export const getComments = async ( postId: string, repository: ReturnType<postDbRepositoryType> ) => {
+  const result = await repository.getComments(postId)
+  return result;
+}
+

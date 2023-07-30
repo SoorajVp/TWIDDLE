@@ -13,8 +13,11 @@ export interface userDataInterface {
     password?: string ,
     isBlocked: boolean,
     createdAt: Date,
-    googleUser?: boolean
+    googleUser?: boolean,
+    followers?: string[] | null,
+    saved?: string[] | null,
 
+    // following?: string[] | null
 }
 
 export interface adminDataInterface {

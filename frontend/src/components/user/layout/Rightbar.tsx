@@ -17,20 +17,18 @@ const RightBar = () => {
         <div className={`border ${border} max-w-sm rounded overflow-hidden shadow-lg`}>
           <img
             className="w-full"
-            src="https://cdna.artstation.com/p/assets/images/images/055/667/294/large/vishal-verma-nike-ui-design.jpg?1667477502"
+            src="https://www.searchenginejournal.com/wp-content/uploads/2023/03/paid-verification-programs-twitter-blue-meta-verified-641e2764953c9-sej.jpg"
             alt="Mountain"
           />
           <div className="px-6 py-6">
-            <div className="font-bold text-lg mb-2">Mountain</div>
+            <div className="font-bold text-base mb-2">Make Verify your Account</div>
             <p className="text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatibus quia, Nonea! Maiores et perferendis eaque,
-              exercitationem praesentium nihil.
+              Just wait for the new incoming feature. Make something more about your account with verified mark. 
             </p>
           </div>
           <div className="px-6 pt-2 pb-2">
             <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-500 mr-2 mb-2">
-              #photography
+              #verifyTick
             </span>
             
           </div>

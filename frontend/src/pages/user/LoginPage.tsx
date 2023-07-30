@@ -22,7 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import Loading from "../../components/user/Loading";
+import Loading from "../../components/shimmer/Loading";
 
 
 const loginSchema = Yup.object({

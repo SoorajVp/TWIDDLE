@@ -35,7 +35,7 @@ const Navbar = () => {
     <>
     <nav className={`${bgColor} ${color} fixed top-0 w-full border-b py-4 sm:hidden`}>
         <div className="container flex px-8 justify-between">
-           <div className="font-bold flex gap-2 text-blue-600" > <BsGrid1X2 size={30} /> TWIDDLE</div> 
+           <div className="font-bold flex gap-2" > <div className='text-blue-600'><BsGrid1X2 size={28} /></div> TWIDDLE</div> 
             
            <div><Link to="/search"><AiOutlineSearch size={30} /> </Link></div> 
         </div>

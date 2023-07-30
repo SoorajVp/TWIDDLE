@@ -23,6 +23,7 @@ const HomePage = () => {
 
   const fetchAllPosts = async() => {
     const response: any = await apiCalls.getAllPosts();
+    console.log("this is data - - ", response)
     if(response.status == "success") {
       setPosts(response.posts);
     }

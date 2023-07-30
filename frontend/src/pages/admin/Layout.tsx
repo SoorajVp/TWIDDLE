@@ -1,41 +1,37 @@
 import { useEffect, useState } from "react";
 import { TfiMenu } from "react-icons/tfi";
 import { GrClose } from "react-icons/gr";
+import { FaUsers } from "react-icons/fa";
+import { BsFillCollectionFill } from "react-icons/bs";
+import { HiSpeakerphone } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import UserTable from "../../components/admin/tables/UserTable";
 
-
-
 const Dashboard = () => {
   const [showDrawer, setShowDrawer] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if(!localStorage.getItem("adminToken")) {
-        navigate('/admin/login')
+    if (!localStorage.getItem("adminToken")) {
+      navigate("/admin/login");
     }
-  })
+  }, [navigate]);
 
   const handleDrawerToggle = () => {
     setShowDrawer((prevShowDrawer) => !prevShowDrawer);
   };
 
   return (
-    <div>
+    <>
       {/* drawer init and show */}
       <div className="p-4 px-7 bg-slate-700 shadow-lg flex justify-between">
-        <div className="mr-3 font-bold text-2xl text-white">
-          ADMIN
-        </div>
+        <div className="mr-3 font-bold text-2xl text-white">ADMIN</div>
         <div className="ml-3 text-white cursor-pointer" onClick={handleDrawerToggle}>
-          { showDrawer ?  <GrClose size={35} /> : <TfiMenu size={35}/>  }
+          {showDrawer ? <GrClose size={35} /> : <TfiMenu size={35} />}
         </div>
       </div>
 
-    <div className="flex justify-center pt-10">
-
-    <UserTable />
-    </div>
-
+        <UserTable />
 
       <div
         id="drawer-navigation"
@@ -73,30 +69,41 @@ const Dashboard = () => {
           <span className="sr-only">Close menu</span>
         </button>
         <div className="py-4 overflow-y-auto">
-          <ul className="space-y-2 font-medium">
+          <ul className="space-y-4 font-medium">
             <li>
               <a
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
               >
-                <svg
-                  className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 22 21"
-                >
-                  <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                  <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                </svg>
-                <span className="ml-3">Dashboard</span>
+                <FaUsers size={30} />
+                <span className="ml-3">Handle Users </span>
               </a>
             </li>
-            {/* Add other menu items as required */}
+
+            <li>
+              <a
+                href="#"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+              >
+                <BsFillCollectionFill size={30} />
+                <span className="ml-3">Handle Posts </span>
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+              >
+                <HiSpeakerphone size={30} />
+                <span className="ml-3">Handle Ads </span>
+              </a>
+            </li>
+
           </ul>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

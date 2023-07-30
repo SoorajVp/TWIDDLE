@@ -29,9 +29,12 @@ const userSchema = new Schema({
     type: String,
     default: ''
   },
+  followers: [],
+  following: [],
+  saved: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   createdAt: {
      type: Date,
-     default: new Date() 
+     default: Date.now 
   }
 });
 

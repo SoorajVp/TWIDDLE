@@ -7,6 +7,7 @@ import { s3CloudService } from "../../services/s3CloudService";
 import upload from "../middlewares/multer";
 
 const postRouter = () => {
+
     const router = express.Router();
     const controller = postController( cloudService, s3CloudService, postDbRepository, PostRespository);
 
@@ -14,6 +15,9 @@ const postRouter = () => {
     router.get('/', controller.getPosts);
     router.put('/:postId/like', controller.postLike);
     router.put('/:postId/unlike', controller.postUnlike);
+    router.get('/:postId/comment', controller.getPostComments)
+    router.post('/:postId/comment', controller.PostComment);
+
 
 
     return router;

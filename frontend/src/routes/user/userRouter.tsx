@@ -1,3 +1,4 @@
+import { PageLoading } from "../../components/shimmer/Loading";
 import UserLayout from "../../pages/layout/UserLayout";
 import CreatePage from "../../pages/user/CreatePage";
 import HomePage from "../../pages/user/HomePage";
@@ -36,6 +37,11 @@ export const userRouter = {
       path: "/search",
       element: <SearchPage />,
     },
+    {
+      path: "/messages",
+      element: <PageLoading />,
+    },
+    
     
   ],
 };

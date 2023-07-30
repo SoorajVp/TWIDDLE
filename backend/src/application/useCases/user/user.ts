@@ -15,3 +15,23 @@ export const userByName = async ( name: string, repository: ReturnType<userDbInt
     return user;
 }
 
+export const followUser = async( id: string, userId: string, repository: ReturnType<userDbInterface> ) => {
+    console.log("function -2")
+    return await repository.followUser( id, userId)
+}
+
+export const unfollowUser = async( id: string, userId: string, repository: ReturnType<userDbInterface> ) => {
+    return await repository.unfollowUser( id, userId)
+}
+
+export const savePost = async( postId: string, userId: string, repository: ReturnType<userDbInterface> ) => {
+    return await repository.savePost(postId, userId )
+}
+
+export const unSavePost = async( postId: string, userId: string, repository: ReturnType<userDbInterface> ) => {
+    return await repository.unSavePost(postId, userId )
+}
+
+export const getSavedPost = async( id: string, repository: ReturnType<userDbInterface> ) => {
+    return await repository.getSavedPost(id);
+}

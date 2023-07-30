@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import { setTheme } from "../../../state/slices/userSlice";
@@ -28,7 +28,7 @@ const SideBar = () => {
     { name: "Search", href: "/search", icon: <AiOutlineSearch size={30} /> },
     { name: "Create", href: "/create", icon: <AiOutlinePlusSquare size={30} /> },
     { name: "Notification", href: "/", icon: <AiOutlineHeart size={30} /> },
-    { name: "Messages", href: "/", icon: <RiMailSendLine size={28} /> },
+    { name: "Messages", href: "/messages", icon: <RiMailSendLine size={28} /> },
     { name: "Profile", href: `/${user.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 rounded-full border" alt="ProfilePic" /> },
   ];
 
@@ -59,7 +59,7 @@ const SideBar = () => {
                   console.log("right clicked");
                 }}
               >
-                <div className="lg:hidden">
+                <div className="lg:hidden text-blue-600">
                   <BsGrid1X2 size={30} />
                 </div>
                 <span className="ml-3 hidden font-bold lg:block">TWIDDLE</span>

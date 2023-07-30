@@ -75,7 +75,7 @@ const SearchBar = () => {
       </div>
 
       <div className="flex justify-center">
-        <ul className="w-full md:w-[51%] absolute rounded-b-md shadow-sm bg-white">
+        <ul className="w-full md:w-[51%] absolute rounded-md shadow-sm bg-white">
 
           {users?.map((user: userInterface ) => {
             return (
@@ -89,7 +89,7 @@ const SearchBar = () => {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                    <p className="text-xs font-medium text-gray-900 truncate">
                       {user.name}
                     </p>
                   </div>
