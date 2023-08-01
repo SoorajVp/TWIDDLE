@@ -1,27 +1,22 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
-import { setTheme } from "../../../state/slices/userSlice";
-import LogoutModal from "../../modal/Logout";
 import { BiMenu } from "react-icons/bi";
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { BsGrid1X2 } from "react-icons/bs";
 import { RiMailSendLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 import {
   AiOutlineHeart,
   AiOutlineHome,
   AiOutlinePlusSquare,
   AiOutlineSearch,
-  AiOutlineSetting,
 } from "react-icons/ai";
-import { Link } from "react-router-dom";
 
 
 
 const SideBar = () => {
   const { user, darkMode } =useSelector((store: RootState) => store.user )
   const [subItems, setSubItems] = useState<boolean>(false);
-  const dispatch = useDispatch();
 
   const MenuLists = [
     { name: "Home", href: "/", icon: <AiOutlineHome size={30} /> },
@@ -51,7 +46,7 @@ const SideBar = () => {
         <div
           className={`${bgColor} ${color} flex justify-center sticky h-screen pt-3 border-r overflow-hidden`}
         >
-          <ul className="space-y-2 ">
+          <ul className="space-y-4">
             <li>
               <div
                 className={`${color} flex cursor-pointer items-center p-2 rounded-lg group`}
@@ -90,7 +85,7 @@ const SideBar = () => {
               </div>
             </li>
 
-            { subItems && (
+            {/* { subItems && (
               <div>
                 <li>
                   <div
@@ -123,7 +118,7 @@ const SideBar = () => {
                   <LogoutModal />
                 </li>
               </div>
-            )}
+            )} */}
           </ul>
         </div>
       </div>

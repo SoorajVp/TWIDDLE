@@ -1,10 +1,8 @@
 import { useState, useRef } from "react";
-import { BiLogOut } from "react-icons/bi";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogout } from "../../state/slices/userSlice";
 import Loading from "../shimmer/Loading";
 import Modal from "react-modal";
+import { FiLogOut } from "react-icons/fi";
 
 const customStyles = {
   content: {
@@ -17,10 +15,9 @@ const customStyles = {
   },
 };
 
-const LogoutModal = () => {
+const AdminLogout = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
@@ -44,24 +41,20 @@ const LogoutModal = () => {
     setLoading(true);
     setIsOpen(false);
     setTimeout(() => {
-      localStorage.removeItem("token");
-      dispatch(setLogout());
-      navigate("/login");
+      localStorage.removeItem("adminToken");
+      navigate("/admin/login");
     }, 2000);
   };
 
   return (
-    <div>
+    <>
       {loading && <Loading />}
-      <div
-        onClick={openModal}
-        className={`flex cursor-pointer items-center py-1 pl-1.5 rounded-lg group`}
-      >
-        <div>
-          <BiLogOut size={24} />{" "}
-        </div>
-        <span className="ml-4"> Logout</span>
-      </div>
+              <div onClick={openModal}
+                className="flex items-center p-2 text-red-600 rounded-lg hover:bg-gray-100 group"
+              >
+                <FiLogOut size={30} />
+                <span className="ml-3">Logout</span>
+              </div>
 
       <Modal
         isOpen={modalIsOpen}
@@ -108,10 +101,10 @@ const LogoutModal = () => {
           </div>
         </div>
       </Modal>
-    </div>
+    </>
   );
 };
 
-export default LogoutModal;
+export default AdminLogout;
 
 

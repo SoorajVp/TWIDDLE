@@ -7,20 +7,20 @@ type Params = {
 };
 
 const SecretToken = () => {
-  const navigate = useNavigate()
-    const { id } = useParams<Params>();
+  const navigate = useNavigate();
+  const { id } = useParams<Params>();
 
-    useEffect(() => {
-        console.log(id)
-        id && localStorage.setItem("token", id );
-        navigate('/')
-        
-    })
+  useEffect(() => {
+    setTimeout(() => {
+      id && localStorage.setItem("token", id);
+      navigate("/");
+    }, 2000);
+  });
   return (
     <div>
-        <Loading />
+      <Loading />
     </div>
-  )
-}
+  );
+};
 
-export default SecretToken
+export default SecretToken;

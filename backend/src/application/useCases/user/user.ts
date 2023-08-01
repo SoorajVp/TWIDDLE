@@ -1,5 +1,10 @@
 import { userDbInterface } from "../../repositories/userDbRepository";
 
+export const getAllUser = async(repository: ReturnType<userDbInterface> ) => {
+    const users = await repository.getAllUser()
+    return users;
+}
+
 export const userSearch = async( name: string, repository: ReturnType<userDbInterface> ) => {
     const users = await repository.userSearch(name);
     return users;
@@ -22,6 +27,10 @@ export const followUser = async( id: string, userId: string, repository: ReturnT
 
 export const unfollowUser = async( id: string, userId: string, repository: ReturnType<userDbInterface> ) => {
     return await repository.unfollowUser( id, userId)
+}
+
+export const blockUser = async( id: string, repository: ReturnType<userDbInterface> ) => {
+    return await repository.blockUser( id )
 }
 
 export const savePost = async( postId: string, userId: string, repository: ReturnType<userDbInterface> ) => {

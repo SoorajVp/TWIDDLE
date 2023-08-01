@@ -15,7 +15,6 @@ const authMiddleware = ( req: CustomRequest, res: Response, next: NextFunction )
     const { payload }: any = authService().verifyToken(token)
     req.userId = payload;
     next()
-    
 }
 
 export default authMiddleware;

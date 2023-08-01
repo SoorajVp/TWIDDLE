@@ -1,59 +1,65 @@
-// // import React from 'react'
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+// import { useState, useRef, useEffect } from 'react';
 
-// import { useEffect } from "react";
+// function Dropdown() {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const dropdownRef = useRef(null);
 
-// export const ToastMessage: React.FC<{ data: string }> = ({ data }) => {
-//   toast.success("Successfully submitted !", {
-//     position: toast.POSITION.TOP_RIGHT,
-//   });
-//   return <ToastContainer />;
-// };
+//   const toggleDropdown = () => {
+//     setIsOpen(!isOpen);
+//   };
 
-// const AlertMessage: React.FC<{ data: string }> = ({ data }) => {
 //   useEffect(() => {
-//     if (localStorage.getItem("alert")) {
-//       setTimeout(() => {
-//         localStorage.removeItem("alert");
-//       }, 3000);
-//     }
-//   }, []);
-//   return (
-//     <>
-//       <div className="fixed top-0 right-0 m-4 shadow-md">
-//         <div
-//           className="bg-red-100 border flex border-red-400 text-red-700 px-4 py-3 rounded relative"
-//           role="alert"
-//         >
-//           <svg
-//             xmlns="http://www.w3.org/2000/svg"
-//             viewBox="0 0 24 24"
-//             fill="currentColor"
-//             className="h-5 w-5"
-//           >
-//             <path
-//               fill-rule="evenodd"
-//               d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-//               clip-rule="evenodd"
-//             />
-//           </svg>
-//           <span className="block sm:inline">{data}</span>
-//           <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-//             <svg
-//               className="fill-current h-6 w-6 text-red-500"
-//               role="button"
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 20 20"
-//             >
-//               <title>Close</title>
-//               <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-//             </svg>
-//           </span>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+//     const handleClickOutside = (event) => {
+//       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+//         setIsOpen(false);
+//       }
+//     };
 
-// export default AlertMessage;
+//     document.addEventListener('mousedown', handleClickOutside);
+
+//     return () => {
+//       document.removeEventListener('mousedown', handleClickOutside);
+//     };
+//   }, [dropdownRef]);
+
+//   return (
+//     <div className="relative inline-block text-left" ref={dropdownRef}>
+//       <button
+//         type="button"
+//         className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+//         onClick={toggleDropdown}
+//       >
+//         Dropdown
+//         <svg
+//           className="-mr-1 ml-2 h-5 w-5"
+//           xmlns="http://www.w3.org/2000/svg"
+//           viewBox="0 0 20 20"
+//           fill="currentColor"
+//           aria-hidden="true"
+//         >
+//           <path
+//             fillRule="evenodd"
+//             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+//             clipRule="evenodd"
+//           />
+//         </svg>
+//       </button>
+
+//       {isOpen && (
+//         <div className="origin-top-right absolute right-0 mt-2 w-56 min-w-1/2 max-w-screen-md rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+//           <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+//             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+//               Option 1
+//             </a>
+//             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+//               Option 2
+//             </a>
+//             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+//               Option 3
+//             </a>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }

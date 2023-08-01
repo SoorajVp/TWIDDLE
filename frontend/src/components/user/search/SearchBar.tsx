@@ -5,9 +5,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { apiCalls } from "../../../api/user/apiCalls";
 import { userInterface } from "../../../state/interface/userInterface";
 import { useNavigate } from "react-router-dom";
@@ -16,15 +15,28 @@ const SearchBar = () => {
   const [value, setValue] = useState<string>(null);
   const [users, setUser] = useState<[]>([]);
   const navigate = useNavigate()
+  const searchRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    console.log(value);
+    console.log(value, users)
     if (value) {
       fetchUsers();
     } else {
       setUser([]);
     }
-  }, [value]);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setValue(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+    
+  }, [value, searchRef ]);
 
   const fetchUsers = async (): Promise<void> => {
     const response = await apiCalls.searchUser({ name: value });
@@ -74,10 +86,10 @@ const SearchBar = () => {
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <ul className="w-full md:w-[51%] absolute rounded-md shadow-sm bg-white">
+      <div className="flex justify-center" ref={searchRef}>
+        <ul className="w-full md:w-[51%] absolute rounded-md shadow-sm bg-white overflow-y-scroll ">
 
-          {users?.map((user: userInterface ) => {
+          { value && users?.map((user: userInterface ) => {
             return (
               <li className="py-2 pl-4 hover:bg-slate-200 cursor-pointer" key={user._id} onClick={()=> navigate(`/${user.name}`)}>
                 <div className="flex items-center space-x-4">

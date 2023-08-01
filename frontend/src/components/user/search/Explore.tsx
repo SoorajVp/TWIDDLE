@@ -1,8 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-const Explore = ( data) => {
-    const { image } = data
+import { PostInterface } from "../../../state/interface/postInterface"
+
+const Explore = ( post: PostInterface) => {
+    const { image } = post;
+
   return (
-    <div onClick={()=> console.log(data)}>
+    <div onClick={()=> console.log(post)}>
+      {/* <PostSingleView post={post} /> */}
         <img src={image} alt="Post" className="min-w-full min-h-full cursor-pointer bg-gray-500" />
     </div>
     

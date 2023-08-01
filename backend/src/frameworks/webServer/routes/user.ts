@@ -9,6 +9,8 @@ const userRouter = () => {
     const router = express.Router();
     const controller = userController(userDbRepository, userRepositoryDb, postDbRepository, PostRespository );
 
+    router.get("/list", controller.getAllUserList);
+
     router.post("/search", controller.searchUser);
 
     router.get("/:userName", controller.getUserByName );
@@ -16,6 +18,9 @@ const userRouter = () => {
     router.put("/:id/follow", controller.userFollow);
 
     router.put("/:postId/save", controller.postSave);
+
+    router.put("/:id/block", controller.blockUserById);
+
 
     
     

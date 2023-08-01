@@ -6,6 +6,7 @@ import { BsFillCollectionFill } from "react-icons/bs";
 import { HiSpeakerphone } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import UserTable from "../../components/admin/tables/UserTable";
+import AdminLogout from "../../components/modal/AdminLogout";
 
 const Dashboard = () => {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -73,7 +74,7 @@ const Dashboard = () => {
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
               >
                 <FaUsers size={30} />
                 <span className="ml-3">Handle Users </span>
@@ -83,7 +84,7 @@ const Dashboard = () => {
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
               >
                 <BsFillCollectionFill size={30} />
                 <span className="ml-3">Handle Posts </span>
@@ -93,11 +94,22 @@ const Dashboard = () => {
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
               >
                 <HiSpeakerphone size={30} />
                 <span className="ml-3">Handle Ads </span>
               </a>
+            </li>
+
+            <li>
+              {/* <div
+                className="flex items-center p-2 text-red-600 rounded-lg hover:bg-gray-100 group"
+              >
+                <FiLogOut size={30} />
+                <span className="ml-3">Logout</span>
+              </div> */}
+
+              <AdminLogout />
             </li>
 
           </ul>

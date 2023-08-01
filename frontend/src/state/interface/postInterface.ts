@@ -1,13 +1,15 @@
+import { userInterface } from "./userInterface";
+
 export interface PostInterface {
   _id: string;
-  userId: string;
+  userId?: userInterface;
   image: string;
   description?: string;
   likes?: string[];
-  comment?: CommentInterface[];
+  comments?: CommentInterface[];
   report?: string[];
-  createdAt: Date;
-  __v: number;
+  createdAt: string;
+  __v?: number;
 }
 
 export interface CommentInterface {
@@ -15,4 +17,12 @@ export interface CommentInterface {
     comment?: string;
     createdAt: Date;
 }
+
+// _id: string;
+//   createdAt: string;
+//   image: string;
+//   description: string;
+//   likes: string[];
+//   comments: CommentInterface[];
+//   userId: userInterface;
 

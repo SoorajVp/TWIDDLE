@@ -4,6 +4,11 @@ import { userRepositoryDbType } from "../../frameworks/database/repositories/use
 export const userDbRepository = (
   repository: ReturnType<userRepositoryDbType>
 ) => {
+
+  const getAllUser = async () => {
+    return await repository.getAllUser();
+  };
+
   const addUser = async (user: registerInterface) => {
     return await repository.addUser(user);
   };
@@ -33,6 +38,10 @@ export const userDbRepository = (
     return await repository.unfollowUser( id, userId )
   }
 
+  const blockUser = async( id: string) => {
+    return await repository.blockUser(id);
+  }
+
   const savePost = async( postId: string, userId?: string ) => {
     return await repository.savePost( postId, userId )
   }
@@ -45,7 +54,7 @@ export const userDbRepository = (
     return await repository.unSavePost( postId, userId )
   }
 
-  return { addUser, getUserByEmail, getUserByName, getUserById, userSearch, followUser, unfollowUser, savePost, unSavePost, getSavedPost };
+  return { getAllUser, addUser, getUserByEmail, getUserByName, getUserById, userSearch, followUser, unfollowUser, blockUser, savePost, unSavePost, getSavedPost };
 };
 
 export type userDbInterface = typeof userDbRepository;

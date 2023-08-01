@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { HiOutlineChatBubbleLeft } from "react-icons/hi2";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
@@ -9,11 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { apiCalls } from "../../../api/user/apiCalls";
 import { lastTimeFormat } from "../../../utils/lastTimeFormat";
+import { RootState } from "../../../state/interface/userInterface";
 import {
-  RootState,
-  userInterface,
-} from "../../../state/interface/userInterface";
-import { CommentInterface } from "../../../state/interface/postInterface";
+  CommentInterface,
+  PostInterface,
+} from "../../../state/interface/postInterface";
 import { setSavePost } from "../../../state/slices/userSlice";
 
 const PostCard = ({
@@ -24,35 +24,63 @@ const PostCard = ({
   likes,
   comments,
   userId,
-}: {
-  _id: string;
-  createdAt: string;
-  image: string;
-  description: string;
-  likes: string[];
-  comments: CommentInterface[];
-  userId: userInterface;
-}) => {
+}: PostInterface) => {
   const [CommentBox, setCommentBox] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
-  const [likeCount, setLikeCount] = useState<number>(likes.length);
+  const [likeCount, setLikeCount] = useState<number>(likes?.length);
   const [comment, setComment] = useState<string>("");
-  const [commentCount, setCommentCount] = useState<number>(comments.length);
-  const [commentList, setCommentList] = useState<CommentInterface[]>(comments)
+  const [commentCount, setCommentCount] = useState<number>(comments?.length);
+  const [commentList, setCommentList] = useState<CommentInterface[]>(comments);
+
+  const [dropDown, setDropDown] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropDown(!dropDown);
+  };
 
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (likes.includes(user._id)) {
+    console.log(
+      "Here it is ",
+      _id,
+      createdAt,
+      image,
+      description,
+      likes,
+      comments,
+      userId
+    );
+    if (likes?.includes(user._id)) {
       setLiked(true);
     }
-    if (user.saved.includes(_id)) {
+    if (user?.saved?.includes(_id)) {
       setSaved(true);
     }
   }, []);
 
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const commentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropDown(false);
+      }
+
+      if (commentRef.current && !commentRef.current.contains(event.target as Node)) {
+        setCommentBox(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef, setDropDown]);
 
   const lastTime: string = lastTimeFormat(createdAt);
 
@@ -69,19 +97,26 @@ const PostCard = ({
   };
 
   const HandleComment = async () => {
-    const data: { id: string; comment: string } = { id: _id, comment: comment };
-    console.log(data);
-    const dummy: CommentInterface = {
-      comment: comment,
-      createdAt: new Date(),
-      userId: {_id: "dummy-id-2", name: user.name, profilePic: user.profilePic}
+    if (comment) {
+      const data: { id: string; comment: string } = {
+        id: _id,
+        comment: comment,
+      };
+      const dummy: CommentInterface = {
+        comment: comment,
+        createdAt: new Date(),
+        userId: {
+          _id: "dummy-id-2",
+          name: user.name,
+          profilePic: user.profilePic,
+        },
+      };
+      const prevComments = [...commentList, dummy];
+      setCommentList(prevComments);
+      await apiCalls.commentPost(data);
+      setCommentCount(commentCount + 1);
+      setComment("");
     }
-    const prevComments = [...commentList, dummy]
-    setCommentList(prevComments);
-    await apiCalls.commentPost(data);
-    setCommentCount(commentCount+1)
-    setComment("")
-
   };
 
   const HandleSaved = async () => {
@@ -114,11 +149,11 @@ const PostCard = ({
   return (
     <>
       <article
-        className={`${bgColor} ${color} mb-4 break-inside p-2 rounded-lg shadow flex flex-col bg-clip-border`}
+        className={`${bgColor} ${color} mb-4  p-2 rounded-lg shadow flex flex-col bg-clip-border`}
       >
         <div className="flex pb-2 items-center justify-between">
           <div className="flex">
-            <Link to={`/${userId.name}`} className="inline-block mr-4 mt-1">
+            <Link to={`/${userId?.name}`} className="inline-block mr-4 mt-1">
               <img
                 className="rounded-full border max-w-none w-9 h-9"
                 src={userId?.profilePic}
@@ -128,7 +163,7 @@ const PostCard = ({
             <div className="flex flex-col">
               <div>
                 <Link
-                  to={`/${userId.name}`}
+                  to={`/${userId?.name}`}
                   className="inline-block text-sm font-medium"
                 >
                   {userId?.name}
@@ -139,8 +174,42 @@ const PostCard = ({
               </div>
             </div>
           </div>
-          <div className="pr-2">
-            <SlOptionsVertical />
+          <div>
+            <div ref={dropdownRef} className="relative inline-block text-left">
+              {dropDown && (
+                <div className={`${darkMode && "bg-black" } ${color} origin-top-right absolute -mt-2 right-0 mr-8 w-24 min-w-1/2 max-w-screen-md rounded-md shadow-lg ring-1 ring-gray-200 ring-opacity-5`}>
+                  <ul
+                    className="py-1"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="options-menu"
+                  >
+                    <li
+                      className={`${darkMode ? "hover:bg-gray-800 hover:text-gray-100" : "hover:bg-gray-100 hover:text-gray-900" } block px-4 py-1 text-sm  hover:bg-gray-100 hover:text-gray-900`}
+                      
+                      role="menuitem"
+                    >
+                      Report
+                    </li>
+                    {/* <li
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      role="menuitem"
+                    >
+                      Option 2
+                    </li>
+                    <li
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      role="menuitem"
+                    >
+                      Option 3
+                    </li> */}
+                  </ul>
+                </div>
+              )}
+              <div className="pr-2 cursor-pointer" onClick={toggleDropdown}>
+                <SlOptionsVertical />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -150,7 +219,7 @@ const PostCard = ({
               className="flex cursor-pointer"
               style={{ width: "100%", height: "auto" }}
             >
-              <img
+              <img onClick={()=>setDropDown(false)}
                 className={`w-full h-full object-cover ${
                   darkMode ? "bg-gray-800" : "bg-gray-200"
                 }`}
@@ -187,7 +256,7 @@ const PostCard = ({
                 <HiOutlineChatBubbleLeft size={30} />
               </span>
               <span className="text-base text-gray-500">
-                {commentCount > 0 && comments.length}
+                {commentCount > 0 && commentCount}
               </span>
             </div>
           </div>
@@ -207,10 +276,16 @@ const PostCard = ({
           </div>
         </div>
 
-        { description && <div className="text-sm pl-1"> <span className="pr-2 font-medium">{userId.name}</span>{description}</div>}
+        {description && (
+          <div className="text-sm pl-1">
+            {" "}
+            <span className="pr-2 font-medium">{userId?.name}</span>
+            {description}
+          </div>
+        )}
 
         {CommentBox && (
-          <div>
+          <div ref={commentRef} >
             <div className="relative pt-1">
               <input
                 className={`${
@@ -246,19 +321,23 @@ const PostCard = ({
               </span>
             </div>
             <ul className="w-96 space-y-3 my-3 text-xs">
-
-              { commentList.map((item, index) => (
+              {commentList.map((item, index) => (
                 <li className="w-full pl-2 flex" key={index}>
-                <img
-                  className="rounded-full border max-w-none w-6 h-6"
-                  src={item?.userId?.profilePic}
-                  alt="Profile"
-                />
-               <Link to={`/${item.userId.name}`} className="pt-0.5 pl-2 font-medium"> {item?.userId?.name}</Link>
-               <p className="pt-0.5 pl-4">{item.comment}</p>
-              </li>
-              ))
-              }
+                  <img
+                    className="rounded-full border max-w-none w-6 h-6"
+                    src={item?.userId?.profilePic}
+                    alt="Profile"
+                  />
+                  <Link
+                    to={`/${item?.userId?.name}`}
+                    className="pt-0.5 pl-2 font-medium"
+                  >
+                    {" "}
+                    {item?.userId?.name}
+                  </Link>
+                  <p className="pt-0.5 pl-4">{item?.comment}</p>
+                </li>
+              ))}
             </ul>
           </div>
         )}

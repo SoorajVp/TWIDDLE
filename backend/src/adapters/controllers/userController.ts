@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { userDbInterface } from "../../application/repositories/userDbRepository";
 import { userRepositoryDbType } from "../../frameworks/database/repositories/userRepository";
 import asyncHandler from "express-async-handler"
-import { followUser, getSavedPost, savePost, unSavePost, unfollowUser, userById, userByName, userSearch } from "../../application/useCases/user/user";
+import { blockUser, followUser, getAllUser, getSavedPost, savePost, unSavePost, unfollowUser, userById, userByName, userSearch } from "../../application/useCases/user/user";
 import { userDataInterface } from "../../types/interface/userInterface";
 import AppError from "../../utils/appError";
 import { HttpStatus } from "../../types/httpStatus";
@@ -14,6 +14,11 @@ import { CustomRequest } from "../../types/interface/customeRequest";
 const userController = ( userDbRepository: userDbInterface, userRepositoryDb: userRepositoryDbType, postDbRepository: postDbRepositoryType, postRepository: PostRespositoryType ) => {
     const dbRepositoryUser = userDbRepository(userRepositoryDb())
     const dbRepositoryPost = postDbRepository(postRepository())
+
+    const getAllUserList = asyncHandler(async (req: Request, res: Response ) => {
+        const users = await getAllUser( dbRepositoryUser )
+        res.status(200).json({ status: "success", users })
+    })
 
     const searchUser = asyncHandler(async (req: Request, res: Response ) => {
         const name: string = req.body.name;
@@ -65,6 +70,11 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         res.status(200).json({ status: "success"})
     })
 
+    const blockUserById = asyncHandler(async (req: Request, res: Response ) => {
+        await blockUser( req.params.id, dbRepositoryUser )
+        res.status(200).json({ status: "success" })
+    })
+
 
     const postSave = asyncHandler(async(req: CustomRequest, res: Response) => {
         const { userId }: any = req;
@@ -80,7 +90,7 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         }
     })
 
-    return { searchUser, getUserById, getUserByName, userFollow, postSave }
+    return { getAllUserList, searchUser, getUserById, getUserByName, userFollow, blockUserById, postSave }
 }
 
 export default userController;

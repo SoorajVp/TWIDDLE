@@ -5,13 +5,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useEffect, useState } from "react";
-import Explore from "../../components/user/search/Explore";
 import SearchBar from "../../components/user/search/SearchBar";
 import { apiCalls } from "../../api/user/apiCalls";
 import { PageLoading } from "../../components/shimmer/Loading";
+import { PostInterface } from "../../state/interface/postInterface";
+import PostSingleView from "../../components/modal/PostSingleView";
 
 const SearchPage = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<PostInterface[]>([]);
   useEffect(() => {
     fetchAllPosts();
   }, []);
@@ -32,7 +33,9 @@ const SearchPage = () => {
       <SearchBar />
       <div className="grid grid-cols-3 gap-1 mt-4 ">
         {posts?.map((post) => {
-          return <Explore {...post} key={post._id} />;
+          // return <Explore {...post} key={post._id} />;
+          return <PostSingleView {...post} key={post._id} />;
+
         })}
       </div>
     </div>

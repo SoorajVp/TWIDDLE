@@ -1,5 +1,4 @@
 import SideBar from "../../components/user/layout/Sidebar";
-// import PostCard from '../../components/user/posts/PostCard'
 import RightBar from "../../components/user/layout/Rightbar";
 import Navbar from "../../components/user/layout/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -11,6 +10,7 @@ const UserLayout = () => {
   const { darkMode } = useSelector((store: RootState) => store.user);
   const [userLoggedin, setUserLoggedin] = useState<boolean>(false);
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");

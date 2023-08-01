@@ -24,6 +24,11 @@ export const apiCalls = {
     return response.data;
   },
 
+  getAllUsers:async () => {
+    const response = await api.get("/user/list");
+    return response.data;
+  },
+
   getAllPosts:async () => {
     const response = await api.get("/post");
     return response.data;
