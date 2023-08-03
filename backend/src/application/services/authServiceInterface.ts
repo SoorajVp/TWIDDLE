@@ -10,7 +10,7 @@ export const authServiceInterface = ( service: authServiceReturn ) => {
         return service.verifyEmail(email, token)
     }
 
-    const generateToken = ( payload: string ) => {
+    const generateToken = ( payload?: { userId: string, isAdmin: boolean} ) => {
         return service.generateToken( payload );
     } 
 

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Params, useParams } from 'react-router-dom';
 import UserProfile from '../../components/user/profile/UserProfile'
 import { useEffect, useState } from 'react';
@@ -11,10 +11,11 @@ import { PageLoading } from '../../components/shimmer/Loading';
 
 type responseInterface = {
   status: string,
-  posts: PostInterface[];
+  posts?: PostInterface[];
   saved?: PostInterface[];
-  user: userInterface
+  user?: userInterface
 }
+
 
 const ProfilePage = () => {
   const { user, darkMode } =useSelector((store: RootState) => store.user );
@@ -60,7 +61,7 @@ const ProfilePage = () => {
     <div>
       
       { userData &&
-        <UserProfile accountProfile={accountProfile} userData={userData} userPosts={userPosts} savedPosts={savedPosts} darkMode={darkMode} isFollowing={isFollowing} followBack={followBack} />
+        <UserProfile accountProfile={accountProfile} userData={userData} stateUser={user} userPosts={userPosts} savedPosts={savedPosts} darkMode={darkMode} isFollowing={isFollowing} followBack={followBack} />
       }
     </div>
   )

@@ -44,7 +44,12 @@ export const apiCalls = {
     return response.data;
   },
 
-  likePost:async ( id:string ) => {
+  updateProfile:async (payload: object) => {
+    const response = await api.post("/user/update-profile", payload);
+    return response.data;
+  },
+
+  likePost:async ( id: string ) => {
     const response = await api.put(`/post/${id}/like`);
     return response.data;
   },
@@ -56,6 +61,11 @@ export const apiCalls = {
 
   followUser:async ( id:string ) => {
     const response = await api.put(`/user/${id}/follow`);
+    return response.data;
+  },
+
+  unFollowUser:async ( id:string ) => {
+    const response = await api.put(`/user/${id}/unfollow`);
     return response.data;
   },
 
@@ -72,7 +82,17 @@ export const apiCalls = {
   savePost:async (id:string) => {
     const response = await api.put(`/user/${id}/save`);
     return response.data;
-  }
+  },
+
+  reportPost:async (payload: object ) => {
+    const response = await api.post(`/post/report`, payload );
+    return response.data;
+  },
+
+  deletePost:async (postId:string, key: string) => {
+    const response = await api.delete(`/post/${postId}/${key}`);
+    return response.data;
+  },
 
 
   

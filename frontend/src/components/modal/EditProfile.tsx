@@ -4,7 +4,7 @@ import EditForm from "../user/profile/EditForm";
 
 const customStyles = {
   content: {
-    top: "40%",
+    top: "45%",
     left: "50%",
     right: "auto",
     bottom: "auto",
@@ -50,7 +50,7 @@ const EditProfile = () => {
         contentLabel="Example Modal"
       >
 
-        <EditForm />
+        <EditForm setIsOpen={setIsOpen} />
         
       </Modal>
     </div>

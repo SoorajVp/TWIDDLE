@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   name: {
     type: String,
     required: true,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useEffect, useRef, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
@@ -10,11 +9,13 @@ import { Link } from "react-router-dom";
 import { apiCalls } from "../../../api/user/apiCalls";
 import { lastTimeFormat } from "../../../utils/lastTimeFormat";
 import { RootState } from "../../../state/interface/userInterface";
+import { setSavePost, setunSavePost } from "../../../state/slices/userSlice";
 import {
   CommentInterface,
   PostInterface,
 } from "../../../state/interface/postInterface";
-import { setSavePost } from "../../../state/slices/userSlice";
+import { DeletePost, ReportPost } from "../../modal/PostOptions";
+
 
 const PostCard = ({
   _id,
@@ -43,16 +44,6 @@ const PostCard = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(
-      "Here it is ",
-      _id,
-      createdAt,
-      image,
-      description,
-      likes,
-      comments,
-      userId
-    );
     if (likes?.includes(user._id)) {
       setLiked(true);
     }
@@ -66,17 +57,14 @@ const PostCard = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropDown(false);
-      }
-
+      // if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      //   setDropDown(false);
+      // }
       if (commentRef.current && !commentRef.current.contains(event.target as Node)) {
         setCommentBox(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -121,20 +109,15 @@ const PostCard = ({
 
   const HandleSaved = async () => {
     setSaved(true);
-    console.log("saved", _id);
     dispatch(setSavePost({ postId: _id }));
-    console.log("saved");
     await apiCalls.savePost(_id);
-    console.log("saved");
-
-    dispatch(setSavePost(_id));
-    console.log("saved");
+    dispatch(setSavePost({ postId: _id }));
   };
 
   const HandleUnSave = async () => {
     setSaved(false);
+    dispatch(setunSavePost({ postId: _id }));
     await apiCalls.savePost(_id);
-    console.log("saved");
   };
 
   let color: string;
@@ -177,32 +160,17 @@ const PostCard = ({
           <div>
             <div ref={dropdownRef} className="relative inline-block text-left">
               {dropDown && (
-                <div className={`${darkMode && "bg-black" } ${color} origin-top-right absolute -mt-2 right-0 mr-8 w-24 min-w-1/2 max-w-screen-md rounded-md shadow-lg ring-1 ring-gray-200 ring-opacity-5`}>
+                <div className={`${darkMode && "bg-black" } ${color} origin-top-right absolute -mt-2 right-0 mr-8 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-1 ring-gray-200 ring-opacity-5`}>
                   <ul
-                    className="py-1"
+                    className="py-1 border rounded-md"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                    <li
-                      className={`${darkMode ? "hover:bg-gray-800 hover:text-gray-100" : "hover:bg-gray-100 hover:text-gray-900" } block px-4 py-1 text-sm  hover:bg-gray-100 hover:text-gray-900`}
-                      
-                      role="menuitem"
-                    >
-                      Report
-                    </li>
-                    {/* <li
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                      role="menuitem"
-                    >
-                      Option 2
-                    </li>
-                    <li
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                      role="menuitem"
-                    >
-                      Option 3
-                    </li> */}
+                    { userId?._id == user?._id ?
+                    <DeletePost postId={_id} darkMode={darkMode} image={image} /> :
+                    <ReportPost userId={user?._id} postId={_id} darkMode={darkMode} /> }
+                    
                   </ul>
                 </div>
               )}
@@ -294,7 +262,6 @@ const PostCard = ({
                 type="text"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                // onBlur={() => setCommentBox(false)}
                 placeholder="Write a comment"
               />
               <span

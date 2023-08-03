@@ -8,6 +8,7 @@ import { dataURLtoFile } from "../../../utils/ImageCropDialog";
 import { apiCalls } from "../../../api/user/apiCalls";
 import Loading from "../../shimmer/Loading";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreatePost = () => {
   const [ loading, setLoading ] = useState<boolean>(false)
@@ -60,14 +61,27 @@ const CreatePost = () => {
   const handleCreatePost = async () => {
     if (croppedImage) {
       setLoading(true)
+      console.log(croppedArea)
       const result = dataURLtoFile(croppedImage, "image");
       const formData = new FormData();
       formData.append("description", description);
       formData.append("image", result);
       const response = await apiCalls.CreatePost(formData);
       console.log(response)
-      console.log(croppedArea)
-      navigate('/')
+
+      if(response.status == "success") {
+        toast.success(response.message, {
+          position: toast.POSITION.TOP_RIGHT,
+          hideProgressBar: true,
+        });
+        navigate('/')
+      } else {
+        toast.error(response.message, {
+          position: toast.POSITION.TOP_RIGHT,
+          hideProgressBar: true,
+        });
+      }
+      
 
     }
   };

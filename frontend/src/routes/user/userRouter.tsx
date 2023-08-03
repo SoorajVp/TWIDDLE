@@ -18,9 +18,11 @@ export const userRegister = {
 };
 
 export const userRouter = {
+
   path: "/",
   element: <UserLayout />,
   children: [
+    
     {
       path: "/",
       element: <HomePage />,

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable no-var */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { Link } from "react-router-dom";
@@ -17,7 +16,7 @@ import {
 import { setLogin } from "../../state/slices/userSlice";
 import { useEffect, useState } from "react";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
@@ -26,7 +25,7 @@ import Loading from "../../components/shimmer/Loading";
 
 
 const loginSchema = Yup.object({
-  name: Yup.string().min(4).max(15).required("Please enter your username "),
+  name: Yup.string().min(4).max(15).required("Please enter your name ").matches(/^[a-zA-Z0-9]+$/, '* This field cannot contain white space and special character'),
   password: Yup.string().required("Please enter your password"),
 });
 
@@ -61,14 +60,19 @@ const LoginPage = () => {
             user,
             token
           }: {
-            user: userInterface;
-            token: string;
+            user?: userInterface;
+            token?: string;
             message: string;
             status: string;
           } = response;
           dispatch(setLogin({ user: user, token: token }));
           localStorage.setItem("token", token);
+          toast.success( response.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            hideProgressBar: true,
+          });
           navigate("/");
+
         } else {
           toast.error( response.message, {
             position: toast.POSITION.TOP_CENTER,
@@ -99,8 +103,8 @@ const LoginPage = () => {
         user,
         token,
       }: {
-        user: userInterface;
-        token: string;
+        user?: userInterface;
+        token?: string;
         message: string;
         status: string;
       } = response;
@@ -121,7 +125,6 @@ const LoginPage = () => {
     <>
     { loading && <Loading /> }
     <div className="h-screen flex items-center w-full bg-slate-100">
-      <ToastContainer />
       <div className="container max-w-md mx-auto xl:max-w-4xl h-screeen flex bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="relative hidden xl:block xl:w-1/2 h-full">
           <img

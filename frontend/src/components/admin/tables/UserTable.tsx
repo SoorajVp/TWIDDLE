@@ -89,7 +89,7 @@ import { userInterface } from "../../../state/interface/userInterface";
                      {person.followers.length}
                    </td>
                    <td className="px-6 py-1 whitespace-nowrap text-center text-xs font-medium">
-                     <div className="text-red-700 bg-red-100 py-2 px-3 rounded-md hover:text-red-900 hover:bg-red-200" >
+                     <div className="text-red-700 bg-red-100 py-1.5 px-3 rounded-md shadow hover:text-red-900 hover:bg-red-200" >
                        BLOCK
                      </div>
                    </td>

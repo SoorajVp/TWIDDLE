@@ -4,15 +4,19 @@ import { PostRespositoryType } from "../../frameworks/database/repositories/post
 import { Request, Response } from "express";
 import { cloudServiceType } from "../../application/services/cloudServiceInterface";
 import { s3ServiceType } from "../../frameworks/services/s3CloudService";
+import { CustomRequest } from "../../types/interface/customeRequest";
 import {
   commentPost,
+  deletePost,
   getAllPosts,
   getComments,
+  getReports,
   likePost,
   postCreate,
+  reportPost,
   unlikePost,
 } from "../../application/useCases/post/post";
-import { CustomRequest } from "../../types/interface/customeRequest";
+
 
 const postController = (
   cloudService: cloudServiceType,
@@ -24,12 +28,13 @@ const postController = (
   const postService = cloudService(s3CloudService());
 
   const createPost = asyncHandler(async (req: CustomRequest, res: Response) => {
+    console.log("creating function  - - - - --")
+
     const result = await postCreate(req, dbRepositoryPost, postService);
-    res
-      .status(200)
+    res.status(200)
       .json({
         status: "success",
-        message: "Post created successfully",
+        message: "Post Uploaded ",
         data: result,
       });
   });
@@ -50,24 +55,37 @@ const postController = (
   })
 
   const PostComment = asyncHandler(async (req: CustomRequest, res: Response) => {
-    // const comment: { postId: string, userId?: string, comment: string} = { postId: req.params.postId, userId: req.userId, comment: req.body.comment } 
     const comment: { userId?: string, comment: string, createdAt: Date} = { userId: req.userId, comment: req.body.comment, createdAt:  new Date()}
     const result = await commentPost( comment, req.params.postId, dbRepositoryPost );
     res.status(200).json({status: "success"});
   })
 
   const getPostComments = asyncHandler(async(req: Request, res: Response ) => {
-    console.log("this is actual working function - - - - - -")
     const comments = await getComments(req.params.postId, dbRepositoryPost );
-    console.log("this is post comments list - - - - -", comments)
     res.status(200).json({status: "success", comments: comments})
+  })
+
+  const postReport = asyncHandler (async( req: CustomRequest, res: Response) => {
+    const { userId } = req;
+    const reportData: { userId?: string, postId: string, reason: string} = { userId: userId, postId: req.body.postId, reason: req.body.reason};
+    await reportPost( reportData, dbRepositoryPost);
+    res.status(201).json({status: "success", message: "Reponse submitted"})
+  })
+
+  const postDelete = asyncHandler(async (req: CustomRequest, res: Response ) => {
+    const { postId, key } = req.params;
+    await deletePost( postId, key, dbRepositoryPost, postService );
+    res.status(200).json({status: "success", message: "Post Deleted successfully"})
+  })
+
+  const postReports = asyncHandler(async (req: Request, res: Response ) => {
+    const result =  await getReports( dbRepositoryPost);
+    res.status(200).json({status: "success", reports: result })
   })
 
 
 
-
-
-  return { createPost, getPosts, postLike, postUnlike, PostComment, getPostComments };
+  return { createPost, getPosts, postLike, postUnlike, PostComment, getPostComments, postReport, postDelete, postReports };
 };
 
 export default postController;

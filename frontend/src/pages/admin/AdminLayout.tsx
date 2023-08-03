@@ -4,11 +4,11 @@ import { GrClose } from "react-icons/gr";
 import { FaUsers } from "react-icons/fa";
 import { BsFillCollectionFill } from "react-icons/bs";
 import { HiSpeakerphone } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
-import UserTable from "../../components/admin/tables/UserTable";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+// import UserTable from "../../components/admin/tables/UserTable";
 import AdminLogout from "../../components/modal/AdminLogout";
 
-const Dashboard = () => {
+const AdminLayout = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const navigate = useNavigate();
 
@@ -27,12 +27,21 @@ const Dashboard = () => {
       {/* drawer init and show */}
       <div className="p-4 px-7 bg-slate-700 shadow-lg flex justify-between">
         <div className="mr-3 font-bold text-2xl text-white">ADMIN</div>
-        <div className="ml-3 text-white cursor-pointer" onClick={handleDrawerToggle}>
+        <div
+          className="ml-3 text-white cursor-pointer"
+          onClick={handleDrawerToggle}
+        >
           {showDrawer ? <GrClose size={35} /> : <TfiMenu size={35} />}
         </div>
       </div>
 
-        <UserTable />
+
+
+
+      {/* <UserTable /> */}
+      <Outlet />
+
+
 
       <div
         id="drawer-navigation"
@@ -72,23 +81,21 @@ const Dashboard = () => {
         <div className="py-4 overflow-y-auto">
           <ul className="space-y-4 font-medium">
             <li>
-              <a
-                href="#"
+              <Link to="/admin/users"
                 className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
               >
                 <FaUsers size={30} />
                 <span className="ml-3">Handle Users </span>
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a
-                href="#"
+              <Link to="/admin/posts"
                 className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
               >
                 <BsFillCollectionFill size={30} />
                 <span className="ml-3">Handle Posts </span>
-              </a>
+              </Link>
             </li>
 
             <li>
@@ -102,13 +109,6 @@ const Dashboard = () => {
             </li>
 
             <li>
-              {/* <div
-                className="flex items-center p-2 text-red-600 rounded-lg hover:bg-gray-100 group"
-              >
-                <FiLogOut size={30} />
-                <span className="ml-3">Logout</span>
-              </div> */}
-
               <AdminLogout />
             </li>
 
@@ -119,4 +119,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminLayout;

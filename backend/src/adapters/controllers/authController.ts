@@ -5,20 +5,21 @@ import { adminLogin, loginWithGoogle, userLogin, userRegister } from "../../appl
 import { authServiceInterfaceType } from "../../application/services/authServiceInterface";
 import { authServiceType } from "../../frameworks/services/authService";
 import asyncHandler from "express-async-handler";
-import { adminDbInterface } from "../../application/repositories/adminDbRepository";
-import { adminRepositoryInterface } from "../../frameworks/database/repositories/adminRepository";
+// import { adminDbInterface } from "../../application/repositories/adminDbRepository";
+// import { adminRepositoryInterface } from "../../frameworks/database/repositories/adminRepository";
+// import { getReports } from "../../application/useCases/post/post";
 
 const authController = (
   authServiceInterface: authServiceInterfaceType,
   authServiceImpl: authServiceType,
   userDbRepository: userDbInterface,
   userRepositoryDb: userRepositoryDbType,
-  adminDbRepository: adminDbInterface,
-  adminRepositoryImpl: adminRepositoryInterface
+  // adminDbRepository: adminDbInterface,
+  // adminRepositoryImpl: adminRepositoryInterface
 ) => {
     
   const dbRespositoryUser = userDbRepository(userRepositoryDb());
-  const dbRespositoryAdmin = adminDbRepository(adminRepositoryImpl());
+  // const dbRespositoryAdmin = adminDbRepository(adminRepositoryImpl());
   const authService = authServiceInterface(authServiceImpl());
 
   const registerUser = asyncHandler(
@@ -34,7 +35,7 @@ const authController = (
     const { name, password } = req.body;
     const user = { name, password }
     const result = await userLogin( user, dbRespositoryUser, authService );
-    res.status(200).json({ status: "success", message: "User loggedin successfully", user: result.userData, token:result.token })
+    res.status(200).json({ status: "success", message: "Loggedin successfully", user: result.userData, token:result.token })
   })
 
   const googleLogin = asyncHandler(async (req: Request, res: Response ) => {
@@ -44,10 +45,12 @@ const authController = (
   })
 
   const adminlogin = asyncHandler(async( req: Request, res: Response ) => {
-    const { email, password } = req.body;
-    const result = await adminLogin( email, password, dbRespositoryAdmin, authService );
-    res.status(200).json({ status: "success", message: "Admin loggedin successfully", token:result.token, admin: result.admin })
+    const { name, password } = req.body;
+    const result = await adminLogin( name, password, dbRespositoryUser, authService );
+    res.status(200).json({ status: "success", message: "Admin loggedin successfully", token:result?.token, admin: result?.admin })
   })
+
+  
 
   return { registerUser, loginUser, googleLogin, adminlogin };
 

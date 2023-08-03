@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { useFormik } from "formik";
@@ -13,12 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const loginSchema = Yup.object({
-  email: Yup.string().email().required("Please enter your username "),
+  name: Yup.string().required("Please enter your username "),
   password: Yup.string().required("Please enter your password"),
 });
 
-const initialValues: { email: string; password: string } = {
-  email: "",
+const initialValues: { name: string; password: string } = {
+  name: "",
   password: "",
 };
 
@@ -35,8 +33,8 @@ const AdminLogin = () => {
       initialValues: initialValues,
       validationSchema: loginSchema,
       onSubmit: async(values) => {
-        const { email, password }: { email: string; password: string } = values;
-        const data = { email, password };
+        const { name, password }: { name: string; password: string } = values;
+        const data = { name, password };
         console.log(data);
 
         const response:  AdminAuthResponse = await apiCalls.adminLogin(data);
@@ -77,17 +75,17 @@ const AdminLogin = () => {
                     <div className="relative">
                       <input
                         autoComplete="off"
-                        id="email"
-                        name="email"
+                        id="name"
+                        name="name"
                         type="text"
-                        value={values.email}
+                        value={values.name}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                         placeholder="Email address"
                       />
-                      {errors.email && touched.email ? (
-                        <p className="text-xs text-red-700">{errors.email}</p>
+                      {errors.name && touched.name ? (
+                        <p className="text-xs text-red-700">{errors.name}</p>
                       ) : null}
                       <label className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
                         Email Address

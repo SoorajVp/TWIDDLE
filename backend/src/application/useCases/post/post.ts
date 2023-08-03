@@ -3,18 +3,23 @@ import AppError from "../../../utils/appError";
 import { postDbRepositoryType } from "../../repositories/postDbRepository";
 import { cloudServiceType } from "../../services/cloudServiceInterface";
 import { CustomRequest } from "../../../types/interface/customeRequest";
+// import { adminDbInterface } from "../../repositories/adminDbRepository";
 
 export const postCreate = async (
   req: CustomRequest,
   repository: ReturnType<postDbRepositoryType>,
   service: ReturnType<cloudServiceType>
 ) => {
+  
   const result = await service.uploadAndGetUrl(req?.file);
+  console.log("this is created function 2  - - -- ", result)
+
   const post: { userId?: string; image: string; description: string } = {
     userId: req.userId?.toString(),
     image: result.imgUrl.toString(),
     description: req.body.description,
   };
+  console.log("this is created post  - - -- ", post)
   const newPost = repository.createPost(post);
   if (!newPost) {
     throw new AppError("Something went wrong !", HttpStatus.BAD_REQUEST);
@@ -27,7 +32,6 @@ export const getAllPosts = async (
   repository: ReturnType<postDbRepositoryType>
 ) => {
   const posts = await repository.getAllPosts();
-  console.log("this is all posts ----", posts)
   if (!posts) {
     throw new AppError("Something went wrong !", HttpStatus.BAD_REQUEST);
   }
@@ -62,7 +66,6 @@ export const unlikePost = async(req: CustomRequest, repository: ReturnType<postD
 }
 
 export const commentPost = async ( comment: {userId?: string, comment: string}, postId: string, repository: ReturnType<postDbRepositoryType> ) => {
-  console.log("function - 2")
   const result = await repository.commentPost(comment, postId );
   return result;
 }
@@ -72,3 +75,15 @@ export const getComments = async ( postId: string, repository: ReturnType<postDb
   return result;
 }
 
+export const reportPost = async( reportData: { userId?: string, postId: string, reason: string}, repository: ReturnType<postDbRepositoryType> ) => {
+  return await repository.reportPost(reportData);
+}
+ 
+export const deletePost = async( id: string, key: string, repository: ReturnType<postDbRepositoryType>, service: ReturnType<cloudServiceType> ) => {
+  await service.deleteFile(key)
+  return await repository.deletepost(id);
+}
+
+export const getReports =async ( repository: ReturnType<postDbRepositoryType> ) => {
+  return await repository.getReports();
+}

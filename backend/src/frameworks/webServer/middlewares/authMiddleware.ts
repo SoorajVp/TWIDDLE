@@ -4,7 +4,7 @@ import { CustomRequest } from "../../../types/interface/customeRequest";
 import AppError from "../../../utils/appError";
 import { HttpStatus } from "../../../types/httpStatus";
 
-const authMiddleware = ( req: CustomRequest, res: Response, next: NextFunction ) => {
+export const userAuthMiddleware = ( req: CustomRequest, res: Response, next: NextFunction ) => {
     let token: string | null = "";
     if( req.headers.authorization ) {
         token = req.headers.authorization.split(" ")[1];
@@ -13,8 +13,24 @@ const authMiddleware = ( req: CustomRequest, res: Response, next: NextFunction )
         throw new AppError("UnAuthorized user found", HttpStatus.OK)
     }
     const { payload }: any = authService().verifyToken(token)
-    req.userId = payload;
+    req.userId = payload.userId;
     next()
 }
 
-export default authMiddleware;
+
+export const adminAuthMiddleware = ( req: CustomRequest, res: Response, next: NextFunction ) => {
+    let token: string | null = "";
+    if( req.headers.authorization ) {
+        token = req.headers.authorization.split(" ")[1];
+    }
+    if(!token) {
+        throw new AppError("UnAuthorized user found", HttpStatus.OK)
+    }
+    const { payload }: any = authService().verifyToken(token)
+    if(payload.isAdmin == true) {
+        next()
+    } else {
+        throw new AppError("UnAuthorized user found", HttpStatus.OK)
+    }
+    
+}

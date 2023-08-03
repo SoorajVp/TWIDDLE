@@ -1,4 +1,5 @@
-import { registerInterface, userDataInterface } from "../../../types/interface/userInterface";
+import mongoose from "mongoose";
+import { editUserInterface, registerInterface, userDataInterface } from "../../../types/interface/userInterface";
 import User from "../models/userModel";
 
 export const userRepositoryDb = () => {
@@ -33,6 +34,10 @@ export const userRepositoryDb = () => {
         return user;
     }
 
+    const updateProfile = async ( userData: editUserInterface ) => {
+        return await User.findByIdAndUpdate({_id: userData.id}, { name: userData.name, email: userData.email, bio: userData.bio }, { new: true })
+    }
+
     const followUser = async ( id: string, userId?: string ) => {
         await User.findByIdAndUpdate({ _id: id }, {$push: {followers: userId} }, { new: true })
         return await User.findByIdAndUpdate({ _id: userId }, {$push: {following: id} }, { new: true })
@@ -65,7 +70,7 @@ export const userRepositoryDb = () => {
 
 
 
-    return { addUser, getAllUser, getUserByEmail, getUserByName, getUserById, userSearch, followUser, unfollowUser, setFollowing, blockUser, savePost, unSavePost, getSavedPost }
+    return { addUser, getAllUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, followUser, unfollowUser, setFollowing, blockUser, savePost, unSavePost, getSavedPost }
 }
 
 export type userRepositoryDbType = typeof userRepositoryDb;

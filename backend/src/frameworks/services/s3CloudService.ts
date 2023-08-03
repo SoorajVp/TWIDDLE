@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import configKeys from "../../config";
 import crypto from "crypto";
 
@@ -30,8 +30,18 @@ export const s3CloudService = () => {
     return { key, imgUrl}
   };
 
+  const deleteFile = async (key: string) => {
+    const params = {
+      Bucket: configKeys.S3_BUCKET_NAME,
+      Key: key,
+    };
+    const command = new DeleteObjectCommand(params);
+    await s3.send(command);
+    console.log(`File with key "${key}" has been deleted from the S3 bucket.`);
+  };
 
-  return { uploadFile };
+
+  return { uploadFile, deleteFile };
 };
 
 export type s3ServiceType = typeof s3CloudService;

@@ -1,4 +1,4 @@
-import { registerInterface } from "../../types/interface/userInterface";
+import { editUserInterface, registerInterface } from "../../types/interface/userInterface";
 import { userRepositoryDbType } from "../../frameworks/database/repositories/userRepository";
 
 export const userDbRepository = (
@@ -29,8 +29,12 @@ export const userDbRepository = (
     return await repository.userSearch(name);
   };
 
+  const updateProfile = async ( userData: editUserInterface ) => {
+    console.log("funtion - 2")
+    return await repository.updateProfile(userData)
+  }
+
   const followUser = async( id: string, userId?: string ) => {
-    console.log("function -3")
     return await repository.followUser( id, userId )
   }
 
@@ -54,7 +58,7 @@ export const userDbRepository = (
     return await repository.unSavePost( postId, userId )
   }
 
-  return { getAllUser, addUser, getUserByEmail, getUserByName, getUserById, userSearch, followUser, unfollowUser, blockUser, savePost, unSavePost, getSavedPost };
+  return { getAllUser, addUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, followUser, unfollowUser, blockUser, savePost, unSavePost, getSavedPost };
 };
 
 export type userDbInterface = typeof userDbRepository;

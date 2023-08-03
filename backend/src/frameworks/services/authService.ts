@@ -17,7 +17,7 @@ export const authService = () => {
         return result;
     }
 
-    const generateToken = (payload:string) => {
+    const generateToken = (payload?: { userId: string, isAdmin: boolean}) => {
         const token = jwt.sign({payload}, configKeys.JWT_SECRET, { expiresIn: "5d", });
         return token
     }

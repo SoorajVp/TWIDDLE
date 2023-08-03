@@ -14,8 +14,8 @@ const authRouter = () => {
     authService,
     userDbRepository,
     userRepositoryDb,
-    adminDbRepository,
-    adminRepository
+    // adminDbRepository,
+    // adminRepository
   );
 
   router.post("/register", controller.registerUser );

@@ -1,9 +1,11 @@
-import Comment from "../models/commentModel";
 import Post from "../models/postModel"
+import ReportPost from "../models/reportModel";
 
 export const PostRespository = () => {
     
     const createPost = async( post: {userId?: string, image: string, description: string}) => {
+        console.log("creating db 2 - - - - --")
+
         const newPost = new Post(post);
         return await newPost.save();
     }
@@ -13,7 +15,7 @@ export const PostRespository = () => {
     }
 
     const getUserPosts = async ( id: string ) => {
-        return await Post.find({ userId: id })
+        return await Post.find({ userId: id }).populate('userId')
     }
 
     const getPostById = async ( id: string ) => {
@@ -36,11 +38,23 @@ export const PostRespository = () => {
         return await Post.findById({ _id: postId}).populate({ path: 'comments.userId', select: 'name profilePic' })
     }
 
-    
+    const reportPost = async( reportData: {userId?: string, postId: string, reason: string } ) => {
+        const report = new ReportPost(reportData);
+        return await report.save();
+    }
+
+    const deletePost = async ( id: string ) => {
+        return await Post.findByIdAndDelete({_id: id})
+    }
+
+    const getReports = async() => {
+        return await ReportPost.find().populate('userId').populate('postId')
+    }
 
 
 
-    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments };
+
+    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments, reportPost, deletePost, getReports };
 }
 
 export type PostRespositoryType = typeof PostRespository;

@@ -19,7 +19,6 @@ const PostList= ({ items } ) => {
           return (
             <div key={item?._id} onClick={singleView} >
               <PostSingleView {...item}/>
-              {/* <img className="min-h-full bg-gray-300" src={item?.image} alt="Sample" /> */}
             </div>
           );
         })}

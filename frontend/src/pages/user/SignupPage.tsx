@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { useFormik } from "formik";
@@ -48,7 +47,7 @@ const SignupPage = () => {
       const userData = { name, email, password };
       const response: AuthResponse = await apiCalls.Register(userData);
       if(response.status == "success") {
-        const { user, token }: { user: userInterface, token: string, message: string, status: string }  = response;
+        const { user, token }: { user?: userInterface, token?: string }  = response;
         toast.success( response.message, {
           position: toast.POSITION.TOP_CENTER,
           hideProgressBar: true,

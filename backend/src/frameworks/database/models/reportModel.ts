@@ -1,27 +1,26 @@
 import { Schema, model } from "mongoose";
 
-const commentSchema = new Schema({
-
-    userId: {
+const reportSchema = new Schema({
+    userId:{
         type: String,
         ref: "User",
         required: true
     },
-    postId: {
+    postId:{
         type: String,
         ref: "Post",
         required: true
     },
-    comment: {
+    reason: {
         type: String,
         required: true
     },
     createdAt: {
         type: Date,
-        default: Date.now
-    }
-
+        default: Date.now 
+     }
 })
 
-const Comment = model( "Comment", commentSchema );
-export default Comment;
+const ReportPost = model("Report", reportSchema);
+export default ReportPost;
+

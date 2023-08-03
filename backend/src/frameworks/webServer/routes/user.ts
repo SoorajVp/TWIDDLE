@@ -13,9 +13,13 @@ const userRouter = () => {
 
     router.post("/search", controller.searchUser);
 
+    router.post("/update-profile", controller.profileUpdate);
+
     router.get("/:userName", controller.getUserByName );
 
     router.put("/:id/follow", controller.userFollow);
+
+    router.put("/:id/unfollow", controller.userUnfollow);
 
     router.put("/:postId/save", controller.postSave);
 

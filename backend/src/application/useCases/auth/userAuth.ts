@@ -2,12 +2,10 @@ import AppError from "../../../utils/appError";
 import { userDbInterface } from "../../repositories/userDbRepository";
 import { HttpStatus } from "../../../types/httpStatus";
 import {
-  adminDataInterface,
   registerInterface,
   userDataInterface,
 } from "../../../types/interface/userInterface";
 import { authServiceInterfaceType } from "../../services/authServiceInterface";
-import { adminDbInterface } from "../../repositories/adminDbRepository";
 
 export const userRegister = async (
   user: registerInterface,
@@ -30,17 +28,21 @@ export const userRegister = async (
     user.password && (await authService.encryptPassword(user?.password));
 
   const users = await userRepository.addUser(user);
-  const userId = users._id;
-  const token = await authService.generateToken(userId.toString());
+  const payload: { userId: string, isAdmin: boolean} = { userId: users._id.toString(), isAdmin: users.isAdmin}
+
+  const token = authService.generateToken(payload);
   await authService.verifyEmail(user.email, token);
   return { token, userData: users };
 };
+
+
 
 export const userLogin = async (
   user: { name: string; password: string },
   userRepository: ReturnType<userDbInterface>,
   authService: ReturnType<authServiceInterfaceType>
 ) => {
+
   const userData: userDataInterface | null = await userRepository.getUserByName(
     user.name
   );
@@ -62,8 +64,8 @@ export const userLogin = async (
   if (userData.isBlocked) {
     throw new AppError("This account was blocked !", HttpStatus.OK);
   }
-
-  const token = await authService.generateToken(userData._id);
+  const payload: { userId: string, isAdmin: boolean} = { userId: userData._id.toString(), isAdmin:  Boolean(userData.isAdmin)}
+  const token = authService.generateToken(payload);
 
   return { token, userData };
 };
@@ -78,42 +80,48 @@ export const loginWithGoogle = async (
   const userData: any = await userRepository.getUserByEmail( user.email );
   if (!userData) {
     user.googleUser = true;
-    user.name = await authService.createRandomName(user.name)
+    user.name = authService.createRandomName(user.name)
     const users = await userRepository.addUser(user);
-    const userId = users._id;
-    const token = await authService.generateToken(userId.toString());
+    const payload: { userId: string; isAdmin: boolean  } = { userId: users._id.toString(), isAdmin:  users.isAdmin}
+    const token = authService.generateToken(payload);
     return { token, userData: users };
   }
   if(userData.googleUser) {
     if (userData.isBlocked) {
       throw new AppError("Action blocked", HttpStatus.OK);
     }
-    const token = await authService.generateToken(userData._id);
+    const token = authService.generateToken(userData._id);
     return { token, userData };
   } else {
-    throw new AppError("Email registered with password", HttpStatus.OK);
+    throw new AppError("Email already registered", HttpStatus.OK);
   }
-  
-
 };
 
 
 
 export const adminLogin = async(
-  email: string,
+  name: string,
   password: string,
-  adminRepository: ReturnType<adminDbInterface>,
+  userRepository: ReturnType<userDbInterface>,
   service: ReturnType<authServiceInterfaceType>
 ) => {
-  const admin : adminDataInterface | null = await adminRepository.getAdminByEmail(email);
+
+  const admin: userDataInterface | null = await userRepository.getUserByName( name );
   if(!admin) {
     throw new AppError("Admin not found !", HttpStatus.OK);
   }
-  const checkPassword: boolean = await service.comparePassword( password, admin.password );
-  if(!checkPassword) {
-    throw new AppError("Incorrect password !", HttpStatus.OK);
-  } 
-  const token = await service.generateToken(admin._id.toString());
-  return { token, admin };
+  if(!admin.isAdmin) {
+    throw new AppError("Admin not found !", HttpStatus.OK);
+  }
+  if(admin.password) {
+    const checkPassword: boolean = await service.comparePassword( password, admin.password );
+    if(!checkPassword) {
+      throw new AppError("Incorrect password !", HttpStatus.OK);
+    } 
+    const payload: { userId: string, isAdmin: boolean} = { userId: admin._id.toString(), isAdmin:  Boolean(admin.isAdmin)}
+    const token = service.generateToken(payload);
+    return { token, admin };
+  }
+  
   
 };

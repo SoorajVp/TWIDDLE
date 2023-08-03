@@ -1,5 +1,6 @@
 export interface userInterface {
   _id: string;
+  isAdmin?: boolean;
   bio?: string;
   email: string;
   isBlocked: boolean;
@@ -15,9 +16,10 @@ export interface userInterface {
 }
 
 export interface AuthState {
-  darkMode: boolean;
+  darkMode?: boolean;
   user?: userInterface | null;
   token?: string | null;
+  actions?: number;
 }
 
 export interface RootState {
@@ -25,13 +27,19 @@ export interface RootState {
 }
 
 export interface AuthResponse {
-  user: userInterface;
-  token: string;
+  user?: userInterface;
+  token?: string;
   status: string;
   message: string;
 }
 
+
+
 // admin interface
+
+
+
+
 
 export interface AdminInterface {
   _id: string;

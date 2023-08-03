@@ -43,11 +43,10 @@ const LogoutModal = () => {
   const submitLogout = () => {
     setLoading(true);
     setIsOpen(false);
-    setTimeout(() => {
-      localStorage.removeItem("token");
-      dispatch(setLogout());
-      navigate("/login");
-    }, 2000);
+    localStorage.removeItem("token");
+    dispatch(setLogout());
+    setLoading(false);
+    navigate("/login");
   };
 
   return (
@@ -113,5 +112,3 @@ const LogoutModal = () => {
 };
 
 export default LogoutModal;
-
-

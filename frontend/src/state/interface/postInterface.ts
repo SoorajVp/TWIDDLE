@@ -18,11 +18,11 @@ export interface CommentInterface {
     createdAt: Date;
 }
 
-// _id: string;
-//   createdAt: string;
-//   image: string;
-//   description: string;
-//   likes: string[];
-//   comments: CommentInterface[];
-//   userId: userInterface;
 
+export interface ReportPosts {
+  _id: string,
+  userId?: userInterface,
+  postId?: PostInterface,
+  reason?: string,
+  createdAt?: string
+}

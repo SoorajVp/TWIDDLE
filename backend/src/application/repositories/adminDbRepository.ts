@@ -5,6 +5,7 @@ export const adminDbRepository = ( repository: ReturnType<adminRepositoryInterfa
         return await repository.getAdminByEmail(email);
     }
 
+    
     return { getAdminByEmail }
 }
 

@@ -49,12 +49,13 @@ const AdminLogout = () => {
   return (
     <>
       {loading && <Loading />}
-              <div onClick={openModal}
-                className="flex items-center p-2 text-red-600 rounded-lg hover:bg-gray-100 group"
-              >
-                <FiLogOut size={30} />
-                <span className="ml-3">Logout</span>
-              </div>
+      <div
+        onClick={openModal}
+        className="flex items-center p-2 text-red-700 rounded-lg hover:bg-gray-100 group"
+      >
+        <FiLogOut size={30} />
+        <span className="ml-3">Logout</span>
+      </div>
 
       <Modal
         isOpen={modalIsOpen}
@@ -106,5 +107,3 @@ const AdminLogout = () => {
 };
 
 export default AdminLogout;
-
-
