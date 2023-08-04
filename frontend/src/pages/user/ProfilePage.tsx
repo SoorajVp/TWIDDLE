@@ -34,14 +34,13 @@ const ProfilePage = () => {
 
     const fetchUserData = async(name: string): Promise<void> => {
       const response: responseInterface = await apiCalls.getUserByName(name);
-      console.log("This is response  - - - - -",response)
-      if( response.user.name == user.name ) {
+      if( response.user?.name == user.name ) {
         setAccountProfile(true)
       }
-      if(response.user.followers.includes(user._id)) {
+      if(response.user?.followers.includes(user._id)) {
         setFollowing(true);
       }
-      if(response.user.following.includes(user._id)) {
+      if(response.user?.following.includes(user._id)) {
         setFollowBack(true)
       }
       if(response.saved) {

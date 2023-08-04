@@ -40,7 +40,7 @@ const authController = (
 
   const googleLogin = asyncHandler(async (req: Request, res: Response ) => {
     const result = await loginWithGoogle(req.body, dbRespositoryUser, authService  )
-    res.status(200).json({ status: "success", message: "User loggedin successfully", user: result.userData, token:result.token })
+    res.status(200).json({ status: "success", message: "Loggedin successfully", user: result.userData, token:result.token })
 
   })
 
@@ -49,6 +49,7 @@ const authController = (
     const result = await adminLogin( name, password, dbRespositoryUser, authService );
     res.status(200).json({ status: "success", message: "Admin loggedin successfully", token:result?.token, admin: result?.admin })
   })
+
 
   
 

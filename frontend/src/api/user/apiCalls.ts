@@ -49,6 +49,16 @@ export const apiCalls = {
     return response.data;
   },
 
+  checkPassword: async ( password: string) => {
+    const response = await api.get(`/user/${password}/password`);
+    return response.data;
+  },
+
+  changePassword: async ( payload: object) => {
+    const response = await api.put(`/user/change-password`, payload);
+    return response.data;
+  },
+
   likePost:async ( id: string ) => {
     const response = await api.put(`/post/${id}/like`);
     return response.data;
@@ -79,6 +89,11 @@ export const apiCalls = {
     return reponse.data;
   },
 
+  deleteComment:async (postId: string, commentId: string) => {
+    const reponse = await api.delete(`/post/${postId}/${commentId}` );
+    return reponse.data;
+  },
+
   savePost:async (id:string) => {
     const response = await api.put(`/user/${id}/save`);
     return response.data;
@@ -90,7 +105,7 @@ export const apiCalls = {
   },
 
   deletePost:async (postId:string, key: string) => {
-    const response = await api.delete(`/post/${postId}/${key}`);
+    const response = await api.post(`/post/${postId}/${key}`);
     return response.data;
   },
 

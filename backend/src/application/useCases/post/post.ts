@@ -12,14 +12,11 @@ export const postCreate = async (
 ) => {
   
   const result = await service.uploadAndGetUrl(req?.file);
-  console.log("this is created function 2  - - -- ", result)
-
   const post: { userId?: string; image: string; description: string } = {
     userId: req.userId?.toString(),
     image: result.imgUrl.toString(),
     description: req.body.description,
   };
-  console.log("this is created post  - - -- ", post)
   const newPost = repository.createPost(post);
   if (!newPost) {
     throw new AppError("Something went wrong !", HttpStatus.BAD_REQUEST);
@@ -75,12 +72,19 @@ export const getComments = async ( postId: string, repository: ReturnType<postDb
   return result;
 }
 
+export const deleteComment = async ( postId: string, commentId: string, repository: ReturnType<postDbRepositoryType> ) => {
+  const result = await repository.deleteComment(postId, commentId)
+  return result;
+}
+
 export const reportPost = async( reportData: { userId?: string, postId: string, reason: string}, repository: ReturnType<postDbRepositoryType> ) => {
   return await repository.reportPost(reportData);
 }
  
 export const deletePost = async( id: string, key: string, repository: ReturnType<postDbRepositoryType>, service: ReturnType<cloudServiceType> ) => {
+  console.log("function - 2")
   await service.deleteFile(key)
+  console.log("function - 5")
   return await repository.deletepost(id);
 }
 

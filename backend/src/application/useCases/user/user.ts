@@ -2,6 +2,7 @@ import { HttpStatus } from "../../../types/httpStatus";
 import { editUserInterface, userDataInterface } from "../../../types/interface/userInterface";
 import AppError from "../../../utils/appError";
 import { userDbInterface } from "../../repositories/userDbRepository";
+import { authServiceInterfaceType } from "../../services/authServiceInterface";
 
 export const getAllUser = async(repository: ReturnType<userDbInterface> ) => {
     const users = await repository.getAllUser()
@@ -24,7 +25,6 @@ export const userByName = async ( name: string, repository: ReturnType<userDbInt
 }
 
 export const updateProfile = async ( userData: editUserInterface, repository: ReturnType<userDbInterface>) => {
-    console.log("funtion - 1")
     const isEmailExists: userDataInterface | any = await repository.getUserByEmail( userData.email );
     if(isEmailExists && isEmailExists?._id != userData.id) {
         throw new AppError("Email is already exists", HttpStatus.OK);
@@ -35,6 +35,26 @@ export const updateProfile = async ( userData: editUserInterface, repository: Re
     }
     return await repository.updateProfile(userData);
 }
+
+export const passwordCheck = async ( userId: string, password: string,repository: ReturnType<userDbInterface>, service: ReturnType<authServiceInterfaceType> ) => {
+    const userData : userDataInterface | any = await repository.getUserById(userId)
+    if(userData){
+        const checkPassword: boolean  = await service.comparePassword( password, userData.password.toString());
+        if(!checkPassword) {
+          throw new AppError("Incorrect password !", HttpStatus.OK);
+        }
+        return
+    }
+}
+
+export const passwordChange = async ( userId: string, password: string,repository: ReturnType<userDbInterface>, service: ReturnType<authServiceInterfaceType> ) => {
+    console.log("function - 2 -")
+
+    password = await service.encryptPassword(password);
+    console.log("function - 3 -")
+
+    return await repository.newPassword(userId, password);
+  }
 
 export const followUser = async( id: string, userId: string, repository: ReturnType<userDbInterface> ) => {
     return await repository.followUser( id, userId)

@@ -7,8 +7,14 @@ import configKeys from '../../config';
 export const authService = () => {
 
     const encryptPassword = async( password: string ) => {
+        console.log("encrypting - 2 -", password)
+
         const salt = await bcrypt.genSalt(10);
+        console.log("function - password -", salt)
+
         password = await bcrypt.hash( password, salt )
+        console.log("function - password -", password)
+
         return password;
     }
 

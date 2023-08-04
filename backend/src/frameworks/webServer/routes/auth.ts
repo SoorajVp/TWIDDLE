@@ -26,6 +26,8 @@ const authRouter = () => {
 
   router.post("/admin/login", controller.adminlogin);
 
+
+
   return router;
   
 };

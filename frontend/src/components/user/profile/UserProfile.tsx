@@ -141,9 +141,9 @@ const UserProfile = ({
           </div>
         </div>
       </div>
-      <div className="pl-5">
-        <p className="text-base ">{stateUser?.name}</p>
-        <p className="text-xs py-1 pb-5">{stateUser?.bio} </p>
+      <div className="lg:pl-5 lg: pt-3">
+        <p className="text-base ">{userData?.name}</p>
+        <p className="text-xs py-1 pb-5">{userData?.bio} </p>
       </div>
       <hr />
       <div className="flex justify-around  py-2">

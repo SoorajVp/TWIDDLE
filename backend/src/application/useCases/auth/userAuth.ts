@@ -122,6 +122,6 @@ export const adminLogin = async(
     const token = service.generateToken(payload);
     return { token, admin };
   }
-  
-  
 };
+
+

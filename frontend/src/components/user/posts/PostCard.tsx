@@ -9,12 +9,12 @@ import { Link } from "react-router-dom";
 import { apiCalls } from "../../../api/user/apiCalls";
 import { lastTimeFormat } from "../../../utils/lastTimeFormat";
 import { RootState } from "../../../state/interface/userInterface";
-import { setSavePost, setunSavePost } from "../../../state/slices/userSlice";
+import { setAction, setSavePost, setunSavePost } from "../../../state/slices/userSlice";
 import {
   CommentInterface,
   PostInterface,
 } from "../../../state/interface/postInterface";
-import { DeletePost, ReportPost } from "../../modal/PostOptions";
+import { CommentOption, DeletePost, ReportPost } from "../../modal/PostOptions";
 
 
 const PostCard = ({
@@ -26,6 +26,7 @@ const PostCard = ({
   comments,
   userId,
 }: PostInterface) => {
+
   const [CommentBox, setCommentBox] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
@@ -34,33 +35,34 @@ const PostCard = ({
   const [commentCount, setCommentCount] = useState<number>(comments?.length);
   const [commentList, setCommentList] = useState<CommentInterface[]>(comments);
 
-  const [dropDown, setDropDown] = useState(false);
+  const [dropDown, setDropDown] = useState<boolean>(false);
 
-  const toggleDropdown = () => {
-    setDropDown(!dropDown);
-  };
 
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("This is the list of comments",commentList)
+    setCommentList(comments)
     if (likes?.includes(user._id)) {
       setLiked(true);
     }
     if (user?.saved?.includes(_id)) {
       setSaved(true);
     }
-  }, []);
+  }, [comments]);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const commentRef = useRef<HTMLDivElement | null>(null);
+  const commentBoxRef = useRef<HTMLDivElement | null>(null);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       // if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       //   setDropDown(false);
       // }
-      if (commentRef.current && !commentRef.current.contains(event.target as Node)) {
+
+      if (commentBoxRef.current && !commentBoxRef.current.contains(event.target as Node)) {
         setCommentBox(false);
       }
     };
@@ -90,18 +92,9 @@ const PostCard = ({
         id: _id,
         comment: comment,
       };
-      const dummy: CommentInterface = {
-        comment: comment,
-        createdAt: new Date(),
-        userId: {
-          _id: "dummy-id-2",
-          name: user.name,
-          profilePic: user.profilePic,
-        },
-      };
-      const prevComments = [...commentList, dummy];
-      setCommentList(prevComments);
+
       await apiCalls.commentPost(data);
+      dispatch(setAction())
       setCommentCount(commentCount + 1);
       setComment("");
     }
@@ -131,7 +124,7 @@ const PostCard = ({
 
   return (
     <>
-      <article
+      <article 
         className={`${bgColor} ${color} mb-4  p-2 rounded-lg shadow flex flex-col bg-clip-border`}
       >
         <div className="flex pb-2 items-center justify-between">
@@ -174,20 +167,20 @@ const PostCard = ({
                   </ul>
                 </div>
               )}
-              <div className="pr-2 cursor-pointer" onClick={toggleDropdown}>
+              <div className="pr-2 cursor-pointer" onClick={()=> setDropDown(!dropDown)}>
                 <SlOptionsVertical />
               </div>
             </div>
           </div>
         </div>
 
-        <div>
+        <div onClick={() => setDropDown(false)}>
           <div className="flex justify-between gap-1 mb-1">
             <div
               className="flex cursor-pointer"
               style={{ width: "100%", height: "auto" }}
             >
-              <img onClick={()=>setDropDown(false)}
+              <img 
                 className={`w-full h-full object-cover ${
                   darkMode ? "bg-gray-800" : "bg-gray-200"
                 }`}
@@ -246,28 +239,24 @@ const PostCard = ({
 
         {description && (
           <div className="text-sm pl-1">
-            {" "}
             <span className="pr-2 font-medium">{userId?.name}</span>
             {description}
           </div>
         )}
 
         {CommentBox && (
-          <div ref={commentRef} >
+          <div ref={commentBoxRef} className="" >
             <div className="relative pt-1">
-              <input
-                className={`${
+              <input className={`${
                   darkMode ? "bg-slate-800" : "bg-slate-100"
-                } pt-2 pb-1 pl-3 w-full h-9 text-xs rounded-lg placeholder:text-slate-500 pr-20`}
+                } pt-2 pb-1 pl-3 w-full h-9 text-sm rounded-lg placeholder:text-slate-500 pr-20`}
                 type="text"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Write a comment"
               />
-              <span
-                className="flex absolute right-3 top-2/4 -mt-2 items-center"
-                onClick={HandleComment}
-              >
+              <span className="flex absolute right-3 top-2/4 -mt-2 items-center"
+                onClick={HandleComment} >
                 {/* <svg
                   className="mr-2"
                   style={{ width: "26px", height: "26px" }}
@@ -287,22 +276,33 @@ const PostCard = ({
                 </svg>
               </span>
             </div>
-            <ul className="w-96 space-y-3 my-3 text-xs">
+
+            <ul className="space-y-3 mt-3 text-xs max-h-40 overflow-y-auto">
               {commentList.map((item, index) => (
-                <li className="w-full pl-2 flex" key={index}>
+                <li className="w-full pl-2 flex justify-between" key={index}>
+                <div className="flex">
+                <Link
+                    to={`/${item?.userId?.name}`} className="flex" >
                   <img
-                    className="rounded-full border max-w-none w-6 h-6"
+                    className="rounded-full border max-w-none w-7 h-7"
                     src={item?.userId?.profilePic}
                     alt="Profile"
                   />
-                  <Link
-                    to={`/${item?.userId?.name}`}
-                    className="pt-0.5 pl-2 font-medium"
-                  >
-                    {" "}
-                    {item?.userId?.name}
-                  </Link>
-                  <p className="pt-0.5 pl-4">{item?.comment}</p>
+                   <div className="flex-2 pl-2">
+                        <p className="text-sm font-medium">
+                        {item?.userId?.name}
+                        </p>
+                        <p className="text-gray-500 truncate"  style={{ fontSize: "13px" }}>
+                            {lastTimeFormat(item.createdAt.toString())}
+                        </p>
+                    </div>
+                    </Link>
+
+                  <p className="pt-0.5 pl-3 text-sm">{item?.comment}</p>
+                  </div>
+
+                  <CommentOption userId={item.userId._id} postId={_id} commentId={item._id} />
+
                 </li>
               ))}
             </ul>

@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Modal from "react-modal";
 import { apiCalls } from "../../api/user/apiCalls";
 import { GoTrash } from "react-icons/go";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAction } from "../../state/slices/userSlice";
+import { RootState } from "../../state/interface/userInterface";
+import { SlOptionsVertical } from "react-icons/sl";
 
 const customStyles = {
   content: {
@@ -35,7 +37,6 @@ export const ReportPost = ({
   postId: string;
   darkMode: boolean;
 }) => {
-
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [reason, setReason] = useState<string>(null);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
@@ -56,7 +57,11 @@ export const ReportPost = ({
   const HandleReport = async () => {
     if (reason && reason !== " ") {
       console.log(reason);
-      const data: { userId: string; postId: string; reason: string } = { userId: userId, postId: postId, reason: reason };
+      const data: { userId: string; postId: string; reason: string } = {
+        userId: userId,
+        postId: postId,
+        reason: reason,
+      };
       const response: ReportPostResponse = await apiCalls.reportPost(data);
       if (response.status === "success") {
         closeModal();
@@ -70,7 +75,6 @@ export const ReportPost = ({
           hideProgressBar: true,
         });
       }
-      
     }
   };
 
@@ -95,7 +99,7 @@ export const ReportPost = ({
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className="w-80 py-1 text-center">
+        <div className="w-72 py-1 text-center">
           <svg
             className="mx-auto mb-2 text-red-200 w-12 h-12"
             aria-hidden="true"
@@ -114,7 +118,6 @@ export const ReportPost = ({
           <h3 className="py-2 text-sm font-normal text-gray-500 ">
             Your reponse will forward to admin authorization
           </h3>
-
 
           <textarea
             id="message"
@@ -150,7 +153,7 @@ export const ReportPost = ({
 export const DeletePost = ({
   postId,
   darkMode,
-  image
+  image,
 }: {
   postId: string;
   darkMode: boolean;
@@ -158,7 +161,7 @@ export const DeletePost = ({
 }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   function openModal() {
     setIsOpen(true);
@@ -173,17 +176,20 @@ export const DeletePost = ({
     setIsOpen(false);
   }
 
-  console.log(image.split("/").pop())
+  console.log(image.split("/").pop());
   const HandlePostDelete = async () => {
-    const response: ReportPostResponse = await apiCalls.deletePost(postId, image.split("/").pop())
-    console.log(response)
-    dispatch(setAction())
+    const response: {status: string, message: string} = await apiCalls.deletePost(
+      postId,
+      image.split("/").pop()
+    );
+    console.log(response);
+    dispatch(setAction());
     setIsOpen(false);
     toast.success(response.message, {
       position: toast.POSITION.TOP_RIGHT,
       hideProgressBar: true,
     });
-  }
+  };
   return (
     <div>
       <li
@@ -205,7 +211,11 @@ export const DeletePost = ({
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className={`${darkMode && "bg-black" } px-7 -m-4 w-72 py-5 text-center`}>
+        <div
+          className={`${
+            darkMode && "bg-black"
+          } px-7 -m-4 w-72 py-5 text-center`}
+        >
           <svg
             className="mx-auto mb-2 text-orange-300 w-12 h-12"
             aria-hidden="true"
@@ -229,18 +239,110 @@ export const DeletePost = ({
             type="button"
             onClick={HandlePostDelete}
             className="text-white bg-red-600  hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-8 py-1.5 text-center mr-2"
-          ><GoTrash />
+          >
+            <GoTrash />
             Delete
           </button>
           <button
             onClick={closeModal}
             type="button"
-            className={`${darkMode ? "text-gray-200 bg-gray-800 hover:bg-gray-700" : "text-gray-700 bg-white hover:bg-gray-100" }  focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-7 py-1.5 focus:z-10`}
+            className={`${
+              darkMode
+                ? "text-gray-200 bg-gray-800 hover:bg-gray-700"
+                : "text-gray-700 bg-white hover:bg-gray-100"
+            }  focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-7 py-1.5 focus:z-10`}
           >
             Cancel
           </button>
         </div>
       </Modal>
+    </div>
+  );
+};
+
+export const CommentOption = ({ userId, postId, commentId }: {userId: string, postId: string, commentId: string}) => {
+  
+  const { darkMode, user } = useSelector((store: RootState) => store.user);
+  const [commentOption, setCommentOption] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const commentOptionRef = useRef<HTMLDivElement | null>(null);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        commentOptionRef.current &&
+        !commentOptionRef.current.contains(event.target as Node)
+      ) {
+        setCommentOption(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [commentOptionRef]);
+
+  
+
+  let color: string;
+  let bgColor: string;
+
+  if (darkMode) {
+    (color = "text-slate-200"), (bgColor = "bg-gray-950");
+  } else {
+    (color = "text-gray-950"), (bgColor = "bg-white");
+  }
+
+  const deleteComment = async () => {
+    console.log("clicked------");
+    const response: {status: string, message: string} = await apiCalls.deleteComment(postId, commentId);
+    setCommentOption(false);
+    dispatch(setAction())
+
+    console.log("deleted------");
+
+    toast.success(response.message, {
+      position: toast.POSITION.TOP_RIGHT,
+      hideProgressBar: true,
+    });
+  }
+
+  return (
+    <div ref={commentOptionRef} className="relative inline-block text-left">
+      {commentOption && (
+        <div
+          className={`${
+            darkMode && bgColor
+          } ${color} ${ userId == user?._id &&  "origin-top-right absolute right-0 mr-6 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-gray-200 ring-opacity-5"}`}
+        >
+          <ul
+            className={` ${userId == user?._id &&  "py-0.5 border rounded-md" }`}
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="options-menu"
+          >
+            {userId == user?._id && (
+              <li onClick={deleteComment}
+                className={`${
+                  darkMode
+                    ? "hover:bg-gray-900 hover:text-white"
+                    : "hover:bg-gray-100 hover:text-gray-900"
+                } block px-4 py-1 text-sm hover:bg-gray-100 hover:text-gray-900`}
+                role="menuitem"
+              >
+                Delete
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
+
+      <div
+        className="p-2 cursor-pointer"
+        onClick={() => setCommentOption(true)}
+      >
+        <SlOptionsVertical />
+      </div>
     </div>
   );
 };

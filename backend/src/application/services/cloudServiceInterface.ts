@@ -7,6 +7,7 @@ export const cloudService = ( service: ReturnType<s3ServiceType>) => {
     }
 
     const deleteFile = async(key: string) => {
+    console.log("function - 3")
         return await service.deleteFile(key);
     }
 

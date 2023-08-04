@@ -14,7 +14,7 @@ const RightBar = () => {
   return (
     <div className={`${bgColor} ${color} ${border}  hidden col-span-2 md:block sticky h-screen border-l`}>
       <div className="p-4">
-        <div className={`border ${border} max-w-sm rounded overflow-hidden shadow-lg`}>
+        <div className={`border ${border} max-w-sm mx-8 rounded overflow-hidden shadow-lg`}>
           <img
             className="w-full"
             src="https://www.searchenginejournal.com/wp-content/uploads/2023/03/paid-verification-programs-twitter-blue-meta-verified-641e2764953c9-sej.jpg"

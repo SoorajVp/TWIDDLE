@@ -13,6 +13,7 @@ const persistor = persistStore(store);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   
   <React.StrictMode>
+    
     <ToastContainer />
 
     <Provider store={store}>

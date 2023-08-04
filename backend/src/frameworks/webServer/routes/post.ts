@@ -24,9 +24,11 @@ const postRouter = () => {
 
     router.post('/:postId/comment', controller.PostComment);
 
+    router.delete('/:postId/:commentId', controller.commentDelete);
+
     router.post('/report', controller.postReport);
 
-    router.delete('/:postId/:key', controller.postDelete);
+    router.post('/:postId/:key', controller.postDelete);
 
 
 

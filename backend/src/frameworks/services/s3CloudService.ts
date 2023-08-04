@@ -31,6 +31,7 @@ export const s3CloudService = () => {
   };
 
   const deleteFile = async (key: string) => {
+    console.log("function - 4")
     const params = {
       Bucket: configKeys.S3_BUCKET_NAME,
       Key: key,

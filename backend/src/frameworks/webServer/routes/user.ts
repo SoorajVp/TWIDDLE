@@ -4,16 +4,22 @@ import { userDbRepository } from "../../../application/repositories/userDbReposi
 import { userRepositoryDb } from "../../database/repositories/userRepository";
 import { postDbRepository } from "../../../application/repositories/postDbRepository";
 import { PostRespository } from "../../database/repositories/postRepository";
+import { authServiceInterface } from "../../../application/services/authServiceInterface";
+import { authService } from "../../services/authService";
 
 const userRouter = () => {
     const router = express.Router();
-    const controller = userController(userDbRepository, userRepositoryDb, postDbRepository, PostRespository );
+    const controller = userController(userDbRepository, userRepositoryDb, postDbRepository, PostRespository, authServiceInterface, authService );
 
     router.get("/list", controller.getAllUserList);
 
     router.post("/search", controller.searchUser);
 
     router.post("/update-profile", controller.profileUpdate);
+
+    router.get("/:password/password", controller.checkPassword);
+
+    router.put("/change-password", controller.changePassword);
 
     router.get("/:userName", controller.getUserByName );
 

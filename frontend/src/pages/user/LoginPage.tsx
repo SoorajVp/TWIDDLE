@@ -67,10 +67,12 @@ const LoginPage = () => {
           } = response;
           dispatch(setLogin({ user: user, token: token }));
           localStorage.setItem("token", token);
+
           toast.success( response.message, {
             position: toast.POSITION.TOP_RIGHT,
             hideProgressBar: true,
           });
+          
           navigate("/");
 
         } else {
@@ -110,6 +112,10 @@ const LoginPage = () => {
       } = response;
       dispatch(setLogin({ user: user, token: token }));
       localStorage.setItem("token", token);
+      toast.success( response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: true,
+      });
       navigate("/");
     } else {
 

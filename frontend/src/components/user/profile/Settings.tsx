@@ -5,9 +5,11 @@ import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import { setTheme } from "../../../state/slices/userSlice";
+import ChangePassword from "../../modal/ChangePassword";
+
 
 const Settings = () => {
-  const { darkMode } = useSelector((store: RootState) => store.user);
+  const { darkMode, user } = useSelector((store: RootState) => store.user);
 
   const dispatch = useDispatch();
   let color: string, bgColor: string, hover: string;
@@ -28,17 +30,9 @@ const Settings = () => {
           <button className="font-semibold p-1 rounded inline-flex">
             <IoMdSettings size={35} />
           </button>
-          <ul className="dropdown-menu absolute right-0 hidden pt-1 pr-3 text-sm rounded-md border">
-            <li className={`${color} ${hover} ${bgColor} py-1 rounded-r-lg`}>
-              <div
-                className={` px-3 cursor-pointer flex items-center py-1`}
-              >
-                <div className="">
-                  <BiSolidLockOpenAlt size={23} />
-                </div>
-                <span className="ml-3">Security</span>
-              </div>
-            </li>
+          <ul className="dropdown-menu absolute right-0 hidden pt-1 pr-3 mr-4 text-sm rounded-md border">
+            { user.password &&
+            <ChangePassword /> }
 
             <li className={`${color} ${hover} ${bgColor} py-1 rounded-r-lg`}>
               <div

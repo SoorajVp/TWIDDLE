@@ -3,7 +3,6 @@ import { PostRespositoryType } from "../../frameworks/database/repositories/post
 export const postDbRepository = ( repository: ReturnType<PostRespositoryType> ) => {
 
     const createPost = async (post: {userId?: string, image: string, description: string })  => {
-        console.log("creating db - - - - --")
         return await repository.createPost(post);
     }
 
@@ -35,22 +34,27 @@ export const postDbRepository = ( repository: ReturnType<PostRespositoryType> ) 
         return await repository.getComments(postId);
     }
 
+    const deleteComment = async( postId: string, commentId: string ) => {
+        return await repository.deleteComment(postId, commentId)
+    }
+
     const reportPost = async ( reportData: {userId?: string, postId: string, reason: string}) => {
         return await repository.reportPost(reportData);
     }
 
     const deletepost = async ( id: string ) => {
+    console.log("function - 6")
+
         return await repository.deletePost(id);
     }
 
     const getReports = async () => {
-    console.log("function reached - - - -- 3 -")
         return await repository.getReports();
     }
 
 
  
-    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments, reportPost, deletepost, getReports };
+    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments, deleteComment, reportPost, deletepost, getReports };
 }
 
 export type postDbRepositoryType = typeof postDbRepository;

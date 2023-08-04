@@ -19,11 +19,12 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   useEffect(()=> {
+    console.log("render")
     if(!localStorage.getItem("token")) {
       navigate("/login");
     }
     fetchAllPosts()
-  },[actions])
+  },[actions ])
 
   const fetchAllPosts = async() => {
     const response: any = await apiCalls.getAllPosts();

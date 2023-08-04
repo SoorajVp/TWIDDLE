@@ -48,14 +48,34 @@ const CreatePost = () => {
     };
   };
 
+  const isImageFile = (file: File): boolean => {
+    return file.type.startsWith('image/');
+  };
+
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
+    if(isImageFile(e.target.files?.[0]) && e.target.files && e.target.files.length > 0 ) {
+      console.log("this is file details----", true)
       const reader: FileReader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.addEventListener("load", () => {
         setImage(reader.result);
       });
+    } else {
+      toast.warn( "Invalid file format !", {
+        position: toast.POSITION.TOP_CENTER,
+        hideProgressBar: true,
+      });
+      console.log("False ----")
+
     }
+
+    // if (e.target.files && e.target.files.length > 0) {
+    //   const reader: FileReader = new FileReader();
+    //   reader.readAsDataURL(e.target.files[0]);
+    //   reader.addEventListener("load", () => {
+    //     setImage(reader.result);
+    //   });
+    // }
   };
 
   const handleCreatePost = async () => {
@@ -81,8 +101,6 @@ const CreatePost = () => {
           hideProgressBar: true,
         });
       }
-      
-
     }
   };
 
@@ -92,7 +110,7 @@ const CreatePost = () => {
       <div className="flex my-2 justify-between">
         <div className="font-medium text-lg pt-4 pl-1">New Post</div>
         <div
-          className="p-2 px-4 mt-3 text-sm bg-blue-600 text-white hover:bg-blue-500 cursor-pointer rounded"
+          className="p-2 px-4 mt-3 text-xs bg-blue-600 text-white hover:bg-blue-500 cursor-pointer rounded"
           onClick={handleCreatePost}
         >
           CREATE POST
@@ -120,8 +138,7 @@ const CreatePost = () => {
               />
             </svg>
             <p className="mb-2 text-sm text-gray-500">
-              <span className="font-semibold">Click to upload</span> or drag and
-              drop
+              <span className="font-semibold">Click to upload</span>
             </p>
             <p className="text-xs text-gray-500">
               SVG, PNG, JPG or JPEG 
