@@ -11,6 +11,9 @@ const adminRouter = () => {
     const controller = postController( cloudService, s3CloudService, postDbRepository, PostRespository);
 
     router.get('/reports', controller.postReports);
+
+    router.put('/block-post/:postId', controller.postBlock);
+
     
 
     return router;

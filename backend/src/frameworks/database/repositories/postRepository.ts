@@ -9,7 +9,7 @@ export const PostRespository = () => {
     }
 
     const getAllPosts = async () => {
-        return await Post.find().populate('userId').populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
+        return await Post.find({isBlocked: false}).populate('userId').populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
     }
 
     const getUserPosts = async ( id: string ) => {
@@ -46,7 +46,6 @@ export const PostRespository = () => {
     }
 
     const deletePost = async ( id: string ) => {
-    console.log("function - 7")
         return await Post.findByIdAndDelete({_id: id})
     }
 
@@ -54,10 +53,15 @@ export const PostRespository = () => {
         return await ReportPost.find().populate('userId').populate('postId')
     }
 
+    const blockPost = async ( postId: string ) => {
+        return await Post.findByIdAndUpdate({ _id: postId}, { isBlocked: true}, { new: true })
+    }
 
 
 
-    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments, reportPost, deletePost, getReports, deleteComment };
+
+
+    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments, reportPost, deletePost, getReports, deleteComment, blockPost };
 }
 
 export type PostRespositoryType = typeof PostRespository;

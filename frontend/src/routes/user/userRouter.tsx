@@ -1,11 +1,16 @@
+import { Suspense, lazy } from "react";
+// import HomeLazy from "../../components/lazy/HomeLazy";
 import { PageLoading } from "../../components/shimmer/Loading";
 import UserLayout from "../../pages/layout/UserLayout";
 import CreatePage from "../../pages/user/CreatePage";
-import HomePage from "../../pages/user/HomePage";
+// import HomePage from "../../pages/user/HomePage";
 import LoginPage from "../../pages/user/LoginPage";
 import ProfilePage from "../../pages/user/ProfilePage";
 import SearchPage from "../../pages/user/SearchPage";
 import SignupPage from "../../pages/user/SignupPage";
+
+const HomePage = lazy(() => import('../../pages/user/HomePage'));
+
 
 export const userLogin = {
   path: "/login",
@@ -22,10 +27,13 @@ export const userRouter = {
   path: "/",
   element: <UserLayout />,
   children: [
-    
     {
       path: "/",
-      element: <HomePage />,
+      element: (
+        <Suspense fallback={<PageLoading />}>
+          <HomePage />
+        </Suspense>
+      ),
     }, 
     {
       path: "/:userName",
@@ -43,7 +51,6 @@ export const userRouter = {
       path: "/messages",
       element: <PageLoading />,
     },
-    
     
   ],
 };

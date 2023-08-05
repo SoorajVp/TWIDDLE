@@ -2,6 +2,7 @@ import { userInterface } from "./userInterface";
 
 export interface PostInterface {
   _id: string;
+  isBlocked?: boolean;
   userId?: userInterface;
   image: string;
   description?: string;

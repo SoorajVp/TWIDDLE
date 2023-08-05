@@ -18,6 +18,7 @@ type responseInterface = {
 
 
 const ProfilePage = () => {
+  
   const { user, darkMode } =useSelector((store: RootState) => store.user );
 
     const [ accountProfile, setAccountProfile ] = useState<boolean>(false)
@@ -29,6 +30,7 @@ const ProfilePage = () => {
     const { userName } = useParams<Params>();
 
     useEffect(() => {
+      console.log("render")
       fetchUserData(userName)
     }, [userName])
 
@@ -58,7 +60,6 @@ const ProfilePage = () => {
     
    return (
     <div>
-      
       { userData &&
         <UserProfile accountProfile={accountProfile} userData={userData} stateUser={user} userPosts={userPosts} savedPosts={savedPosts} darkMode={darkMode} isFollowing={isFollowing} followBack={followBack} />
       }

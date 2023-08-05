@@ -12,11 +12,14 @@ import { PostRespositoryType } from "../../frameworks/database/repositories/post
 import { CustomRequest } from "../../types/interface/customeRequest";
 import { authServiceInterfaceType } from "../../application/services/authServiceInterface";
 import { authServiceType } from "../../frameworks/services/authService";
+import { cloudServiceType } from "../../application/services/cloudServiceInterface";
+import { s3ServiceType } from "../../frameworks/services/s3CloudService";
 
-const userController = ( userDbRepository: userDbInterface, userRepositoryDb: userRepositoryDbType, postDbRepository: postDbRepositoryType, postRepository: PostRespositoryType, authServiceInterface: authServiceInterfaceType, authServiceImpl: authServiceType ) => {
+const userController = ( userDbRepository: userDbInterface, userRepositoryDb: userRepositoryDbType, postDbRepository: postDbRepositoryType, postRepository: PostRespositoryType, authServiceInterface: authServiceInterfaceType, authServiceImpl: authServiceType, cloudService: cloudServiceType, s3CloudService: s3ServiceType ) => {
     const dbRepositoryUser = userDbRepository(userRepositoryDb())
     const dbRepositoryPost = postDbRepository(postRepository())
    const authService = authServiceInterface(authServiceImpl());
+   const s3CloudServices = cloudService(s3CloudService())
 
     const getAllUserList = asyncHandler(async (req: Request, res: Response ) => {
         const users = await getAllUser( dbRepositoryUser )
@@ -53,9 +56,11 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
     })
 
     const profileUpdate = asyncHandler(async (req: CustomRequest, res: Response ) => {
+        console.log(req)
         const { userId }: any = req; 
-        const userData: editUserInterface = { id: userId, name: req.body.name, email: req.body.email, bio: req.body.bio};
-        await updateProfile( userData, dbRepositoryUser);
+        const userData: editUserInterface = { id: userId, key: req.body.key, profilePic: req?.file, name: req.body.name, email: req.body.email, bio: req.body.bio};
+        console.log("this is edited form data ------", userData )
+        await updateProfile( userData, dbRepositoryUser, s3CloudServices );
         const user: userDataInterface | null = await userById( userId, dbRepositoryUser )
         res.status(200).json({status: "success", message: "Profile updated ", user })
     })
@@ -69,21 +74,26 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         } else {
             throw new AppError("Something went wrong !", HttpStatus.OK);
         }
-      })    
+      })
 
     const changePassword = asyncHandler(async (req: CustomRequest,res: Response) => {
-        console.log("function - 1 -", req.body)
         const { password } = req.body;
         const { userId } = req
         if(userId) {
             await passwordChange( userId, password, dbRepositoryUser, authService );
-            console.log("function - 6 -")
-
             res.status(200).json({status: "success", message: "Password Changed "})
         } else {
             throw new AppError("Something went wrong !", HttpStatus.OK);
         }
     })
+
+    // const changeProfilePic = asyncHandler(async (req:CustomRequest, res: Response ) => {
+    //     const { userId } = req;
+    //     if(!userId) {
+    //         throw new AppError("Something went wrong !", HttpStatus.OK);
+    //     }
+    //     await newProfilePic(userId, req.file, dbRepositoryUser,  )
+    // })
 
 
     const userFollow = asyncHandler(async(req: CustomRequest, res: Response ) => {

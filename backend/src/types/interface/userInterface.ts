@@ -1,3 +1,5 @@
+import { File } from "buffer"
+
 export interface registerInterface  {
     name: string,
     email: string,
@@ -16,9 +18,8 @@ export interface userDataInterface {
     createdAt: Date,
     googleUser?: boolean,
     followers?: string[] | null,
-    saved?: string[] | null,
-
     following?: string[] | null
+    saved?: string[] | null,
 }
 
 export interface adminDataInterface {
@@ -29,7 +30,9 @@ export interface adminDataInterface {
 }
 
 export interface editUserInterface {
-    id: string | undefined,
+    id: string ,
+    key: string ,
+    profilePic?: any | null,
     name: string,
     email: string,
     bio: string | null

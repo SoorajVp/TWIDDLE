@@ -38,9 +38,11 @@ export const userRepositoryDb = () => {
         return await User.findByIdAndUpdate({_id: userData.id}, { name: userData.name, email: userData.email, bio: userData.bio }, { new: true })
     }
 
+    const newProfilePic = async ( userId: string, imgUrl: string ) => {
+        return await User.findByIdAndUpdate({ _id: userId }, {profilePic: imgUrl}, { new: true })
+    }
+ 
     const newPassword = async ( userId: string, password: string ) => {
-        console.log("function - 5 -")
-
         return await User.findByIdAndUpdate({ _id: userId }, {password: password}, { new: true })
     }
 
@@ -76,7 +78,7 @@ export const userRepositoryDb = () => {
 
 
 
-    return { addUser, getAllUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newPassword, followUser, unfollowUser, setFollowing, blockUser, savePost, unSavePost, getSavedPost }
+    return { addUser, getAllUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newProfilePic, newPassword, followUser, unfollowUser, setFollowing, blockUser, savePost, unSavePost, getSavedPost }
 }
 
 export type userRepositoryDbType = typeof userRepositoryDb;

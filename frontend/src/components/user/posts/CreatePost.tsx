@@ -54,7 +54,6 @@ const CreatePost = () => {
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     if(isImageFile(e.target.files?.[0]) && e.target.files && e.target.files.length > 0 ) {
-      console.log("this is file details----", true)
       const reader: FileReader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.addEventListener("load", () => {
@@ -65,17 +64,7 @@ const CreatePost = () => {
         position: toast.POSITION.TOP_CENTER,
         hideProgressBar: true,
       });
-      console.log("False ----")
-
     }
-
-    // if (e.target.files && e.target.files.length > 0) {
-    //   const reader: FileReader = new FileReader();
-    //   reader.readAsDataURL(e.target.files[0]);
-    //   reader.addEventListener("load", () => {
-    //     setImage(reader.result);
-    //   });
-    // }
   };
 
   const handleCreatePost = async () => {

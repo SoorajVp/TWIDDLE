@@ -59,6 +59,11 @@ export const apiCalls = {
     return response.data;
   },
 
+  changeProfilePic:async (payload:object) => {
+    const response = await api.put(`/user/change-profile`, payload);
+    return response.data;
+  },
+
   likePost:async ( id: string ) => {
     const response = await api.put(`/post/${id}/like`);
     return response.data;

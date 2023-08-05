@@ -82,12 +82,15 @@ export const reportPost = async( reportData: { userId?: string, postId: string, 
 }
  
 export const deletePost = async( id: string, key: string, repository: ReturnType<postDbRepositoryType>, service: ReturnType<cloudServiceType> ) => {
-  console.log("function - 2")
-  await service.deleteFile(key)
-  console.log("function - 5")
+  await service.removeFile(key)
   return await repository.deletepost(id);
 }
 
 export const getReports =async ( repository: ReturnType<postDbRepositoryType> ) => {
   return await repository.getReports();
 }
+
+export const blockPost =async ( postId: string, repository: ReturnType<postDbRepositoryType> ) => {
+  return await repository.blockPost(postId);
+}
+

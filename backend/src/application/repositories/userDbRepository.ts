@@ -33,9 +33,11 @@ export const userDbRepository = (
     return await repository.updateProfile(userData)
   }
 
-  const newPassword = async ( userId: string, password: string ) => {
-    console.log("function - 4 -")
+  const newProfilePic = async ( userId: string, imgUrl: string) => {
+    return await repository.newProfilePic(userId, imgUrl);
+  }
 
+  const newPassword = async ( userId: string, password: string ) => {
     return await repository.newPassword( userId, password )
   }
 
@@ -63,7 +65,7 @@ export const userDbRepository = (
     return await repository.unSavePost( postId, userId )
   }
 
-  return { getAllUser, addUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newPassword, followUser, unfollowUser, blockUser, savePost, unSavePost, getSavedPost };
+  return { getAllUser, addUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newProfilePic, newPassword, followUser, unfollowUser, blockUser, savePost, unSavePost, getSavedPost };
 };
 
 export type userDbInterface = typeof userDbRepository;

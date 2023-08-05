@@ -13,5 +13,10 @@ export const apiCalls = {
     const response = await api.get(`/post/reports`);
     return response.data;
   },
+
+  blockPost: async (postId: string) => {
+    const response = await api.put(`/admin/block-post/${postId}`);
+    return response.data;
+  },
   
 };

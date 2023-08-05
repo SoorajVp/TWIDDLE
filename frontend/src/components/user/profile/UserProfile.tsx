@@ -31,6 +31,7 @@ const UserProfile = ({
   isFollowing,
   followBack,
 }: profileInterface) => {
+  
   const [postItems, setPostItems] = useState<PostInterface[]>(userPosts);
   const [follow, setFollow] = useState<boolean>(isFollowing);
   const [followers, setFollowers] = useState<number>(userData.followers.length);
@@ -142,8 +143,8 @@ const UserProfile = ({
         </div>
       </div>
       <div className="lg:pl-5 lg: pt-3">
-        <p className="text-base ">{userData?.name}</p>
-        <p className="text-xs py-1 pb-5">{userData?.bio} </p>
+        <p className="text-base ">{ accountProfile ? stateUser?.name : userData.name}</p>
+        <p className="text-xs py-1 pb-5">{ accountProfile ? stateUser?.bio : userData.bio} </p>
       </div>
       <hr />
       <div className="flex justify-around  py-2">

@@ -1,16 +1,23 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from "react";
 import { apiCalls } from "../../../api/admin/apiCalls";
 import { ReportPosts } from "../../../state/interface/postInterface";
 import { lastTimeFormat } from "../../../utils/lastTimeFormat";
+import { useDispatch, useSelector } from "react-redux";
+import { setAction } from "../../../state/slices/userSlice";
+import { RootState } from "../../../state/interface/userInterface";
 
 
   const PostTable = () => {
     const [items, setItems] = useState<ReportPosts[]>([])
+    const { actions } = useSelector((store: RootState) => store.user)
+    const dispatch = useDispatch()
     useEffect(() => {
+      console.log("render")
       fetchUserList()
-    }, [])
+    }, [actions])
 
     const fetchUserList =async (): Promise<any> => {
         console.log("fetchinggg.....")
@@ -19,9 +26,15 @@ import { lastTimeFormat } from "../../../utils/lastTimeFormat";
       setItems(response?.reports)
     }
 
-    // const HandleUserBlock = async(userId: string): Promise<void> => {
-
-    // }
+    const HandlePostBlock = async(postId: string): Promise<void> => {
+      console.log("renderinggggggggggggggggggggggggggggggggggg")
+      console.log("Clicked -----", postId)
+      const response: {status: string} = await apiCalls.blockPost(postId);
+      console.log("blocked -----", response)
+      if(response.status == 'success') {
+        dispatch(setAction())
+      }
+    }
 
     return (
       <div className="flex justify-center mt-8">
@@ -66,9 +79,9 @@ import { lastTimeFormat } from "../../../utils/lastTimeFormat";
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white text-center divide-y divide-gray-100">
                   {items.map((item) => (
-                   <tr key={item._id}>
+                   <tr key={item._id} className={`${ item.postId.isBlocked && "bg-gray-200"}  `}>
                    <td className="px-3 py-2 whitespace-nowrap">
                      <div className="flex items-center">
                        <div className="flex-shrink-0">
@@ -94,10 +107,14 @@ import { lastTimeFormat } from "../../../utils/lastTimeFormat";
                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
                      {lastTimeFormat(item?.createdAt)}
                    </td>
-                   <td className="px-6 py-1 whitespace-nowrap text-center text-xs font-medium">
-                     <div className="text-red-700 bg-red-100 py-2 px-3 rounded-md hover:text-red-900 hover:bg-red-200" >
+                   <td className="px-6 py-1 whitespace-nowrap text-center text-xs font-semibold">
+                     { item.postId.isBlocked ? 
+                     <div onClick={ () =>HandlePostBlock(item.postId._id)} className="text-gray-800 bg-gray-300 py-1.5 px-3 rounded-md shadow-md hover:text-black hover:bg-gray-400 cursor-pointer" >
                        Delete
-                     </div>
+                     </div> :
+                     <div onClick={ () =>HandlePostBlock(item.postId._id)} className="text-red-700 bg-red-100 py-1.5 px-3 rounded-md shadow-md hover:text-red-900 hover:bg-red-200 cursor-pointer" >
+                       Block
+                     </div> }
                    </td>
                  </tr>
                   ))}

@@ -3,6 +3,7 @@ import { editUserInterface, userDataInterface } from "../../../types/interface/u
 import AppError from "../../../utils/appError";
 import { userDbInterface } from "../../repositories/userDbRepository";
 import { authServiceInterfaceType } from "../../services/authServiceInterface";
+import { cloudServiceType } from "../../services/cloudServiceInterface";
 
 export const getAllUser = async(repository: ReturnType<userDbInterface> ) => {
     const users = await repository.getAllUser()
@@ -24,7 +25,7 @@ export const userByName = async ( name: string, repository: ReturnType<userDbInt
     return user;
 }
 
-export const updateProfile = async ( userData: editUserInterface, repository: ReturnType<userDbInterface>) => {
+export const updateProfile = async ( userData: editUserInterface, repository: ReturnType<userDbInterface>, service: ReturnType<cloudServiceType> ) => {
     const isEmailExists: userDataInterface | any = await repository.getUserByEmail( userData.email );
     if(isEmailExists && isEmailExists?._id != userData.id) {
         throw new AppError("Email is already exists", HttpStatus.OK);
@@ -33,10 +34,21 @@ export const updateProfile = async ( userData: editUserInterface, repository: Re
     if(isNameExists && isNameExists?._id != userData.id) {
         throw new AppError("Name is already exists", HttpStatus.OK);
     }
+    if(userData.profilePic) {
+        if(userData.key != "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg") {
+            const key: string | undefined = userData.key.split("/").pop()?.toString()
+            await service.removeFile(key)
+        }
+        const { imgUrl } = await service.uploadAndGetUrl(userData.profilePic);
+        await repository.newProfilePic( userData.id, imgUrl)
+    }
+
     return await repository.updateProfile(userData);
 }
 
-export const passwordCheck = async ( userId: string, password: string,repository: ReturnType<userDbInterface>, service: ReturnType<authServiceInterfaceType> ) => {
+
+
+export const passwordCheck = async ( userId: any, password: string, repository: ReturnType<userDbInterface>, service: ReturnType<authServiceInterfaceType> ) => {
     const userData : userDataInterface | any = await repository.getUserById(userId)
     if(userData){
         const checkPassword: boolean  = await service.comparePassword( password, userData.password.toString());
@@ -48,11 +60,7 @@ export const passwordCheck = async ( userId: string, password: string,repository
 }
 
 export const passwordChange = async ( userId: string, password: string,repository: ReturnType<userDbInterface>, service: ReturnType<authServiceInterfaceType> ) => {
-    console.log("function - 2 -")
-
     password = await service.encryptPassword(password);
-    console.log("function - 3 -")
-
     return await repository.newPassword(userId, password);
   }
 

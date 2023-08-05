@@ -12,7 +12,7 @@ const postRouter = () => {
 
     const controller = postController( cloudService, s3CloudService, postDbRepository, PostRespository);
 
-    router.post('/',upload.single("image"), controller.createPost);
+    router.post('/', upload.single("image"), controller.createPost);
     
     router.get('/', controller.getPosts);
 
@@ -27,6 +27,8 @@ const postRouter = () => {
     router.delete('/:postId/:commentId', controller.commentDelete);
 
     router.post('/report', controller.postReport);
+
+    router.get('/reports', controller.postReports);
 
     router.post('/:postId/:key', controller.postDelete);
 

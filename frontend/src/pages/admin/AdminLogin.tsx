@@ -24,7 +24,7 @@ const AdminLogin = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   useEffect(() => {
-    if(localStorage.getItem("adminToken")) {
+    if(localStorage.getItem("token")) {
       navigate('/admin')
   }
   }, [])
@@ -42,7 +42,7 @@ const AdminLogin = () => {
         if(response.status == "success") {
           const { admin, token } = response;
           dispatch(setAdminLogin({admin, token}))
-          localStorage.setItem("adminToken", token);
+          localStorage.setItem("token", token);
           console.log("success")
           navigate('/admin')
         } else {

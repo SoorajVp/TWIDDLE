@@ -27,6 +27,7 @@ export const adminAuthMiddleware = ( req: CustomRequest, res: Response, next: Ne
         throw new AppError("UnAuthorized user found", HttpStatus.OK)
     }
     const { payload }: any = authService().verifyToken(token)
+    console.log("payload", payload)
     if(payload.isAdmin == true) {
         next()
     } else {

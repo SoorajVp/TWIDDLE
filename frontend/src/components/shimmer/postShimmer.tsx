@@ -7,7 +7,7 @@ const PostShimmer = () => {
 
   let bgColor: string;
 
-  bgColor = theme ? "bg-gray-800" :  "bg-gray-200"
+  bgColor = theme ? "bg-gray-800" : "bg-gray-200"
 
   return (
     <>

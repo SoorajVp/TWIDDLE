@@ -13,7 +13,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!localStorage.getItem("adminToken")) {
+    if (!localStorage.getItem("token")) {
       navigate("/admin/login");
     }
   }, [navigate]);

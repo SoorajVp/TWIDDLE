@@ -12,7 +12,7 @@ import {
   RootState,
 } from "../../../state/interface/userInterface";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Loading from "../../shimmer/Loading";
 
 const loginSchema = Yup.object({
@@ -26,9 +26,11 @@ interface stateType {
 }
 
 const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<Blob>(null)
   const { user, darkMode } = useSelector((store: RootState) => store.user);
   const initialValues: { name: string; bio: string; email: string } = {
     name: user.name,
@@ -47,9 +49,20 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
           bio,
           email,
         }: { name: string; bio: string | null; email: string } = values;
-        const userData = { name, bio, email };
+        // const userData = { name, bio, email };
+        
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("bio", bio);
+        formData.append("email", email);
+        formData.append("key", user.profilePic);
 
-        const response: AuthResponse = await apiCalls.updateProfile(userData);
+
+        if(image) {
+          formData.append("profilePic", image);
+        }
+
+        const response: AuthResponse = await apiCalls.updateProfile(formData);
         if (response.status == "success") {
           const { user } = response;
           dispatch(updateUser({ user: user }));
@@ -69,6 +82,21 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
       },
     });
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files[0];
+  //   console.log("this is image details - - - - -", files );
+  //   const formData = new FormData();
+  //   formData.append("profilePic", files);
+  // };
+
+  console.log("this is selected image --------", image)
+
 
   let color: string, bgColor: string, hover: string;
   if (darkMode) {
@@ -76,13 +104,14 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
       (bgColor = "bg-gray-950"),
       (hover = "hover:bg-black");
   } else {
-    (color = "text-gray-950"),
+    (color = "text-gray-900"),
       (bgColor = "bg-white"),
       (hover = "hover:bg-gray-100");
   }
 
   return (
     <div>
+
       {loading && <Loading />}
 
       <div className={`${color} ${bgColor} px-6 py-2 lg:px-2 w-96 -m-4`}>
@@ -105,15 +134,28 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
             <hr />
 
             <div className="sm:mx-auto pt-1 sm:w-full sm:max-w-sm">
+            {image ?
+            <img
+                className="mx-auto object-cover h-32 w-32 rounded-full border"
+                src={URL.createObjectURL(image)}
+                alt="Your Company"
+              /> :
               <img
                 className="mx-auto h-auto w-32 rounded-full border"
                 src={user.profilePic}
                 alt="Your Company"
-              />
-              <h2 className={`${color} text-center text-xs font-bold leading-9 tracking-tight`}>
-                Change profile photo
-              </h2>
+              /> }
+              
             </div>
+            <h2 className={`${color} text-center text-xs font-bold`}>
+                <p className="bg-gray-500 text-white border rounded-3xl inline-block py-0.5 px-3 cursor-pointer" onClick={handleButtonClick}>Change profile</p>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={(e) => setImage(e.target.files?.[0])}
+                  />
+              </h2>
             <div className="">
               <div className="flex justify-between px-1">
                 <label
@@ -213,14 +255,6 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
               </div>
             </div>
 
-            {/* <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Save Changes
-              </button>
-            </div> */}
           </form>
         </div>
       </div>

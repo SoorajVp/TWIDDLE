@@ -6,12 +6,11 @@ export const cloudService = ( service: ReturnType<s3ServiceType>) => {
         return await service.uploadFile(file);
     }
 
-    const deleteFile = async(key: string) => {
-    console.log("function - 3")
-        return await service.deleteFile(key);
+    const removeFile = async(key?: string) => {
+        return await service.removeFile(key);
     }
 
-    return { uploadAndGetUrl, deleteFile }
+    return { uploadAndGetUrl, removeFile }
 }
 
 export type cloudServiceType = typeof cloudService;

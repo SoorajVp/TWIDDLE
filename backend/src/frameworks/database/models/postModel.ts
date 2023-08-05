@@ -7,6 +7,10 @@ const commentSchema = new Schema({
   });
 
 const postSchema = new Schema({
+    isBlocked: {
+        type: Boolean,
+        default: false
+    },
     userId:{
         type: String,
         ref: "User",
