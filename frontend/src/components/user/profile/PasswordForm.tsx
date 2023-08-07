@@ -14,7 +14,7 @@ interface stateType {
 interface ApiResponse {
     status: string;
     message: string;
-  }
+}
 
 const passwordSchema = Yup.object({
     password: Yup.string().min(5).max(15).required("Please enter your password"),
@@ -98,6 +98,7 @@ const PasswordForm: React.FC<stateType> = ({ setIsOpen }) => {
             >
               Cancel
             </button>
+            <h2 className="text-center text-sm font-semibold pt-1.5">Change Password </h2>
 
             { !confirmPage ? <button type="button"
                 onClick={HandleNextPage}
@@ -114,8 +115,10 @@ const PasswordForm: React.FC<stateType> = ({ setIsOpen }) => {
           </div>
           <hr />
 
-          { !confirmPage ? <div className="my-6">
-            <div className="text-center px-1">
+          { !confirmPage ? <div className="">
+            <div className="text-center px-1 my-6">
+             
+              
               <label
                 htmlFor="userName"
                 className={`${color} block text-sm font-medium leading-6`}

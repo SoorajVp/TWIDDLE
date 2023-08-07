@@ -20,7 +20,6 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   useEffect(()=> {
-    console.log("render")
     if(!localStorage.getItem("token")) {
       navigate("/login");
     }

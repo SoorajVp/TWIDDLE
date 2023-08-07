@@ -24,7 +24,7 @@ const SideBar = () => {
     { name: "Create", href: "/create", icon: <AiOutlinePlusSquare size={30} /> },
     { name: "Notification", href: "/", icon: <AiOutlineHeart size={30} /> },
     { name: "Messages", href: "/messages", icon: <RiMailSendLine size={28} /> },
-    { name: "Profile", href: `/${user.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 rounded-full border" alt="ProfilePic" /> },
+    { name: "Profile", href: `/${user.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 rounded-full border border-blue-600" alt="ProfilePic" /> },
   ];
 
  

@@ -24,17 +24,14 @@ const PostSingleView = ({
   userId,
 }: PostInterface) => {
   const post = { _id, image, createdAt, description, likes, comments, userId };
-  console.log("this is props - -  -");
   const [modalIsOpen, setIsOpen] = useState(false);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
 
   function openModal() {
-    console.log("this is modal - - - -", post);
     setIsOpen(true);
   }
 
   function afterOpenModal() {
-    // references are now sync'd and can be accessed.
     if (subtitleRef.current) {
       subtitleRef.current.style.color = "#f00";
     }
@@ -47,18 +44,7 @@ const PostSingleView = ({
   return (
     <>
 
-      {/* <div
-        onClick={openModal}
-        className={`flex cursor-pointer items-center p-2 pt-3 rounded-lg group`}
-      >
-        <div>
-          <BiLogOut size={30} />{" "}
-        </div>
-        <span className="ml-3 hidden lg:block"> Logout</span>
-      </div> */}
-
       <div onClick={openModal}>
-        {/* <PostSingleView post={post} /> */}
         <img
           src={image}
           alt="Post"

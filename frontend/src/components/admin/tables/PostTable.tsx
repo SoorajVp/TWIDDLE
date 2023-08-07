@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import { apiCalls } from "../../../api/admin/apiCalls";
 import { ReportPosts } from "../../../state/interface/postInterface";
 import { lastTimeFormat } from "../../../utils/lastTimeFormat";
-import { useDispatch, useSelector } from "react-redux";
-import { setAction } from "../../../state/slices/userSlice";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
+import { BlockPost } from "../../modal/BlockPost";
+import { DeletePost } from "../../modal/DeletePost";
 
 
   const PostTable = () => {
     const [items, setItems] = useState<ReportPosts[]>([])
     const { actions } = useSelector((store: RootState) => store.user)
-    const dispatch = useDispatch()
     useEffect(() => {
       console.log("render")
       fetchUserList()
@@ -26,16 +26,7 @@ import { RootState } from "../../../state/interface/userInterface";
       setItems(response?.reports)
     }
 
-    const HandlePostBlock = async(postId: string): Promise<void> => {
-      console.log("renderinggggggggggggggggggggggggggggggggggg")
-      console.log("Clicked -----", postId)
-      const response: {status: string} = await apiCalls.blockPost(postId);
-      console.log("blocked -----", response)
-      if(response.status == 'success') {
-        dispatch(setAction())
-      }
-    }
-
+   
     return (
       <div className="flex justify-center mt-8">
         <div className="flex overflow-x-auto">
@@ -80,12 +71,12 @@ import { RootState } from "../../../state/interface/userInterface";
                   </tr>
                 </thead>
                 <tbody className="bg-white text-center divide-y divide-gray-100">
-                  {items.map((item) => (
-                   <tr key={item._id} className={`${ item.postId.isBlocked && "bg-gray-200"}  `}>
+                  {items?.map((item) => (
+                   <tr key={item._id} className={`${ item?.postId?.isBlocked && "bg-gray-200"}  `}>
                    <td className="px-3 py-2 whitespace-nowrap">
                      <div className="flex items-center">
                        <div className="flex-shrink-0">
-                         <img className="w-16" src={item?.postId.image} alt="" />
+                         <img className="w-16" src={item?.postId?.image} alt="" />
                        </div>
                        {/* <div className="ml-4">
                          <div className="text-sm font-medium text-gray-900">{item?.postId.description}</div>
@@ -93,12 +84,12 @@ import { RootState } from "../../../state/interface/userInterface";
                      </div>
                    </td>
                    <td className="px-6 py-2 whitespace-nowrap">
-                   <div className="text-sm text-gray-500">{item?.postId.description}</div>
+                   <div className="text-sm text-gray-500">{item?.postId?.description}</div>
 
                    </td>
                    
                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
-                     {item?.userId.name}
+                     {item?.userId?.name}
                    </td>
                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
                      {item?.reason}
@@ -108,13 +99,13 @@ import { RootState } from "../../../state/interface/userInterface";
                      {lastTimeFormat(item?.createdAt)}
                    </td>
                    <td className="px-6 py-1 whitespace-nowrap text-center text-xs font-semibold">
-                     { item.postId.isBlocked ? 
-                     <div onClick={ () =>HandlePostBlock(item.postId._id)} className="text-gray-800 bg-gray-300 py-1.5 px-3 rounded-md shadow-md hover:text-black hover:bg-gray-400 cursor-pointer" >
-                       Delete
-                     </div> :
-                     <div onClick={ () =>HandlePostBlock(item.postId._id)} className="text-red-700 bg-red-100 py-1.5 px-3 rounded-md shadow-md hover:text-red-900 hover:bg-red-200 cursor-pointer" >
-                       Block
-                     </div> }
+
+                     { item?.postId?.isBlocked ?
+
+                     <DeletePost postId={item?.postId?._id} imgKey={item?.postId?.image.split("/").pop()} /> :
+                    
+                     <BlockPost postId={item?.postId?._id} />  }
+
                    </td>
                  </tr>
                   ))}

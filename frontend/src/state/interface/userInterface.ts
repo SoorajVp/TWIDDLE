@@ -34,13 +34,6 @@ export interface AuthResponse {
 }
 
 
-
-// admin interface
-
-
-
-
-
 export interface AdminInterface {
   _id: string;
   name: string;

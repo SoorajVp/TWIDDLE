@@ -21,13 +21,16 @@ const initialValues: { name: string; password: string } = {
 };
 
 const AdminLogin = () => {
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   useEffect(() => {
-    if(localStorage.getItem("token")) {
+    if(localStorage.getItem("adminToken")) {
       navigate('/admin')
   }
   }, [])
+
   const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
     useFormik({
       initialValues: initialValues,
@@ -35,14 +38,11 @@ const AdminLogin = () => {
       onSubmit: async(values) => {
         const { name, password }: { name: string; password: string } = values;
         const data = { name, password };
-        console.log(data);
-
         const response:  AdminAuthResponse = await apiCalls.adminLogin(data);
-        console.log("This is admin response - - -", response)
         if(response.status == "success") {
           const { admin, token } = response;
           dispatch(setAdminLogin({admin, token}))
-          localStorage.setItem("token", token);
+          localStorage.setItem("adminToken", token);
           console.log("success")
           navigate('/admin')
         } else {
@@ -50,11 +50,7 @@ const AdminLogin = () => {
             position: toast.POSITION.TOP_CENTER,
             hideProgressBar: true,
           });
-          console.log("failed")
         }
-
-        
-        
       },
     });
 

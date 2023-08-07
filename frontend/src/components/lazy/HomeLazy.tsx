@@ -1,6 +1,5 @@
 import { Suspense, lazy } from "react";
 import { PageLoading } from "../shimmer/Loading";
-// import HomePage from "../../pages/user/HomePage"
 const HomePage = lazy(() => import('../../pages/user/HomePage'));
 
 

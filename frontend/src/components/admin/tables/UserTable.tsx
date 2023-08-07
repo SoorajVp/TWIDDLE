@@ -17,9 +17,6 @@ import { userInterface } from "../../../state/interface/userInterface";
       setUsers(resposnse.users)
     }
 
-    // const HandleUserBlock = async(userId: string): Promise<void> => {
-
-    // }
 
     return (
       <div className="flex justify-center mt-8">

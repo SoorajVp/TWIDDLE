@@ -79,9 +79,10 @@ const postController = (
   })
 
   const postDelete = asyncHandler(async (req: CustomRequest, res: Response ) => {
+    console.log("looooooooooooooooooooooo")
     const { postId, key } = req.params;
     await deletePost( postId, key, dbRepositoryPost, postService );
-    res.status(200).json({status: "success", message: "Post Deleted successfully"})
+    res.status(200).json({status: "success", message: "Post deleted successfully"})
   })
 
   const postReports = asyncHandler(async (req: Request, res: Response ) => {
@@ -92,8 +93,10 @@ const postController = (
   const postBlock = asyncHandler(async (req: Request, res: Response ) => {
     console.log("heyyyy 1")
     await blockPost( req.params.postId, dbRepositoryPost);
-    res.status(200).json({status: "success"})
+    res.status(200).json({status: "success", message: "Post blocked successfully"})
   })
+
+  
 
   
 

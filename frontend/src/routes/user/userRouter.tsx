@@ -8,9 +8,14 @@ import LoginPage from "../../pages/user/LoginPage";
 import ProfilePage from "../../pages/user/ProfilePage";
 import SearchPage from "../../pages/user/SearchPage";
 import SignupPage from "../../pages/user/SignupPage";
+import SecretToken from "../../pages/user/SecretToken";
 
 const HomePage = lazy(() => import('../../pages/user/HomePage'));
 
+export const secretPage = {
+   path: "/api/auth/:id/token", 
+   element: <SecretToken /> 
+}
 
 export const userLogin = {
   path: "/login",
@@ -30,7 +35,7 @@ export const userRouter = {
     {
       path: "/",
       element: (
-        <Suspense fallback={<PageLoading />}>
+        <Suspense fallback={ <PageLoading /> }>
           <HomePage />
         </Suspense>
       ),

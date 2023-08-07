@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import Modal from "react-modal";
-import EditForm from "../user/profile/EditForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/interface/userInterface";
 import { BiSolidLockOpenAlt } from "react-icons/bi";
@@ -18,7 +17,7 @@ const customStyles = {
 };
 
 const ChangePassword = () => {
-  const { darkMode, user } = useSelector((store: RootState) => store.user);
+  const { darkMode } = useSelector((store: RootState) => store.user);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const subtitleRef = useRef<HTMLDivElement | null>(null);

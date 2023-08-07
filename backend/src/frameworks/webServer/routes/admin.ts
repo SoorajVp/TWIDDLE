@@ -14,6 +14,8 @@ const adminRouter = () => {
 
     router.put('/block-post/:postId', controller.postBlock);
 
+    router.put('/:postId/:key', controller.postDelete);
+
     
 
     return router;

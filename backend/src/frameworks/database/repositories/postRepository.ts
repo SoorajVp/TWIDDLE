@@ -46,7 +46,8 @@ export const PostRespository = () => {
     }
 
     const deletePost = async ( id: string ) => {
-        return await Post.findByIdAndDelete({_id: id})
+        await ReportPost.deleteMany({ postId: id })
+        return await Post.findByIdAndDelete({ _id: id })
     }
 
     const getReports = async() => {

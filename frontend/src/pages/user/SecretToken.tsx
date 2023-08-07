@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/shimmer/Loading";
+import { toast } from "react-toastify";
 
 type Params = {
   id: string | undefined;
@@ -11,16 +12,22 @@ const SecretToken = () => {
   const { id } = useParams<Params>();
 
   useEffect(() => {
-    setTimeout(() => {
-      id && localStorage.setItem("token", id);
-      navigate("/");
-    }, 2000);
-  });
+   
+    id && localStorage.setItem("token", id);
+    navigate("/");
+    toast.success( "Loggedin successfully ", {
+      position: toast.POSITION.TOP_RIGHT,
+      hideProgressBar: true,
+    });
+
+  },[]);
   return (
     <div>
       <Loading />
     </div>
   );
 };
+
+
 
 export default SecretToken;

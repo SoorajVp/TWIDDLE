@@ -5,7 +5,6 @@ import { FaUsers } from "react-icons/fa";
 import { BsFillCollectionFill } from "react-icons/bs";
 import { HiSpeakerphone } from "react-icons/hi";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-// import UserTable from "../../components/admin/tables/UserTable";
 import AdminLogout from "../../components/modal/AdminLogout";
 
 const AdminLayout = () => {
@@ -13,7 +12,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    if (!localStorage.getItem("adminToken")) {
       navigate("/admin/login");
     }
   }, [navigate]);
@@ -24,9 +23,8 @@ const AdminLayout = () => {
 
   return (
     <>
-      {/* drawer init and show */}
       <div className="p-4 px-7 bg-slate-700 shadow-lg flex justify-between">
-        <div className="mr-3 font-bold text-2xl text-white">ADMIN</div>
+        <Link to="/admin" className="mr-3 font-bold text-2xl text-white">ADMIN</Link>
         <div
           className="ml-3 text-white cursor-pointer"
           onClick={handleDrawerToggle}
@@ -35,12 +33,8 @@ const AdminLayout = () => {
         </div>
       </div>
 
-
-
-
-      {/* <UserTable /> */}
+      
       <Outlet />
-
 
 
       <div
@@ -107,7 +101,7 @@ const AdminLayout = () => {
                 <span className="ml-3">Handle Ads </span>
               </a>
             </li>
-
+            
             <li>
               <AdminLogout />
             </li>

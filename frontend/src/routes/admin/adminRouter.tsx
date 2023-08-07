@@ -1,8 +1,8 @@
-import PostTable from "../../components/admin/tables/PostTable";
-import UserTable from "../../components/admin/tables/UserTable";
 import AdminLogin from "../../pages/admin/AdminLogin";
-import AdminLayout from "../../pages/admin/AdminLayout";
-// import Dashboard from "../../pages/admin/Layout";
+import Dashboard from "../../pages/admin/Dashboard";
+import PostList from "../../pages/admin/PostList";
+import UserList from "../../pages/admin/UserList";
+import AdminLayout from "../../pages/layout/AdminLayout";
 
 export const adminLogin = {
   path: "/admin/login",
@@ -15,15 +15,15 @@ export const dashboard = {
   children: [
     {
       path: "/admin/",
-      element: <div>Dashboard</div> ,
+      element: <Dashboard />
     },
     {
       path: "/admin/users",
-      element: <UserTable />,
+      element: <UserList />,
     },
     {
       path: "/admin/posts",
-      element: <PostTable />,
+      element: <PostList />,
     }
   ]
 }

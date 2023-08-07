@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { api } from "../instance";
+import { api } from "../admin/instance";
 
 export const apiCalls = {
 
@@ -16,6 +16,11 @@ export const apiCalls = {
 
   blockPost: async (postId: string) => {
     const response = await api.put(`/admin/block-post/${postId}`);
+    return response.data;
+  },
+
+  deletePost:async (postId:string, key: string) => {
+    const response = await api.put(`/admin/${postId}/${key}`);
     return response.data;
   },
   

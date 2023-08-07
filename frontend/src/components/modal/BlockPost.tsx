@@ -1,8 +1,20 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAction } from "../../state/slices/userSlice";
 import Loading from "../shimmer/Loading";
 import Modal from "react-modal";
-import { FiLogOut } from "react-icons/fi";
+import { apiCalls } from "../../api/admin/apiCalls";
+import { toast } from "react-toastify";
+
+interface ApiResponse {
+  status: string;
+  message: string;
+}
+
+interface BlockPostProps {
+  postId: string;
+}
 
 const customStyles = {
   content: {
@@ -15,9 +27,9 @@ const customStyles = {
   },
 };
 
-const AdminLogout = () => {
+export const BlockPost: React.FC<BlockPostProps> = ({ postId }) => {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
@@ -27,6 +39,7 @@ const AdminLogout = () => {
   }
 
   function afterOpenModal() {
+    // references are now sync'd and can be accessed.
     if (subtitleRef.current) {
       subtitleRef.current.style.color = "#f00";
     }
@@ -36,26 +49,32 @@ const AdminLogout = () => {
     setIsOpen(false);
   }
 
-  const submitLogout = () => {
+  const HandlePostBlock = async (): Promise<void> => {
     setLoading(true);
-    
-    setTimeout(() => {
-      localStorage.removeItem("adminToken");
-      setIsOpen(false);
-      navigate("/admin/login");
-    }, 2000);
-   
+    const response = (await apiCalls.blockPost(postId)) as ApiResponse;
+    if (response.status == "success") {
+      setLoading(false);
+      dispatch(setAction());
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: true,
+      });
+    } else {
+      toast.error(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: true,
+      });
+    }
   };
 
   return (
-    <>
-      
+    <div>
+      {loading && <Loading />}
       <div
         onClick={openModal}
-        className="flex items-center p-2 text-red-700 rounded-lg cursor-pointer hover:bg-gray-100 group"
+        className="text-red-700 bg-red-100 py-1.5 px-3 rounded-md shadow-md hover:text-red-800 hover:bg-red-200 cursor-pointer"
       >
-        <FiLogOut size={30} />
-        <span className="ml-3">Logout</span>
+        Block
       </div>
 
       <Modal
@@ -66,7 +85,6 @@ const AdminLogout = () => {
         contentLabel="Example Modal"
       >
         <div className="">
-        {loading && <Loading />} 
           <div className="px-7 py-1 text-center">
             <svg
               className="mx-auto mb-2 text-red-200 w-12 h-12"
@@ -85,14 +103,14 @@ const AdminLogout = () => {
             </svg>
             <h3 className="mb-5 text-xs font-normal text-gray-500 ">
               Are you sure <br />
-              Do you want to logout this account?
+              Do you want to block this post ?
             </h3>
             <button
               type="button"
-              onClick={submitLogout}
-              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-8 py-1.5 text-center mr-2"
+              onClick={HandlePostBlock}
+              className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-1.5 text-center mr-2"
             >
-              Logout
+              Deactivate
             </button>
             <button
               onClick={closeModal}
@@ -104,8 +122,7 @@ const AdminLogout = () => {
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 
-export default AdminLogout;

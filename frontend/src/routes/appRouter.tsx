@@ -1,15 +1,19 @@
 import { createBrowserRouter } from "react-router-dom";
-import { userLogin, userRegister, userRouter } from "./user/userRouter";
-import SecretToken from "../pages/user/SecretToken";
+import { secretPage, userLogin, userRegister, userRouter } from "./user/userRouter";
 import { adminLogin, dashboard } from "./admin/adminRouter";
 
 const routes = [
+
+  // Admin Routes
   adminLogin,
+  dashboard,
+
+  // User Routes
   userLogin,
   userRegister,
   userRouter,
-  dashboard,
-  { path: "/api/auth/:id/token", element: <SecretToken /> },
+  secretPage
+  
 ];
 
 const appRouter = createBrowserRouter(routes);

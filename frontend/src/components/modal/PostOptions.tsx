@@ -313,10 +313,10 @@ export const CommentOption = ({ userId, postId, commentId }: {userId: string, po
         <div
           className={`${
             darkMode && bgColor
-          } ${color} ${ userId == user?._id &&  "origin-top-right absolute right-0 mr-6 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-gray-200 ring-opacity-5"}`}
+          } ${color} ${ userId == user?._id && "origin-top-right absolute right-0 mr-6 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-gray-200 ring-opacity-5"}`}
         >
           <ul
-            className={` ${userId == user?._id &&  "py-0.5 border rounded-md" }`}
+            className={` ${userId == user?._id && "py-0.5 border rounded-md" }`}
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="options-menu"

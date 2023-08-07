@@ -23,6 +23,8 @@ export const adminAuthMiddleware = ( req: CustomRequest, res: Response, next: Ne
     if( req.headers.authorization ) {
         token = req.headers.authorization.split(" ")[1];
     }
+    console.log("token", token)
+
     if(!token) {
         throw new AppError("UnAuthorized user found", HttpStatus.OK)
     }
