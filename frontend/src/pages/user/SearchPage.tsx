@@ -9,12 +9,16 @@ import { apiCalls } from "../../api/user/apiCalls";
 import { PageLoading } from "../../components/shimmer/Loading";
 import { PostInterface } from "../../state/interface/postInterface";
 import PostSingleView from "../../components/modal/PostSingleView";
+import RightBar from "../../components/user/layout/Rightbar";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/interface/userInterface";
 
 const SearchPage = () => {
   const [posts, setPosts] = useState<PostInterface[]>([]);
+  const { actions } = useSelector((store: RootState) => store.user)
   useEffect(() => {
     fetchAllPosts();
-  }, []);
+  }, [actions]);
 
   const fetchAllPosts = async (): Promise<void> => {
     const response: any = await apiCalls.getAllPosts();
@@ -23,21 +27,31 @@ const SearchPage = () => {
     }
   };
 
-  if(posts.length === 0 ) {
-    return <PageLoading />
-  }
+
 
   return (
-    <div>
-      <SearchBar />
-      <div className="grid grid-cols-3 gap-1 mt-4 ">
-        {posts?.map((post) => {
-          // return <Explore {...post} key={post._id} />;
-          return <PostSingleView {...post} key={post._id} />;
+    <>
+      <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto ">
 
-        })}
+        {posts.length === 0 ? (
+          <PageLoading />
+        ) : (
+
+          <div>
+            <SearchBar />
+            <div className="grid grid-cols-3 gap-1 mt-4 ">
+              {posts?.map((post) => {
+                return <PostSingleView {...post} key={post._id} />;
+              })}
+            </div>
+          </div>
+
+        )}
+
       </div>
-    </div>
+
+      <RightBar />
+    </>
   );
 };
 

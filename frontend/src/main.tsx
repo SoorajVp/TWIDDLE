@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom/client";
-import React from "react";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -12,8 +11,7 @@ const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   
-  <React.StrictMode>
-    
+  <>
     <ToastContainer />
 
     <Provider store={store}>
@@ -21,6 +19,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </>
 
 );

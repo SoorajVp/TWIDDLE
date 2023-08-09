@@ -12,7 +12,7 @@ const PostShimmer = () => {
   return (
     <>
       <article
-        className={`mb-4 lg:px-20 mt-3 break-inside p-3 rounded-lg shadow flex flex-col bg-clip-border`}
+        className={`mb-4 pt-5 break-inside rounded-lg shadow flex flex-col bg-clip-border`}
       >
         <div className="flex pb-7 p-2 h-6 items-center justify-between">
           <div className="flex">

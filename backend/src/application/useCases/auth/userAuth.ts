@@ -7,6 +7,7 @@ import {
 } from "../../../types/interface/userInterface";
 import { authServiceInterfaceType } from "../../services/authServiceInterface";
 
+
 export const userRegister = async (
   user: registerInterface,
   userRepository: ReturnType<userDbInterface>,
@@ -36,16 +37,18 @@ export const userRegister = async (
 };
 
 
-
 export const userLogin = async (
   user: { name: string; password: string },
   userRepository: ReturnType<userDbInterface>,
   authService: ReturnType<authServiceInterfaceType>
 ) => {
+  console.log("login function 2")
 
   const userData: userDataInterface | null = await userRepository.getUserByName(
     user.name
   );
+  console.log("login function 3")
+
 
   if (!userData) {
     throw new AppError("User not found !", HttpStatus.OK);
@@ -60,24 +63,33 @@ export const userLogin = async (
       throw new AppError("Incorrect password !", HttpStatus.OK);
     }
   }
+  console.log("login function 4")
+
 
   if (userData.isBlocked) {
-    throw new AppError("This account was blocked !", HttpStatus.OK);
+    throw new AppError("Account action blocked !", HttpStatus.OK);
   }
+
   const payload: { userId: string, isAdmin: boolean} = { userId: userData._id.toString(), isAdmin:  Boolean(userData.isAdmin)}
   const token = authService.generateToken(payload);
+  console.log("login function 5")
+
 
   return { token, userData };
 };
 
 export const loginWithGoogle = async (
+
   user: { name: string; email: string; picture: string; googleUser: boolean },
   userRepository: ReturnType<userDbInterface>,
   authService: ReturnType<authServiceInterfaceType>
 ) => {
+  console.log("login function 2")
 
   user.name = user.name.split(" ").join(""); 
   const userData: any = await userRepository.getUserByEmail( user.email );
+  console.log("login function 3")
+
   if (!userData) {
     user.googleUser = true;
     user.name = authService.createRandomName(user.name)
@@ -86,10 +98,14 @@ export const loginWithGoogle = async (
     const token = authService.generateToken(payload);
     return { token, userData: users };
   }
+  console.log("login function 4")
+
   if(userData.googleUser) {
     if (userData.isBlocked) {
-      throw new AppError("Action blocked", HttpStatus.OK);
+      throw new AppError("Account action blocked !", HttpStatus.OK);
     }
+    console.log("login function 5")
+
     const token = authService.generateToken(userData._id);
     return { token, userData };
   } else {

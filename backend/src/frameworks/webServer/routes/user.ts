@@ -11,10 +11,12 @@ import { s3CloudService } from "../../services/s3CloudService";
 import upload from "../middlewares/multer";
 
 const userRouter = () => {
+
     const router = express.Router();
+
     const controller = userController( userDbRepository, userRepositoryDb, postDbRepository, PostRespository, authServiceInterface, authService, cloudService, s3CloudService );
 
-    router.get("/list", controller.getAllUserList);
+    router.get("/is-blocked", controller.isBlockedUser);
 
     router.post("/search", controller.searchUser);
 
@@ -34,7 +36,6 @@ const userRouter = () => {
 
     router.put("/:postId/save", controller.postSave);
 
-    router.put("/:id/block", controller.blockUserById);
 
 
     

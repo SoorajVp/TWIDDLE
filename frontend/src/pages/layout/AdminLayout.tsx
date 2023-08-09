@@ -21,6 +21,7 @@ const AdminLayout = () => {
     setShowDrawer((prevShowDrawer) => !prevShowDrawer);
   };
 
+
   return (
     <>
       <div className="p-4 px-7 bg-slate-700 shadow-lg flex justify-between">
@@ -101,7 +102,7 @@ const AdminLayout = () => {
                 <span className="ml-3">Handle Ads </span>
               </a>
             </li>
-            
+
             <li>
               <AdminLogout />
             </li>

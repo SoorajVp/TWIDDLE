@@ -6,6 +6,7 @@ import { authServiceInterfaceType } from "../../services/authServiceInterface";
 import { cloudServiceType } from "../../services/cloudServiceInterface";
 
 export const getAllUser = async(repository: ReturnType<userDbInterface> ) => {
+    console.log("function 2 ----")
     const users = await repository.getAllUser()
     return users;
 }
@@ -74,6 +75,10 @@ export const unfollowUser = async( id: string, userId: string, repository: Retur
 
 export const blockUser = async( id: string, repository: ReturnType<userDbInterface> ) => {
     return await repository.blockUser( id )
+}
+
+export const unBlockUser = async( id: string, repository: ReturnType<userDbInterface> ) => {
+    return await repository.unBlockUser( id )
 }
 
 export const savePost = async( postId: string, userId: string, repository: ReturnType<userDbInterface> ) => {

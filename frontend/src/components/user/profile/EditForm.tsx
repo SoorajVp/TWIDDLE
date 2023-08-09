@@ -98,15 +98,13 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
   console.log("this is selected image --------", image)
 
 
-  let color: string, bgColor: string, hover: string;
+  let color: string, bgColor: string;
   if (darkMode) {
     (color = "text-white"),
-      (bgColor = "bg-gray-950"),
-      (hover = "hover:bg-black");
+      (bgColor = "bg-gray-950")
   } else {
     (color = "text-gray-900"),
-      (bgColor = "bg-white"),
-      (hover = "hover:bg-gray-100");
+      (bgColor = "bg-white")
   }
 
   return (
@@ -148,7 +146,7 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any ) => {
               
             </div>
             <h2 className={`${color} text-center text-xs font-bold`}>
-                <p className="bg-gray-500 text-white border rounded-3xl inline-block py-0.5 px-3 cursor-pointer" onClick={handleButtonClick}>Change profile</p>
+                <p className="bg-gray-500 shadow-md text-xs text-white border rounded-3xl inline-block py-0.5 px-3 cursor-pointer" onClick={handleButtonClick}>Change profile</p>
                 <input
                     type="file"
                     ref={fileInputRef}

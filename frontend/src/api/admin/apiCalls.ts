@@ -9,8 +9,18 @@ export const apiCalls = {
     return response.data;
   },
 
+  getAllUsers:async () => {
+    const response = await api.get("/admin/list");
+    return response.data;
+  },
+
+  blockUser: async (userId: string) => {
+    const response = await api.put(`/admin/block-user/${userId}`);
+    return response.data;
+  },
+
   getReports: async () => {
-    const response = await api.get(`/post/reports`);
+    const response = await api.get(`/admin/reports`);
     return response.data;
   },
 

@@ -26,6 +26,7 @@ const postController = (
   postDbRepository: postDbRepositoryType,
   postRespository: PostRespositoryType
 ) => {
+
   const dbRepositoryPost = postDbRepository(postRespository());
   const postService = cloudService(s3CloudService());
 
@@ -85,16 +86,9 @@ const postController = (
     res.status(200).json({status: "success", message: "Post deleted successfully"})
   })
 
-  const postReports = asyncHandler(async (req: Request, res: Response ) => {
-    const result =  await getReports( dbRepositoryPost);
-    res.status(200).json({status: "success", reports: result })
-  })
+  
 
-  const postBlock = asyncHandler(async (req: Request, res: Response ) => {
-    console.log("heyyyy 1")
-    await blockPost( req.params.postId, dbRepositoryPost);
-    res.status(200).json({status: "success", message: "Post blocked successfully"})
-  })
+  
 
   
 
@@ -102,7 +96,7 @@ const postController = (
 
 
 
-  return { createPost, getPosts, postLike, postUnlike, PostComment, getPostComments, commentDelete, postReport, postDelete, postReports, postBlock };
+  return { createPost, getPosts, postLike, postUnlike, PostComment, getPostComments, commentDelete, postReport, postDelete };
 };
 
 export default postController;

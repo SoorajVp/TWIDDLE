@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState, userInterface } from '../../state/interface/userInterface';
 import { PostInterface } from '../../state/interface/postInterface';
 import { PageLoading } from '../../components/shimmer/Loading';
+import RightBar from '../../components/user/layout/Rightbar';
 
 type responseInterface = {
   status: string,
@@ -36,6 +37,7 @@ const ProfilePage = () => {
 
     const fetchUserData = async(name: string): Promise<void> => {
       const response: responseInterface = await apiCalls.getUserByName(name);
+      console.log(response)
       if( response.user?.name == user.name ) {
         setAccountProfile(true)
       }
@@ -53,17 +55,16 @@ const ProfilePage = () => {
       setuserPosts(response.posts);
     }
 
-    if(!userData) {
-      return <PageLoading />
-    }
-
     
    return (
-    <div>
-      { userData &&
+    <>
+    <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto">
+      { !userData ?  <PageLoading /> :
         <UserProfile accountProfile={accountProfile} userData={userData} stateUser={user} userPosts={userPosts} savedPosts={savedPosts} darkMode={darkMode} isFollowing={isFollowing} followBack={followBack} />
       }
     </div>
+    <RightBar />
+    </>
   )
 }
 

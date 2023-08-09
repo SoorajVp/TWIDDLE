@@ -4,6 +4,11 @@ import { api } from "./instance";
 
 export const apiCalls = {
 
+  isBlockedUser: async () => {
+    const response = await api.get("/user/is-blocked");
+    return response.data;
+  },
+
   Login: async (payload: object) => {
     const response = await api.post("/auth/login", payload);
     return response.data;
@@ -22,12 +27,7 @@ export const apiCalls = {
   CreatePost:async (payload: object) => {
     const response = await api.post("/post", payload);
     return response.data;
-  },
-
-  getAllUsers:async () => {
-    const response = await api.get("/user/list");
-    return response.data;
-  },
+  },  
 
   getAllPosts:async () => {
     const response = await api.get("/post");

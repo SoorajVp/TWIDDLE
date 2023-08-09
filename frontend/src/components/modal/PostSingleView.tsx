@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useState, useRef } from "react";
 import Modal from "react-modal";
 import PostCard from "../user/posts/PostCard";
 import { PostInterface } from "../../state/interface/postInterface";
+
+
 
 const customStyles = {
   content: {
@@ -13,6 +17,8 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
   },
 };
+
+Modal.setAppElement('#root');
 
 const PostSingleView = ({
   _id,
@@ -27,6 +33,7 @@ const PostSingleView = ({
   const [modalIsOpen, setIsOpen] = useState(false);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
 
+  
   function openModal() {
     setIsOpen(true);
   }

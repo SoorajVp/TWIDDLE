@@ -14,6 +14,7 @@ import { DeletePost } from "../../modal/DeletePost";
   const PostTable = () => {
     const [items, setItems] = useState<ReportPosts[]>([])
     const { actions } = useSelector((store: RootState) => store.user)
+    
     useEffect(() => {
       console.log("render")
       fetchUserList()

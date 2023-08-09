@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../../state/slices/userSlice";
 import { useEffect, useState } from "react";
 import Loading from "../../components/shimmer/Loading";
+import image from "../../../public/signup-image.png"
 import { ToastContainer, toast } from "react-toastify";
 
 const signupSchema = Yup.object({
@@ -74,9 +75,10 @@ const SignupPage = () => {
     {loading && <Loading /> }
     <div className="h-screen flex items-center w-full bg-slate-100">
     <ToastContainer />
-      <div className="container max-w-md mx-auto xl:max-w-4xl h-screeen flex bg-white rounded-lg shadow-lg overflow-hidden">
+    
+      <div className="container max-w-md mx-auto xl:max-w-4xl h-screeen flex overflow-hidden">
         
-        <div className="w-full xl:w-1/2 p-8">
+        <div className="w-full xl:w-1/2 p-8 ">
           <form onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold"> Create an account </h1>
             <div>
@@ -84,7 +86,7 @@ const SignupPage = () => {
                 Already have an account ? 
               </span>
               <Link to="/login" className="text-gray-700 pl-2 text-sm font-semibold">
-               Login
+               Signin
               </Link>
             </div>
             <div className="mb-2 mt-4">
@@ -194,8 +196,8 @@ const SignupPage = () => {
 
         <div className="relative hidden xl:block xl:w-1/2 h-full">
           <img
-            className="absolute h-auto w-full object-cover"
-            src="https://i.pinimg.com/736x/02/97/a8/0297a8a2c062b27b6b07bfc15c915dee.jpg"
+            className="absolute h-auto p-5 w-full object-cover"
+            src={image}
             alt="my zomato
           "
           />

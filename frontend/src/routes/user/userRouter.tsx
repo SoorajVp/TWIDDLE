@@ -1,16 +1,16 @@
-import { Suspense, lazy } from "react";
-// import HomeLazy from "../../components/lazy/HomeLazy";
-import { PageLoading } from "../../components/shimmer/Loading";
 import UserLayout from "../../pages/layout/UserLayout";
 import CreatePage from "../../pages/user/CreatePage";
-// import HomePage from "../../pages/user/HomePage";
+import HomePage from "../../pages/user/HomePage";
 import LoginPage from "../../pages/user/LoginPage";
 import ProfilePage from "../../pages/user/ProfilePage";
 import SearchPage from "../../pages/user/SearchPage";
 import SignupPage from "../../pages/user/SignupPage";
 import SecretToken from "../../pages/user/SecretToken";
+import ChatPage from "../../pages/user/ChatPage";
+import ErrorElement from "../../pages/error/ErrorElement";
 
-const HomePage = lazy(() => import('../../pages/user/HomePage'));
+// const HomePage = lazy(() => import('../../pages/user/HomePage'));
+
 
 export const secretPage = {
    path: "/api/auth/:id/token", 
@@ -27,18 +27,16 @@ export const userRegister = {
   element: <SignupPage />,
 };
 
-export const userRouter = {
 
+
+export const userRouter = {
   path: "/",
   element: <UserLayout />,
+  errorElement: <ErrorElement />,
   children: [
     {
       path: "/",
-      element: (
-        <Suspense fallback={ <PageLoading /> }>
-          <HomePage />
-        </Suspense>
-      ),
+      element: <HomePage />
     }, 
     {
       path: "/:userName",
@@ -54,7 +52,7 @@ export const userRouter = {
     },
     {
       path: "/messages",
-      element: <PageLoading />,
+      element: <ChatPage />,
     },
     
   ],

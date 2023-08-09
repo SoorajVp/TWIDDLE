@@ -16,7 +16,6 @@ const SearchBar = () => {
   const searchRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    console.log(value, users)
     if (value) {
       fetchUsers();
     } else {
@@ -34,7 +33,7 @@ const SearchBar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
     
-  }, [value, searchRef ]);
+  }, [value, searchRef]);
 
   const fetchUsers = async (): Promise<void> => {
     const response = await apiCalls.searchUser({ name: value });
@@ -74,7 +73,7 @@ const SearchBar = () => {
           <input
             type="search"
             id="default-search"
-            value={value}
+            value={value !== null ? value : ""}
             autoComplete="off"
             // onBlur={()=> setUser(null)}
             onChange={(e) => setValue(e.target.value)}
@@ -87,7 +86,7 @@ const SearchBar = () => {
       <div className="flex justify-center" ref={searchRef}>
         <ul className="w-full md:w-[51%] absolute rounded-md shadow-sm bg-white overflow-y-scroll ">
 
-          { value && users?.map((user: userInterface ) => {
+          { value && users?.map(( user: userInterface ) => {
             return (
               <li className="py-2 pl-4 hover:bg-slate-200 cursor-pointer" key={user._id} onClick={()=> navigate(`/${user.name}`)}>
                 <div className="flex items-center space-x-4">

@@ -32,7 +32,6 @@ const PostCard = ({
   const [saved, setSaved] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(likes?.length);
   const [comment, setComment] = useState<string>("");
-  const [commentCount, setCommentCount] = useState<number>(comments?.length);
   const [commentList, setCommentList] = useState<CommentInterface[]>(comments);
 
   const [dropDown, setDropDown] = useState<boolean>(false);
@@ -42,7 +41,6 @@ const PostCard = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("This is the list of comments",commentList)
     setCommentList(comments)
     if (likes?.includes(user._id)) {
       setLiked(true);
@@ -58,6 +56,7 @@ const PostCard = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      
       // if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       //   setDropDown(false);
       // }
@@ -95,7 +94,6 @@ const PostCard = ({
 
       await apiCalls.commentPost(data);
       dispatch(setAction())
-      setCommentCount(commentCount + 1);
       setComment("");
     }
   };
@@ -217,7 +215,7 @@ const PostCard = ({
                 <HiOutlineChatBubbleLeft size={30} />
               </span>
               <span className="text-base text-gray-500">
-                {commentCount > 0 && commentCount}
+                {comments?.length}
               </span>
             </div>
           </div>

@@ -9,12 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { apiCalls } from "../../api/user/apiCalls";
+import { setLogin } from "../../state/slices/userSlice";
+import { useEffect, useState } from "react";
 import {
   AuthResponse,
   userInterface,
 } from "../../state/interface/userInterface";
-import { setLogin } from "../../state/slices/userSlice";
-import { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +23,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import Loading from "../../components/shimmer/Loading";
 
-
+import image from '../../../public/login-image.png'
 const loginSchema = Yup.object({
   name: Yup.string().min(4).max(15).required("Please enter your name ").matches(/^[a-zA-Z0-9]+$/, '* This field cannot contain white space and special character'),
   password: Yup.string().required("Please enter your password"),
@@ -98,6 +98,7 @@ const LoginPage = () => {
     setLoading(true)
     const userData = { email, name, picture, googleUser: true };
     const response: AuthResponse = await apiCalls.googleAuth(userData);
+    console.log("gggggggggggggggg", response)
 
     if (response.status == "success") {
       
@@ -131,16 +132,16 @@ const LoginPage = () => {
     <>
     { loading && <Loading /> }
     <div className="h-screen flex items-center w-full bg-slate-100">
-      <div className="container max-w-md mx-auto xl:max-w-4xl h-screeen flex bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="container max-w-md mx-auto xl:max-w-4xl h-screeen flex  overflow-hidden">
         <div className="relative hidden xl:block xl:w-1/2 h-full">
           <img
             className="absolute h-auto w-full object-cover"
-            src="https://e1.pxfuel.com/desktop-wallpaper/967/276/desktop-wallpaper-19-8-mil-me-gusta-140-comentarios-juice-box.jpg"
+            src={image}
             alt="Login image
           "
           />
         </div>
-        <div className="w-full xl:w-1/2 p-8">
+        <div className="w-full xl:w-1/2 p-8 ">
           <form onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold">Sign in to your account</h1>
             <div>

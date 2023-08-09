@@ -1,4 +1,3 @@
-import { BiSolidLockOpenAlt } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import LogoutModal from "../../modal/Logout";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";

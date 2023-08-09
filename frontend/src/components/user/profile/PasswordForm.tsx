@@ -26,6 +26,7 @@ const passwordSchema = Yup.object({
     confirmPassword: '',
   };
 
+  
 const PasswordForm: React.FC<stateType> = ({ setIsOpen }) => {
 
   const { darkMode } = useSelector((store: RootState) => store.user);
@@ -72,15 +73,13 @@ const PasswordForm: React.FC<stateType> = ({ setIsOpen }) => {
   }
 
 
-  let color: string, bgColor: string, hover: string;
+  let color: string, bgColor: string;
   if (darkMode) {
     (color = "text-white"),
-      (bgColor = "bg-gray-950"),
-      (hover = "hover:bg-black");
+      (bgColor = "bg-gray-950")
   } else {
     (color = "text-gray-950"),
-      (bgColor = "bg-white"),
-      (hover = "hover:bg-gray-100");
+      (bgColor = "bg-white")
   }
   return (
     <div>

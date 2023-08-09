@@ -63,6 +63,10 @@ export const userRepositoryDb = () => {
         return await User.findByIdAndUpdate({ _id: id }, {isBlocked: true}, { new: true })
     }
 
+    const unBlockUser = async (id: string ) => {
+        return await User.findByIdAndUpdate({ _id: id }, {isBlocked: false}, { new: true })
+    }
+
     const getSavedPost = async( id: string ) => {
         return await User.findById({_id: id}).populate("saved")
     }
@@ -77,7 +81,7 @@ export const userRepositoryDb = () => {
 
 
 
-    return { addUser, getAllUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newProfilePic, newPassword, followUser, unfollowUser, setFollowing, blockUser, savePost, unSavePost, getSavedPost }
+    return { addUser, getAllUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newProfilePic, newPassword, followUser, unfollowUser, setFollowing, blockUser, unBlockUser, savePost, unSavePost, getSavedPost }
 }
 
 export type userRepositoryDbType = typeof userRepositoryDb;

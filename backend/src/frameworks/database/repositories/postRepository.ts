@@ -13,7 +13,7 @@ export const PostRespository = () => {
     }
 
     const getUserPosts = async ( id: string ) => {
-        return await Post.find({ userId: id }).populate('userId')
+        return await Post.find({ userId: id }).populate('userId').sort({_id: -1})
     }
 
     const getPostById = async ( id: string ) => {

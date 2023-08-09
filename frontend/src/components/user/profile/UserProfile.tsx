@@ -2,7 +2,7 @@
 import { BiBookmark } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
 import { RiTable2 } from "react-icons/ri";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PostList from "../posts/PostList";
 import { apiCalls } from "../../../api/user/apiCalls";
 import { userInterface } from "../../../state/interface/userInterface";
@@ -50,6 +50,11 @@ const UserProfile = ({
   const SavedClick = () => {
     setPostItems(savedPosts.reverse());
   };
+  useEffect(() => {
+    console.log("again rendering -----");
+    setPostItems(userPosts)
+    setFollowers(userData.followers.length)
+  }, [userData])
 
   const HandleFollow = async (): Promise<void> => {
     setFollow(!follow);
