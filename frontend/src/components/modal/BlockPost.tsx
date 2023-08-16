@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setAction } from "../../state/slices/userSlice";
 import Loading from "../shimmer/Loading";
 import Modal from "react-modal";
-import { apiCalls } from "../../api/admin/apiCalls";
+import { adminRequest } from "../../api/requests/adminRequests";
 import { toast } from "react-toastify";
 
 interface ApiResponse {
@@ -51,7 +51,7 @@ export const BlockPost: React.FC<BlockPostProps> = ({ postId }) => {
 
   const HandlePostBlock = async (): Promise<void> => {
     setLoading(true);
-    const response = (await apiCalls.blockPost(postId)) as ApiResponse;
+    const response = (await adminRequest.blockPost(postId)) as ApiResponse;
     if (response.status == "success") {
       setLoading(false);
       dispatch(setAction());
@@ -125,4 +125,3 @@ export const BlockPost: React.FC<BlockPostProps> = ({ postId }) => {
     </div>
   );
 };
-

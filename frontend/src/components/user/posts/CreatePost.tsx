@@ -5,25 +5,25 @@
 import { ChangeEvent, useState } from "react";
 import Cropper from "react-easy-crop";
 import { dataURLtoFile } from "../../../utils/ImageCropDialog";
-import { apiCalls } from "../../../api/user/apiCalls";
 import Loading from "../../shimmer/Loading";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { postRequest } from "../../../api/requests/postRequest";
 
 const CreatePost = () => {
-  const [ loading, setLoading ] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState(null);
   const [croppedArea, setCroppedArea] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [description, setDescription] = useState<string>("");
 
   const onCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
-    console.log(croppedAreaPercentage)
+    console.log(croppedAreaPercentage);
     setCroppedArea(croppedAreaPixels);
     const cropper = document.createElement("canvas");
     cropper.width = croppedAreaPixels.width;
@@ -49,18 +49,22 @@ const CreatePost = () => {
   };
 
   const isImageFile = (file: File): boolean => {
-    return file.type.startsWith('image/');
+    return file.type.startsWith("image/");
   };
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
-    if(isImageFile(e.target.files?.[0]) && e.target.files && e.target.files.length > 0 ) {
+    if (
+      isImageFile(e.target.files?.[0]) &&
+      e.target.files &&
+      e.target.files.length > 0
+    ) {
       const reader: FileReader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.addEventListener("load", () => {
         setImage(reader.result);
       });
     } else {
-      toast.warn( "Invalid file format !", {
+      toast.warn("Invalid file format !", {
         position: toast.POSITION.TOP_CENTER,
         hideProgressBar: true,
       });
@@ -69,21 +73,21 @@ const CreatePost = () => {
 
   const handleCreatePost = async () => {
     if (croppedImage) {
-      setLoading(true)
-      console.log(croppedArea)
+      setLoading(true);
+      console.log(croppedArea);
       const result = dataURLtoFile(croppedImage, "image");
       const formData = new FormData();
       formData.append("description", description);
       formData.append("image", result);
-      const response = await apiCalls.CreatePost(formData);
-      console.log(response)
+      const response = await postRequest.CreatePost(formData);
+      console.log(response);
 
-      if(response.status == "success") {
+      if (response.status == "success") {
         toast.success(response.message, {
           position: toast.POSITION.TOP_RIGHT,
           hideProgressBar: true,
         });
-        navigate('/')
+        navigate("/");
       } else {
         toast.error(response.message, {
           position: toast.POSITION.TOP_RIGHT,
@@ -95,14 +99,14 @@ const CreatePost = () => {
 
   return (
     <div>
-      { loading && <Loading /> }
+      {loading && <Loading />}
       <div className="flex my-2 justify-between">
         <div className="font-medium text-lg pt-4 pl-1">New Post</div>
         <div
-          className="p-2 px-4 mt-3 text-xs bg-blue-600 text-white hover:bg-blue-500 cursor-pointer rounded"
+          className="p-2 px-4 mt-3 text-xs bg-blue-600 text-white font-semibold hover:bg-blue-500 cursor-pointer rounded"
           onClick={handleCreatePost}
         >
-          CREATE POST
+          CREATE
         </div>
       </div>
       <div className="flex items-center justify-center w-full">
@@ -129,9 +133,7 @@ const CreatePost = () => {
             <p className="mb-2 text-sm text-gray-500">
               <span className="font-semibold">Click to upload</span>
             </p>
-            <p className="text-xs text-gray-500">
-              SVG, PNG, JPG or JPEG 
-            </p>
+            <p className="text-xs text-gray-500">SVG, PNG, JPG or JPEG</p>
           </div>
           {/* } */}
           <input

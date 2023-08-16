@@ -17,8 +17,8 @@ export interface userDataInterface {
     isBlocked?: boolean,
     createdAt: Date,
     googleUser?: boolean,
-    followers?: string[] | null,
-    following?: string[] | null
+    followers?: string[] | null | userDataInterface[],
+    following?: string[] | null | userDataInterface[],
     saved?: string[] | null,
 }
 

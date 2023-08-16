@@ -1,27 +1,26 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from "react";
-import { apiCalls } from "../../../api/admin/apiCalls";
+import { adminRequest } from "../../../api/requests/adminRequests";
+import { BlockUser } from "../../modal/BlockUser";
+import { useSelector } from "react-redux";
 import {
   RootState,
   userInterface,
 } from "../../../state/interface/userInterface";
-import { BlockUser } from "../../modal/BlockUser";
-import { useSelector } from "react-redux";
 
 const UserTable = () => {
-
   const { actions } = useSelector((store: RootState) => store.user);
 
   const [users, setUsers] = useState<userInterface[]>([]);
 
   useEffect(() => {
+    console.log("fetching users - - - - - -")
     fetchUserList();
   }, [actions]);
 
   const fetchUserList = async (): Promise<any> => {
-    const resposnse: { status: string; users: userInterface[] } =
-      await apiCalls.getAllUsers();
+    const resposnse: { status: string; users: userInterface[] } = await adminRequest.getAllUsers();
     console.log(resposnse);
     setUsers(resposnse.users);
   };
@@ -36,31 +35,31 @@ const UserTable = () => {
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Name
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Email
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Followers
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Following
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Handle
                   </th>
@@ -71,7 +70,7 @@ const UserTable = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {users?.map((person) => (
-                  <tr key={person?._id}>
+                  <tr key={person?._id} className=" text-center">
                     <td className="px-6 py-2 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-9 w-9">
@@ -101,7 +100,10 @@ const UserTable = () => {
                       {person?.following.length}
                     </td>
                     <td className="px-6 py-1 whitespace-nowrap text-center text-xs font-medium">
-                      <BlockUser userId={person?._id} isBlocked={person?.isBlocked} />
+                      <BlockUser
+                        userId={person?._id}
+                        isBlocked={person?.isBlocked}
+                      />
                     </td>
                   </tr>
                 ))}

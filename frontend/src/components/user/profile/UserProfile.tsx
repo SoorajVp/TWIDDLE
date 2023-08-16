@@ -4,11 +4,16 @@ import { FiMoreVertical } from "react-icons/fi";
 import { RiTable2 } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import PostList from "../posts/PostList";
-import { apiCalls } from "../../../api/user/apiCalls";
+import { userRequest } from "../../../api/requests/userRequest";
 import { userInterface } from "../../../state/interface/userInterface";
 import { PostInterface } from "../../../state/interface/postInterface";
 import Settings from "./Settings";
 import EditProfile from "../../modal/EditProfile";
+import { chatRequest } from "../../../api/requests/chatRequest";
+import { ChatListInterface } from "../../../state/interface/chatInterface";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLastChat } from "../../../state/slices/userSlice";
 
 type profileInterface = {
   accountProfile: boolean;
@@ -21,6 +26,11 @@ type profileInterface = {
   followBack: boolean;
 };
 
+type ApiResponse = {
+  status: string;
+  newChat: ChatListInterface;
+};
+
 const UserProfile = ({
   accountProfile,
   userData,
@@ -31,10 +41,11 @@ const UserProfile = ({
   isFollowing,
   followBack,
 }: profileInterface) => {
-  
   const [postItems, setPostItems] = useState<PostInterface[]>(userPosts);
   const [follow, setFollow] = useState<boolean>(isFollowing);
   const [followers, setFollowers] = useState<number>(userData.followers.length);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   let color: string, hover: string;
 
@@ -52,21 +63,34 @@ const UserProfile = ({
   };
   useEffect(() => {
     console.log("again rendering -----");
-    setPostItems(userPosts)
-    setFollowers(userData.followers.length)
-  }, [userData])
+    setPostItems(userPosts);
+    setFollowers(userData.followers.length);
+  }, [userData]);
 
   const HandleFollow = async (): Promise<void> => {
     setFollow(!follow);
-    await apiCalls.followUser(userData._id);
+    await userRequest.followUser(userData._id);
     setFollowers(followers + 1);
   };
   const HandleUnfollow = async (): Promise<void> => {
     setFollow(!follow);
-    await apiCalls.unFollowUser(userData._id);
+    await userRequest.unFollowUser(userData._id);
     setFollowers(followers - 1);
   };
 
+  const HandleSendMessage = async () => {
+    const data = {
+      senderId: stateUser._id,
+      receiverId: userData._id,
+    };
+    const response = (await chatRequest.createChat(data)) as ApiResponse;
+    console.log("Chat created - - - - - - -", response);
+    if (response.status === "success") {
+      const { newChat } = response;
+      dispatch(setLastChat({ newChat: newChat }));
+      navigate("/messages");
+    }
+  };
 
   return (
     <div className={`${color} lg:mx-5 mt-3 md:mt-5`}>
@@ -74,20 +98,21 @@ const UserProfile = ({
         <div className="">
           <img
             className="rounded-full border"
-            src={ accountProfile ? stateUser?.profilePic : userData.profilePic}
+            src={accountProfile ? stateUser?.profilePic : userData.profilePic}
             alt="ProfilePic"
           />
         </div>
         <div className="col-span-3 md:mt-4">
           <div className=" flex lg:justify-between md:px-8 justify-end">
             <div className="hidden lg:block">
-              <h3 className="p-2 font-medium text-base">{ accountProfile ? stateUser?.name : userData.name}</h3>
+              <h3 className="p-2 font-medium text-base">
+                {accountProfile ? stateUser?.name : userData.name}
+              </h3>
             </div>
             <div className="flex gap-1 justify-between">
               {accountProfile ? (
                 <EditProfile />
               ) : (
-                
                 <div>
                   {follow ? (
                     <button
@@ -103,18 +128,23 @@ const UserProfile = ({
                       style={{ height: "44px" }}
                       onClick={HandleFollow}
                     >
-                      { followBack ? "FOLLOW BACK" : "FOLLOW" }
+                      {followBack ? "FOLLOW BACK" : "FOLLOW"}
                     </button>
                   )}
                 </div>
               )}
-             { !accountProfile && <div>
-                <button className="border text-white bg-slate-500 py-2.5 text-xs font-medium rounded px-3 lg:px-5">
-                  MESSAGE
-                </button>
-              </div>}
+              {!accountProfile && (
+                <div>
+                  <button
+                    onClick={HandleSendMessage}
+                    className="border text-white bg-slate-500 py-2.5 text-xs font-medium rounded px-3 lg:px-5"
+                  >
+                    MESSAGE
+                  </button>
+                </div>
+              )}
               {accountProfile ? (
-               <Settings />
+                <Settings />
               ) : (
                 <div className={`${hover} pt-1`}>
                   <FiMoreVertical size={31} />
@@ -148,12 +178,19 @@ const UserProfile = ({
         </div>
       </div>
       <div className="lg:pl-5 lg: pt-3">
-        <p className="text-base ">{ accountProfile ? stateUser?.name : userData.name}</p>
-        <p className="text-xs py-1 pb-5">{ accountProfile ? stateUser?.bio : userData.bio} </p>
+        <p className="text-base ">
+          {accountProfile ? stateUser?.name : userData.name}
+        </p>
+        <p className="text-xs py-1 pb-5">
+          {accountProfile ? stateUser?.bio : userData.bio}{" "}
+        </p>
       </div>
       <hr />
       <div className="flex justify-around  py-2">
-        <div className="flex gap-1 cursor-pointer text-sm " onClick={PostsClick}>
+        <div
+          className="flex gap-1 cursor-pointer text-sm "
+          onClick={PostsClick}
+        >
           POSTS <RiTable2 size={25} />
         </div>
         {accountProfile && (
@@ -167,10 +204,7 @@ const UserProfile = ({
       </div>
       <hr />
 
-
       <PostList items={postItems} />
-
-      
     </div>
   );
 };

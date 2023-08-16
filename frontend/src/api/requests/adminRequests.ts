@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { api } from "../admin/instance";
+import { api } from "../instance/admin";
 
-export const apiCalls = {
+export const adminRequest = {
 
   adminLogin: async (payload: object) => {
     const response = await api.post("auth/admin/login", payload);

@@ -16,6 +16,8 @@ const postRouter = () => {
     
     router.get('/', controller.getPosts);
 
+    router.get('/following-posts', controller.followPosts)
+
     router.put('/:postId/like', controller.postLike);
 
     router.put('/:postId/unlike', controller.postUnlike);

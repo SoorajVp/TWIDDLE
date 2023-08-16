@@ -43,6 +43,11 @@ export const getUserPosts = async (
   return posts;
 };
 
+export const getFollowPosts = async ( userId: string | undefined, repository: ReturnType<postDbRepositoryType> ) => {
+  const posts = await repository.getFollowPosts( userId );
+  return posts;
+}
+
 export const likePost = async (
   req: CustomRequest,
   repository: ReturnType<postDbRepositoryType>

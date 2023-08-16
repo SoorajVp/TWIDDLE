@@ -1,4 +1,6 @@
+import { Types } from "mongoose";
 import Post from "../models/postModel"
+import User from "../models/userModel";
 import ReportPost from "../models/reportModel";
 
 export const PostRespository = () => {
@@ -14,6 +16,18 @@ export const PostRespository = () => {
 
     const getUserPosts = async ( id: string ) => {
         return await Post.find({ userId: id }).populate('userId').sort({_id: -1})
+    }
+
+    const getFollowPosts = async ( userId?: string ) => {
+        const user = await User.findById(userId).populate("following");
+        if (user) {
+          const followingUserIds = user.following.map((followedUser) => followedUser._id);
+          userId && followingUserIds.push(new Types.ObjectId(userId))
+          console.log("Posts from following users:", followingUserIds);
+
+          const posts = await Post.find({ userId: { $in: followingUserIds } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
+          return posts
+        }
     }
 
     const getPostById = async ( id: string ) => {
@@ -62,7 +76,7 @@ export const PostRespository = () => {
 
 
 
-    return { createPost, getAllPosts, getUserPosts, likePost, unlikePost, getPostById, commentPost, getComments, reportPost, deletePost, getReports, deleteComment, blockPost };
+    return { createPost, getAllPosts, getUserPosts, getFollowPosts, likePost, unlikePost, getPostById, commentPost, getComments, reportPost, deletePost, getReports, deleteComment, blockPost };
 }
 
 export type PostRespositoryType = typeof PostRespository;

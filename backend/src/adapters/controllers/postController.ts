@@ -6,13 +6,12 @@ import { cloudServiceType } from "../../application/services/cloudServiceInterfa
 import { s3ServiceType } from "../../frameworks/services/s3CloudService";
 import { CustomRequest } from "../../types/interface/customeRequest";
 import {
-  blockPost,
   commentPost,
   deleteComment,
   deletePost,
   getAllPosts,
   getComments,
-  getReports,
+  getFollowPosts,
   likePost,
   postCreate,
   reportPost,
@@ -32,16 +31,17 @@ const postController = (
 
   const createPost = asyncHandler(async (req: CustomRequest, res: Response) => {
     const result = await postCreate(req, dbRepositoryPost, postService);
-    res.status(200)
-      .json({
-        status: "success",
-        message: "Post Uploaded ",
-        data: result,
-      });
+    res.status(200).json({ status: "success", message: "Post Uploaded ", data: result});
   });
 
   const getPosts = asyncHandler(async (req: Request, res: Response) => {
     const posts = await getAllPosts(dbRepositoryPost);
+    res.status(200).json({ status: "success", posts });
+  });
+
+  const followPosts = asyncHandler(async (req: CustomRequest, res: Response) => {
+    const { userId } = req
+    const posts = await getFollowPosts( userId, dbRepositoryPost );
     res.status(200).json({ status: "success", posts });
   });
 
@@ -80,7 +80,6 @@ const postController = (
   })
 
   const postDelete = asyncHandler(async (req: CustomRequest, res: Response ) => {
-    console.log("looooooooooooooooooooooo")
     const { postId, key } = req.params;
     await deletePost( postId, key, dbRepositoryPost, postService );
     res.status(200).json({status: "success", message: "Post deleted successfully"})
@@ -96,7 +95,7 @@ const postController = (
 
 
 
-  return { createPost, getPosts, postLike, postUnlike, PostComment, getPostComments, commentDelete, postReport, postDelete };
+  return { createPost, getPosts, followPosts, postLike, postUnlike, PostComment, getPostComments, commentDelete, postReport, postDelete };
 };
 
 export default postController;

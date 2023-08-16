@@ -4,7 +4,7 @@ import { BsGrid1X2 } from 'react-icons/bs';
 import { RiMailSendLine } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/interface/userInterface';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 
 
@@ -12,23 +12,24 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const { user, darkMode } =useSelector((store: RootState) => store.user )
+  const location = useLocation()
   const Navlinks = [
     { name: "Home", href: "/", icon: <AiOutlineHome size={30} /> },
-    { name: "Message", href: "/", icon: <RiMailSendLine size={30} /> },
+    { name: "Message", href: "/messages", icon: <RiMailSendLine size={30} /> },
     { name: "Create", href: "/create", icon: <AiOutlinePlusSquare size={30} /> },
-    { name: "Notification", href: "/", icon: <AiOutlineHeart size={30} /> },
-    { name: "Profile", href: `/${user.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 border rounded-full" alt="ProfilePic" />},
+    { name: "Notification", href: "/notifications", icon: <AiOutlineHeart size={30} /> },
+    { name: "Profile", href: `/${user?.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 border rounded-full" alt="ProfilePic" />},
   ];
 
   let color: string, bgColor: string, hover: string;
   if (darkMode) {
     (color = "text-white"),
       (bgColor = "bg-gray-950"),
-      (hover = "hover:bg-gray-800 rounded-md");
+      (hover = "bg-gray-800");
   } else {
     (color = "text-gray-950"),
       (bgColor = "bg-white"),
-      (hover = "hover:bg-gray-100");
+      (hover = "bg-gray-100");
   }
 
   return (
@@ -41,13 +42,15 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <nav className={`${bgColor} ${color} fixed bottom-0 w-full border-t  py-4 sm:hidden`}>
+      <nav className={`${bgColor} ${color} fixed bottom-0 w-full border-t sm:hidden`}>
         <div className="container mx-auto">
-          <ul className="flex justify-between px-8">
+          <ul className="flex justify-between px-3 py-2">
             {Navlinks.map((item) => (
-              <li key={item.name} className={hover}>
-                <Link to={item.href} >{item.icon}</Link>
+              <Link to={item.href} >
+              <li key={item.name} className={`${location.pathname == item.href && hover } hover:${hover} px-3 py-2 rounded-md`}>
+                {item.icon}
               </li>
+              </Link>
             ))}
           </ul>
         </div>

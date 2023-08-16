@@ -3,13 +3,13 @@
 
 import { useState, useRef, useEffect } from "react";
 import Modal from "react-modal";
-import { apiCalls } from "../../api/user/apiCalls";
 import { GoTrash } from "react-icons/go";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setAction } from "../../state/slices/userSlice";
 import { RootState } from "../../state/interface/userInterface";
 import { SlOptionsVertical } from "react-icons/sl";
+import { postRequest } from "../../api/requests/postRequest";
 
 const customStyles = {
   content: {
@@ -62,7 +62,7 @@ export const ReportPost = ({
         postId: postId,
         reason: reason,
       };
-      const response: ReportPostResponse = await apiCalls.reportPost(data);
+      const response: ReportPostResponse = await postRequest.reportPost(data);
       if (response.status === "success") {
         closeModal();
         toast.success(response.message, {
@@ -178,10 +178,8 @@ export const DeletePost = ({
 
   console.log(image.split("/").pop());
   const HandlePostDelete = async () => {
-    const response: {status: string, message: string} = await apiCalls.deletePost(
-      postId,
-      image.split("/").pop()
-    );
+    const response: { status: string; message: string } =
+      await postRequest.deletePost(postId, image.split("/").pop());
     console.log(response);
     dispatch(setAction());
     setIsOpen(false);
@@ -260,13 +258,20 @@ export const DeletePost = ({
   );
 };
 
-export const CommentOption = ({ userId, postId, commentId }: {userId: string, postId: string, commentId: string}) => {
-  
+export const CommentOption = ({
+  userId,
+  postId,
+  commentId,
+}: {
+  userId: string;
+  postId: string;
+  commentId: string;
+}) => {
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const [commentOption, setCommentOption] = useState<boolean>(false);
   const dispatch = useDispatch();
   const commentOptionRef = useRef<HTMLDivElement | null>(null);
-  
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -282,8 +287,6 @@ export const CommentOption = ({ userId, postId, commentId }: {userId: string, po
     };
   }, [commentOptionRef]);
 
-  
-
   let color: string;
   let bgColor: string;
 
@@ -295,9 +298,10 @@ export const CommentOption = ({ userId, postId, commentId }: {userId: string, po
 
   const deleteComment = async () => {
     console.log("clicked------");
-    const response: {status: string, message: string} = await apiCalls.deleteComment(postId, commentId);
+    const response: { status: string; message: string } =
+      await postRequest.deleteComment(postId, commentId);
     setCommentOption(false);
-    dispatch(setAction())
+    dispatch(setAction());
 
     console.log("deleted------");
 
@@ -305,24 +309,26 @@ export const CommentOption = ({ userId, postId, commentId }: {userId: string, po
       position: toast.POSITION.TOP_RIGHT,
       hideProgressBar: true,
     });
-  }
+  };
 
   return (
     <div ref={commentOptionRef} className="relative inline-block text-left">
       {commentOption && (
         <div
-          className={`${
-            darkMode && bgColor
-          } ${color} ${ userId == user?._id && "origin-top-right absolute right-0 mr-6 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-gray-200 ring-opacity-5"}`}
+          className={`${darkMode && bgColor} ${color} ${
+            userId == user?._id &&
+            "origin-top-right absolute right-0 mr-6 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-gray-200 ring-opacity-5"
+          }`}
         >
           <ul
-            className={` ${userId == user?._id && "py-0.5 border rounded-md" }`}
+            className={` ${userId == user?._id && "py-0.5 border rounded-md"}`}
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="options-menu"
           >
             {userId == user?._id && (
-              <li onClick={deleteComment}
+              <li
+                onClick={deleteComment}
                 className={`${
                   darkMode
                     ? "hover:bg-gray-900 hover:text-white"

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setAction } from "../../state/slices/userSlice";
 import Loading from "../shimmer/Loading";
 import Modal from "react-modal";
-import { apiCalls } from "../../api/admin/apiCalls";
+import { adminRequest } from "../../api/requests/adminRequests";
 import { toast } from "react-toastify";
 
 interface ApiResponse {
@@ -51,12 +51,12 @@ export const BlockUser: React.FC<BlockPostProps> = ({ userId, isBlocked }) => {
 
   const HandlePostBlock = async (): Promise<void> => {
     setLoading(true);
-    const response = (await apiCalls.blockUser(userId)) as ApiResponse;
+    const response = (await adminRequest.blockUser(userId)) as ApiResponse;
     console.log("this is response ----", response);
     if (response.status == "success") {
       setLoading(false);
       dispatch(setAction());
-      closeModal()
+      closeModal();
       toast.success(response.message, {
         position: toast.POSITION.TOP_RIGHT,
         hideProgressBar: true,
@@ -112,21 +112,23 @@ export const BlockUser: React.FC<BlockPostProps> = ({ userId, isBlocked }) => {
                 d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-           { isBlocked ? 
-           <h3 className="mb-5 text-xs font-normal text-gray-500 ">
-              Are you sure ? <br />
-              It will unblock this user !
-            </h3> : 
-            <h3 className="mb-5 text-xs font-normal text-gray-500 ">
-            Are you sure ? <br />
-            It will block this user !
-          </h3>}
+            {isBlocked ? (
+              <h3 className="mb-5 text-xs font-normal text-gray-500 ">
+                Are you sure ? <br />
+                It will unblock this user !
+              </h3>
+            ) : (
+              <h3 className="mb-5 text-xs font-normal text-gray-500 ">
+                Are you sure ? <br />
+                It will block this user !
+              </h3>
+            )}
             <button
               type="button"
               onClick={HandlePostBlock}
               className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-1.5 text-center mr-2"
             >
-              { isBlocked ? "Unblock" : "Block" }
+              {isBlocked ? "Unblock" : "Block"}
             </button>
             <button
               onClick={closeModal}
@@ -141,9 +143,6 @@ export const BlockUser: React.FC<BlockPostProps> = ({ userId, isBlocked }) => {
     </div>
   );
 };
-
-
-
 
 // export const Unblock: React.FC<BlockPostProps> = ({ userId }) => {
 //   const [loading, setLoading] = useState<boolean>(false);

@@ -105,8 +105,11 @@ export const loginWithGoogle = async (
       throw new AppError("Account action blocked !", HttpStatus.OK);
     }
     console.log("login function 5")
-
-    const token = authService.generateToken(userData._id);
+    const payload: { userId: string; isAdmin: boolean } = {
+      userId: userData._id.toString(),
+      isAdmin: userData.isAdmin,
+    };
+    const token = authService.generateToken(payload);
     return { token, userData };
   } else {
     throw new AppError("Email already registered", HttpStatus.OK);

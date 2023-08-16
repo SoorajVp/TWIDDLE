@@ -2,7 +2,7 @@
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { apiCalls } from "../../api/admin/apiCalls";
+import { adminRequest } from "../../api/requests/adminRequests";
 import { AdminAuthResponse } from "../../state/interface/userInterface";
 import { useDispatch } from "react-redux";
 import { setAdminLogin } from "../../state/slices/adminSlice";
@@ -21,32 +21,30 @@ const initialValues: { name: string; password: string } = {
 };
 
 const AdminLogin = () => {
-  
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if(localStorage.getItem("adminToken")) {
-      navigate('/admin')
-  }
-  }, [])
+    if (localStorage.getItem("adminToken")) {
+      navigate("/admin");
+    }
+  }, []);
 
   const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
     useFormik({
       initialValues: initialValues,
       validationSchema: loginSchema,
-      onSubmit: async(values) => {
+      onSubmit: async (values) => {
         const { name, password }: { name: string; password: string } = values;
         const data = { name, password };
-        const response:  AdminAuthResponse = await apiCalls.adminLogin(data);
-        if(response.status == "success") {
+        const response: AdminAuthResponse = await adminRequest.adminLogin(data);
+        if (response.status == "success") {
           const { admin, token } = response;
-          dispatch(setAdminLogin({admin, token}))
+          dispatch(setAdminLogin({ admin, token }));
           localStorage.setItem("adminToken", token);
-          console.log("success")
-          navigate('/admin')
+          navigate("/admin");
         } else {
-          toast.error( response.message, {
+          toast.error(response.message, {
             position: toast.POSITION.TOP_CENTER,
             hideProgressBar: true,
           });

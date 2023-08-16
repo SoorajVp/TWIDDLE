@@ -1,3 +1,5 @@
+import { ChatListInterface } from "./chatInterface";
+
 export interface userInterface {
   _id: string;
   isAdmin?: boolean;
@@ -19,6 +21,7 @@ export interface AuthState {
   darkMode?: boolean;
   user?: userInterface | null;
   token?: string | null;
+  lastChat?: ChatListInterface;
   actions?: number;
 }
 

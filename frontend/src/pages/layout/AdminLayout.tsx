@@ -3,13 +3,22 @@ import { TfiMenu } from "react-icons/tfi";
 import { GrClose } from "react-icons/gr";
 import { FaUsers } from "react-icons/fa";
 import { BsFillCollectionFill } from "react-icons/bs";
-import { HiSpeakerphone } from "react-icons/hi";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import AdminLogout from "../../components/modal/AdminLogout";
+import { MdVerified } from "react-icons/md";
+
+const navItems = [
+  { text: "Handle users", href: "/admin/users", icon: <FaUsers size={28} /> },
+  { text: "Handle posts", href: "/admin/posts", icon: <BsFillCollectionFill size={28} /> },
+  { text: "Account varify", href: "/admin/", icon: <MdVerified size={29} /> }
+
+
+]
 
 const AdminLayout = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!localStorage.getItem("adminToken")) {
@@ -73,35 +82,19 @@ const AdminLayout = () => {
           </svg>
           <span className="sr-only">Close menu</span>
         </button>
-        <div className="py-4 overflow-y-auto">
+        <div className="mt-9 overflow-y-auto">
           <ul className="space-y-4 font-medium">
-            <li>
-              <Link to="/admin/users"
-                className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
+            {navItems.map( item => (
+              <li className={`${location.pathname == item.href && "bg-gray-100" } hover:bg-gray-100 rounded-lg`}>
+                <Link to={item.href}
+                className="flex items-center p-2 text-gray-700 group"
               >
-                <FaUsers size={30} />
-                <span className="ml-3">Handle Users </span>
+                  {item.icon}
+                  <span className="ml-3">{item.text}</span>
               </Link>
-            </li>
+              </li>)) }
 
-            <li>
-              <Link to="/admin/posts"
-                className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
-              >
-                <BsFillCollectionFill size={30} />
-                <span className="ml-3">Handle Posts </span>
-              </Link>
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
-              >
-                <HiSpeakerphone size={30} />
-                <span className="ml-3">Handle Ads </span>
-              </a>
-            </li>
+            
 
             <li>
               <AdminLogout />

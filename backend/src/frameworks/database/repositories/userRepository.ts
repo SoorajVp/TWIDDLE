@@ -9,6 +9,8 @@ export const userRepositoryDb = () => {
     }
 
     const getAllUser = async () => {
+    console.log("function 4 ----")
+
         const users: userDataInterface[] = await User.find();
         return users;
     }

@@ -15,6 +15,8 @@ const userRouter = () => {
     const router = express.Router();
 
     const controller = userController( userDbRepository, userRepositoryDb, postDbRepository, PostRespository, authServiceInterface, authService, cloudService, s3CloudService );
+    
+    router.get("/find/:id", controller.getUserById);
 
     router.get("/is-blocked", controller.isBlockedUser);
 
@@ -25,8 +27,6 @@ const userRouter = () => {
     router.get("/:password/password", controller.checkPassword);
 
     router.put("/change-password", controller.changePassword);
-
-    // router.put("/change-profile", controller);
 
     router.get("/:userName", controller.getUserByName );
 

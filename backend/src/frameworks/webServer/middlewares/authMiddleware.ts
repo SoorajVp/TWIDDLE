@@ -11,6 +11,7 @@ export const userAuthMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
+
   try {
     let token: string | null = "";
     if (req.headers.authorization) {
@@ -20,28 +21,25 @@ export const userAuthMiddleware = async (
       throw new AppError("UnAuthorized user found", HttpStatus.OK);
     }
     const { payload }: any = authService().verifyToken(token);
-    
     const user: userDataInterface | null = await User.findById({ _id: payload.userId });
-    console.log(user);
-
     if (!user) {
       throw new AppError("UnAuthorized user found", HttpStatus.OK);
     }
     if (user.isBlocked) {
-      console.log("blocked user found");
-      throw new AppError("Account action blocked ", HttpStatus.OK);
+        console.log("blocked user found");
+        res.json({status: "blocked", message: "Account action Blocked "})
     }
-
-
-
-    console.log("payload", payload);
     req.userId = payload.userId;
     next();
+
   } catch (error) {
     console.log("error - - - - - ", error)
-    // throw new AppError("Something went wrong ! ", HttpStatus.OK);
+    res.json({status: "blocked", message: "Account action Blocked "})
   }
 };
+
+
+
 
 export const adminAuthMiddleware = (
   req: CustomRequest,

@@ -5,14 +5,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { useEffect, useRef, useState } from "react";
-import { apiCalls } from "../../../api/user/apiCalls";
+import { userRequest } from "../../../api/requests/userRequest";
 import { userInterface } from "../../../state/interface/userInterface";
 import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [value, setValue] = useState<string>(null);
   const [users, setUser] = useState<[]>([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -22,30 +22,31 @@ const SearchBar = () => {
       setUser([]);
     }
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setValue(null);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-    
   }, [value, searchRef]);
 
   const fetchUsers = async (): Promise<void> => {
-    const response = await apiCalls.searchUser({ name: value });
+    const response = await userRequest.searchUser({ name: value });
     if (response.status == "success") {
       setUser(response.users);
     }
   };
 
-  
   return (
     <>
-      <div className=""> 
+      <div className="">
         <label
           htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -85,28 +86,31 @@ const SearchBar = () => {
 
       <div className="flex justify-center" ref={searchRef}>
         <ul className="w-full md:w-[51%] absolute rounded-md shadow-sm bg-white overflow-y-scroll ">
-
-          { value && users?.map(( user: userInterface ) => {
-            return (
-              <li className="py-2 pl-4 hover:bg-slate-200 cursor-pointer" key={user._id} onClick={()=> navigate(`/${user.name}`)}>
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="w-8 h-8 rounded-full border"
-                      src={user?.profilePic}
-                      alt="Neil image"
-                    />
+          {value &&
+            users?.map((user: userInterface) => {
+              return (
+                <li
+                  className="py-2 pl-4 hover:bg-slate-200 cursor-pointer"
+                  key={user._id}
+                  onClick={() => navigate(`/${user.name}`)}
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-shrink-0">
+                      <img
+                        className="w-8 h-8 rounded-full border"
+                        src={user?.profilePic}
+                        alt="Neil image"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-gray-900 truncate">
+                        {user.name}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-gray-900 truncate">
-                      {user.name}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-
+                </li>
+              );
+            })}
         </ul>
       </div>
     </>

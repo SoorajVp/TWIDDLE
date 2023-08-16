@@ -4,8 +4,6 @@ import { userRepositoryDb } from "../../../frameworks/database/repositories/user
 import { userDbRepository } from "../../../application/repositories/userDbRepository";
 import { authService } from "../../services/authService";
 import { authServiceInterface } from "../../../application/services/authServiceInterface";
-import { adminDbRepository } from "../../../application/repositories/adminDbRepository";
-import { adminRepository } from "../../database/repositories/adminRepository";
 
 const authRouter = () => {
   const router = express.Router();
@@ -14,8 +12,6 @@ const authRouter = () => {
     authService,
     userDbRepository,
     userRepositoryDb,
-    // adminDbRepository,
-    // adminRepository
   );
 
   router.post("/register", controller.registerUser );

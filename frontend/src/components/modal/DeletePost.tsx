@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setAction } from "../../state/slices/userSlice";
 import Loading from "../shimmer/Loading";
 import Modal from "react-modal";
-import { apiCalls } from "../../api/admin/apiCalls";
+import { adminRequest } from "../../api/requests/adminRequests";
 import { toast } from "react-toastify";
 
 interface ApiResponse {
@@ -52,7 +52,10 @@ export const DeletePost: React.FC<BlockPostProps> = ({ postId, imgKey }) => {
   const HandlePostDelete = async (): Promise<void> => {
     setLoading(true);
     console.log(postId, imgKey);
-    const response = (await apiCalls.deletePost(postId, imgKey)) as ApiResponse;
+    const response = (await adminRequest.deletePost(
+      postId,
+      imgKey
+    )) as ApiResponse;
     if (response.status == "success") {
       setLoading(false);
       dispatch(setAction());

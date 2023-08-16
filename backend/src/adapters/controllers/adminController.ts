@@ -26,7 +26,9 @@ const adminController = (
     const postService = cloudService(s3CloudService());
  
     const getAllUserList = asyncHandler(async (req: Request, res: Response ) => {
+    console.log("function 1 ----")
         const users = await getAllUser( dbRepositoryUser )
+        console.log("this is user list - - - --", users);
         res.status(200).json({ status: "success", users })
     })
 

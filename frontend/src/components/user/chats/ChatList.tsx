@@ -1,112 +1,67 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../../state/interface/userInterface";
+import { ChatListInterface, activeUsersType } from "../../../state/interface/chatInterface";
+import ChatUser from "./ChatUser";
 
-const ChatList = () => {
-  const theme = useSelector((store: RootState) => store.user.darkMode);
-  let color: string, bgColor: string, border: string;
-  if (theme) {
+type PropsTypes = {
+  setCurrentChat: React.Dispatch<React.SetStateAction<ChatListInterface>>;
+  chats: ChatListInterface[];
+  onlineUsers: activeUsersType[];
+  currentChat: ChatListInterface;
+  userId: string;
+  darkMode: boolean;
+};
+
+const ChatList: React.FC<PropsTypes> = ({
+  chats,
+  userId,
+  onlineUsers,
+  currentChat,
+  setCurrentChat,
+  darkMode,
+}) => {
+
+  const checkOnlineStatus = ( chat: ChatListInterface ) => {
+    const chatMembers = chat.members.find((member) => member!== userId)
+    const online = onlineUsers.find((userData) => userData.userId === chatMembers );
+    return online ? true : false;
+  }
+
+  let color: string, bgColor: string, hover: string, border: string;
+  if (darkMode) {
     (color = "text-white"),
       (bgColor = "bg-gray-950"),
+      (hover = "bg-gray-900"),
       (border = "border-gray-500");
   } else {
     (color = "text-gray-950"),
       (bgColor = "bg-white"),
+      (hover = "bg-gray-100"),
       (border = "border-gray-500");
+
   }
 
   return (
-    <div
-      className={`${bgColor} ${color} ${border}  hidden col-span-2 md:block sticky h-screen border-l`}
-    >
-      <div className="max-w-sm mx-5 mt-6 border rounded-lg">
-        
-        <div className="p-3 flex items-center justify-between border-t cursor-pointer hover:bg-gray-100">
-          <div className="flex items-center">
-            <img
-              className="rounded-full h-9 w-9"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg"
-            />
-            <div className="ml-2 flex flex-col">
-              <div className="leading-snug text-sm text-gray-900 font-bold">
-                Jane doe
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-3 flex items-center justify-between border-t cursor-pointer hover:bg-gray-100">
-          <div className="flex items-center">
-            <img
-              className="rounded-full h-9 w-9"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg"
-            />
-            <div className="ml-2 flex flex-col">
-              <div className="leading-snug text-sm text-gray-900 font-bold">
-                Jane doe
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-3 flex items-center justify-between border-t cursor-pointer hover:bg-gray-100">
-          <div className="flex items-center">
-            <img
-              className="rounded-full h-9 w-9"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg"
-            />
-            <div className="ml-2 flex flex-col">
-              <div className="leading-snug text-sm text-gray-900 font-bold">
-                Jane doe
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-3 flex items-center justify-between border-t cursor-pointer hover:bg-gray-100">
-          <div className="flex items-center">
-            <img
-              className="rounded-full h-9 w-9"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg"
-            />
-            <div className="ml-2 flex flex-col">
-              <div className="leading-snug text-sm text-gray-900 font-bold">
-                Jane doe
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-3 flex items-center justify-between border-t cursor-pointer hover:bg-gray-100">
-          <div className="flex items-center">
-            <img
-              className="rounded-full h-9 w-9"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg"
-            />
-            <div className="ml-2 flex flex-col">
-              <div className="leading-snug text-sm text-gray-900 font-bold">
-                Jane doe
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className={`${bgColor} ${color} ${border}`}>
+      <h2 className="ml-6 my-3 text-lg font-semibold">Conversations</h2>
 
+      <div className="relative mx-5 my-2">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="search" id="default-search" className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search user" required />
+    </div>
 
+      <div className="md:max-w-sm mx-5 border rounded-md">
+
+        {chats.map((chat) => (
+          <div onClick={() => setCurrentChat(chat)}  key={chat._id} className={`${currentChat == chat && hover} hover:${hover}  rounded-md`} >
+            <ChatUser chats={chat} userId={userId} online={checkOnlineStatus(chat)} />
+          </div>
+        ))}
        
-        {/* <div className="p-3 flex items-center justify-between border-t cursor-pointer hover:bg-gray-200">
-          <div className="flex items-center">
-            <img
-              className="rounded-full  h-9 w-9"
-              src="https://loremflickr.com/g/600/600/paris"
-            />
-            <div className="ml-2 flex flex-col">
-              <div className="leading-snug text-sm text-gray-900 font-bold">
-                Paris
-              </div>
-              <div className="leading-snug text-xs text-gray-600">@paris</div>
-            </div>
-          </div>
-          <button className="h-8 px-3 text-md font-bold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-100">
-            Follow
-          </button>
-        </div> */}
-
       </div>
+
     </div>
   );
 };

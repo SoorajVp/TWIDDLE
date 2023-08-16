@@ -1,51 +1,20 @@
 import SideBar from "../../components/user/layout/Sidebar";
-// import RightBar from "../../components/user/layout/Rightbar";
 import Navbar from "../../components/user/layout/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/interface/userInterface";
 import { useEffect } from "react";
 
-// interface ApiResponse {
-//   status: string;
-//   message: string;
-// }
 
 const UserLayout = () => {
   const { darkMode } = useSelector((store: RootState) => store.user);
-  // const [userLoggedin, setUserLoggedin] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-      if (!token ) {
+      if (!localStorage.getItem("token") ) {
         navigate("/login");
       } 
-    // Middleware()
   }, []);
-
-  // const Middleware = async (): Promise<void> => {
-  //   const response = (await apiCalls.isBlockedUser()) as ApiResponse;
-  //   console.log("blocked user ---------------", response )
-
-  //   if(response.status == "success") {
-  //     const token = localStorage.getItem("token");
-  //     if (!token ) {
-  //       navigate("/login");
-  //     } else {
-  //       setUserLoggedin(true);
-  //     }
-  //   } else {
-  //     console.log("blocked user ---------------")
-  //     localStorage.removeItem("token");
-  //     toast.error( response.message, {
-  //       position: toast.POSITION.TOP_CENTER,
-  //       hideProgressBar: true,
-  //     });
-  //     navigate("/login");
-  //   }
-  // };
-
   
 
   let color: string, bgColor: string;
@@ -55,8 +24,9 @@ const UserLayout = () => {
     (color = "text-gray-950"), (bgColor = "bg-white");
   }
   return (
+
+
     <>
-      {  (
         <div>
           <div
             className={`${bgColor} ${color} lg:grid-cols-7 grid-cols-5 grid gap-2  overflow-hidden h-screen`}
@@ -74,7 +44,6 @@ const UserLayout = () => {
           </div>
           <Navbar />
         </div>
-      )}
     </>
   );
 };

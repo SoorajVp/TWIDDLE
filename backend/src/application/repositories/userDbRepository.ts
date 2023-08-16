@@ -6,8 +6,6 @@ export const userDbRepository = (
 ) => {
 
   const getAllUser = async () => {
-    console.log("function 3 ----")
-
     return await repository.getAllUser();
   };
 
