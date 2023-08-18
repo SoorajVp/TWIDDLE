@@ -22,16 +22,18 @@ export const postDbRepository = ( repository: ReturnType<PostRespositoryType> ) 
         return await repository.getPostById(id);
     }
 
-    const likePost = async ( postId: string, userId?: string   ) => {
-        return await repository.likePost( postId, userId );
+    const likePost = async ( postId: string, userId?: string, postUserId?: string  ) => {
+        return await repository.likePost( postId, userId, postUserId );
     }
 
-    const unlikePost = async ( postId: string, userId?: string ) => {
-        return await repository.unlikePost( postId, userId );
+    const unlikePost = async ( postId: string, userId?: string, postUserId?: string ) => {
+        return await repository.unlikePost( postId, userId , postUserId);
     }
 
-    const commentPost = async ( comment: { userId?: string, comment: string}, postId: string ) => {
-        return await repository.commentPost(comment, postId)
+    const commentPost = async ( comment: { userId?: string, comment: string}, postId: string, postUserId: string ) => {
+        console.log("function -- 2")
+
+        return await repository.commentPost(comment, postId, postUserId )
     }
 
     const getComments = async( postId: string ) => {

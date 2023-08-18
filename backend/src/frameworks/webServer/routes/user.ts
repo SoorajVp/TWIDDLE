@@ -36,9 +36,11 @@ const userRouter = () => {
 
     router.put("/:postId/save", controller.postSave);
 
+    router.get('/notifications/list', controller.notifications );
+
+    router.delete('/clear-notifications', controller.clearUserNotification)
 
 
-    
     
     return router;
 }

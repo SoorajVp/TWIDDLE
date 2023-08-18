@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import Post from "../models/postModel"
 import User from "../models/userModel";
 import ReportPost from "../models/reportModel";
+import Notification from "../models/notificationModel";
 
 export const PostRespository = () => {
     
@@ -15,7 +16,7 @@ export const PostRespository = () => {
     }
 
     const getUserPosts = async ( id: string ) => {
-        return await Post.find({ userId: id }).populate('userId').sort({_id: -1})
+        return await Post.find({ userId: id }).populate('userId').populate({ path: 'comments.userId', select: 'name profilePic' }).sort({_id: -1})
     }
 
     const getFollowPosts = async ( userId?: string ) => {
@@ -23,10 +24,7 @@ export const PostRespository = () => {
         if (user) {
           const followingUserIds = user.following.map((followedUser) => followedUser._id);
           userId && followingUserIds.push(new Types.ObjectId(userId))
-          console.log("Posts from following users:", followingUserIds);
-
-          const posts = await Post.find({ userId: { $in: followingUserIds } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
-          return posts
+          return await Post.find({ userId: { $in: followingUserIds } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
         }
     }
 
@@ -34,15 +32,39 @@ export const PostRespository = () => {
         return await Post.findById(id)
     }
  
-    const likePost = async ( postId: string, userId?: string ) => {
-        return await Post.findByIdAndUpdate({ _id: postId}, {$push: {likes: userId}}, { new: true })
+    const likePost = async ( postId: string, userId?: string, postUserId?:string ) => {
+        const notify = {
+            userId: postUserId,
+            user: userId,
+            liked: postId
+        }
+        const notification = new Notification(notify) 
+        await notification.save()
+        return await Post.findByIdAndUpdate({ _id: postId}, { $push: {likes: userId}}, { new: true })
     }
 
-    const unlikePost = async ( postId: string, userId?: string ) => {
+    const unlikePost = async ( postId: string, userId?: string, postUserId?:string ) => {
+        await Notification.findOneAndDelete({ userId: postUserId, user: userId, liked: postId })
         return await Post.findByIdAndUpdate(postId, {$pull: {likes: userId}}, { new: true })
     }
 
-    const commentPost = async ( comment: { userId?: string, comment: string}, postId: string ) => {
+    const commentPost = async ( comment: { userId?: string, comment: string}, postId: string, postUserId: string ) => {
+        console.log("function -- 3")
+
+        const notify = {
+            userId: postUserId,
+            user: comment.userId,
+            comment: {
+                postId: postId,
+                text: comment.comment
+            }
+        }
+        console.log("function -- 4", notify )
+
+        const notification = new Notification(notify)
+        await notification.save()
+        console.log("function -- 4")
+
         return await Post.findByIdAndUpdate({ _id: postId}, {$push: {comments: comment}}, { new: true })
     }
 

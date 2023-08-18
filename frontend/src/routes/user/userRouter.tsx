@@ -8,6 +8,7 @@ import SignupPage from "../../pages/user/SignupPage";
 import SecretToken from "../../pages/user/SecretToken";
 import ChatPage from "../../pages/user/ChatPage";
 import ErrorElement from "../../pages/error/ErrorElement";
+import Notification from "../../pages/user/Notification";
 
 // const HomePage = lazy(() => import('../../pages/user/HomePage'));
 
@@ -53,6 +54,10 @@ export const userRouter = {
     {
       path: "/messages",
       element: <ChatPage />,
+    },
+    {
+      path: "/notifications",
+      element: <Notification />,
     },
     
   ],

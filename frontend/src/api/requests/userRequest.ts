@@ -9,6 +9,7 @@ const blockFunction = () => {
 }
 
 export const userRequest = {
+  
   getUserById: async (id: string) => {
     const response = await api.get(`/user/find/${id}`);
     if(response.data.status == "blocked") {
@@ -80,4 +81,23 @@ export const userRequest = {
     }
     return response.data;
   },
+
+  notifications: async() => {
+    const response = await api.get(`/user/notifications/list`);
+    if(response.data.status == "blocked") {
+      blockFunction()
+    }
+    return response.data; 
+  },
+
+  clearNotifications: async () => {
+    const response = await api.delete(`/user/clear-notifications`);
+    if (response.data.status == "blocked") {
+      blockFunction()
+    }
+    return response.data;
+  }
+
+
+
 };

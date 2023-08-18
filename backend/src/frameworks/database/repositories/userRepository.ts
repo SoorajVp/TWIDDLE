@@ -1,5 +1,8 @@
+import { Types } from "mongoose";
 import { editUserInterface, registerInterface, userDataInterface } from "../../../types/interface/userInterface";
+import Notification from "../models/notificationModel";
 import User from "../models/userModel";
+import Post from "../models/postModel";
 
 export const userRepositoryDb = () => {
     
@@ -9,8 +12,6 @@ export const userRepositoryDb = () => {
     }
 
     const getAllUser = async () => {
-    console.log("function 4 ----")
-
         const users: userDataInterface[] = await User.find();
         return users;
     }
@@ -48,7 +49,14 @@ export const userRepositoryDb = () => {
     }
 
     const followUser = async ( id: string, userId?: string ) => {
+        const notify = {
+            userId: id,
+            user: userId,
+            follow: true
+        }
+        const notification = new Notification(notify) 
         await User.findByIdAndUpdate({ _id: id }, {$push: {followers: userId} }, { new: true })
+        await notification.save()
         return await User.findByIdAndUpdate({ _id: userId }, {$push: {following: id} }, { new: true })
     }
 
@@ -70,7 +78,7 @@ export const userRepositoryDb = () => {
     }
 
     const getSavedPost = async( id: string ) => {
-        return await User.findById({_id: id}).populate("saved")
+        return await User.findById({_id: id}).populate("saved").populate("saved.userId")
     }
 
     const savePost = async( postId: string, userId?: string ) => {
@@ -81,9 +89,40 @@ export const userRepositoryDb = () => {
         return await User.findByIdAndUpdate({ _id: userId }, {$pull: {saved: postId} }, { new: true })
     } 
 
+    const getNotifications = async( userId: string ) => {
+        return await Notification.find({ userId: userId })
+        .populate({ path: "user", select: "name profilePic" })
+        .populate({ path: "liked", select: "_id image" })
+        .populate({ path: 'comment.postId', select: '_id image' }).sort({ _id: -1 })
+    }
+
+    const clearNotification = async( userId: string ) => {
+        return await Notification.deleteMany({ userId: userId });
+    }
 
 
-    return { addUser, getAllUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newProfilePic, newPassword, followUser, unfollowUser, setFollowing, blockUser, unBlockUser, savePost, unSavePost, getSavedPost }
+
+    return { 
+        addUser, 
+        getAllUser, 
+        getUserByEmail, 
+        getUserByName, 
+        getUserById, 
+        userSearch, 
+        updateProfile, 
+        newProfilePic, 
+        newPassword, 
+        followUser, 
+        unfollowUser, 
+        setFollowing, 
+        blockUser, 
+        unBlockUser, 
+        savePost, 
+        unSavePost, 
+        getSavedPost, 
+        getNotifications, 
+        clearNotification 
+    }
 }
 
 export type userRepositoryDbType = typeof userRepositoryDb;

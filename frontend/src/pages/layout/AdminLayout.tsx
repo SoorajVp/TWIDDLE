@@ -83,7 +83,7 @@ const AdminLayout = () => {
           <span className="sr-only">Close menu</span>
         </button>
         <div className="mt-9 overflow-y-auto">
-          <ul className="space-y-4 font-medium">
+          <ul className="space-y-4 font-semibold text-sm">
             {navItems.map( item => (
               <li className={`${location.pathname == item.href && "bg-gray-100" } hover:bg-gray-100 rounded-lg`}>
                 <Link to={item.href}

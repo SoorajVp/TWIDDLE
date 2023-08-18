@@ -105,8 +105,6 @@ const LoginPage = () => {
     setLoading(true);
     const userData = { email, name, picture, googleUser: true };
     const response: AuthResponse = await authRequest.googleAuth(userData);
-    console.log("gggggggggggggggg", response);
-
     if (response.status == "success") {
       const {
         user,

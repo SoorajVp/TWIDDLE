@@ -69,7 +69,37 @@ export const userDbRepository = (
     return await repository.unSavePost( postId, userId )
   }
 
-  return { getAllUser, addUser, getUserByEmail, getUserByName, getUserById, userSearch, updateProfile, newProfilePic, newPassword, followUser, unfollowUser, blockUser, unBlockUser, savePost, unSavePost, getSavedPost };
+  const getNotifications = async ( userId: string ) => {
+        console.log("function ---- 3")
+    return await repository.getNotifications( userId );
+  }
+
+  const clearNotification = async( userId: string ) => {
+    return await repository.clearNotification( userId );
+  }
+
+
+
+  return { 
+    getAllUser, 
+    addUser, 
+    getUserByEmail, 
+    getUserByName, 
+    getUserById, 
+    userSearch, 
+    updateProfile, 
+    newProfilePic, 
+    newPassword, 
+    followUser, 
+    unfollowUser, 
+    blockUser, 
+    unBlockUser, 
+    savePost, 
+    unSavePost, 
+    getSavedPost, 
+    getNotifications,
+    clearNotification
+  };
 };
 
 export type userDbInterface = typeof userDbRepository;

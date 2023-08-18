@@ -52,23 +52,24 @@ export const likePost = async (
   req: CustomRequest,
   repository: ReturnType<postDbRepositoryType>
 ) => {
-  const postId: string = req.params.postId;
+  const { postId, postUserId } = req.params;
   const userId = req.userId?.toString();
-  await repository.likePost(postId, userId);
+  await repository.likePost(postId, userId, postUserId );
   const post = await repository.getPostById(postId);
   return post;
 };
 
 export const unlikePost = async(req: CustomRequest, repository: ReturnType<postDbRepositoryType> ) => {
-  const postId: string = req.params.postId;
+  const { postId, postUserId } = req.params;
   const userId = req.userId?.toString();
-  await repository.unlikePost(postId, userId);
+  await repository.unlikePost(postId, userId, postUserId );
   const post = await repository.getPostById(postId);
   return post;
 }
 
-export const commentPost = async ( comment: {userId?: string, comment: string}, postId: string, repository: ReturnType<postDbRepositoryType> ) => {
-  const result = await repository.commentPost(comment, postId );
+export const commentPost = async ( comment: {userId?: string, comment: string}, postId: string, postUserId:string, repository: ReturnType<postDbRepositoryType> ) => {
+  console.log("function -- 1")
+  const result = await repository.commentPost(comment, postId, postUserId );
   return result;
 }
 

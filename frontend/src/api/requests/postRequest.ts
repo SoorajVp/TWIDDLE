@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+
 import { api } from "../instance/user";
 
 const blockFunction = () => {
@@ -35,16 +36,16 @@ export const postRequest = {
     return response.data;
   },
 
-  likePost: async (id: string) => {
-    const response = await api.put(`/post/${id}/like`);
+  likePost: async (postId: string, postUserId: string ) => {
+    const response = await api.put(`/post/${postId}/${postUserId}/like`);
     if(response.data.status == "blocked") {
       blockFunction()
     }
     return response.data;
   },
 
-  unlikePost: async (id: string) => {
-    const response = await api.put(`/post/${id}/unlike`);
+  unlikePost: async (postId: string, postUserId: string) => {
+    const response = await api.put(`/post/${postId}/${postUserId}/unlike`);
     if(response.data.status == "blocked") {
       blockFunction()
     }
@@ -59,7 +60,7 @@ export const postRequest = {
     return response.data;
   },
 
-  commentPost: async (payload: { id: string; comment: string }) => {
+  commentPost: async ( payload: { id: string; comment: string, postUserId: string  }) => {
     const response = await api.post(`/post/${payload.id}/comment`, payload);
     if(response.data.status == "blocked") {
       blockFunction()
@@ -67,7 +68,7 @@ export const postRequest = {
     return response.data;
   },
 
-  deleteComment: async (postId: string, commentId: string) => {
+  deleteComment: async (postId: string, commentId: string ) => {
     const response = await api.delete(`/post/${postId}/${commentId}`);
     if(response.data.status == "blocked") {
       blockFunction()
@@ -95,4 +96,7 @@ export const postRequest = {
     }
     return response.data;
   },
+
+
+
 };

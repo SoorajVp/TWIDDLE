@@ -44,14 +44,14 @@ const PostCard = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setCommentList(comments);
+    setCommentList( comments );
     if (likes?.includes(user._id)) {
       setLiked(true);
     }
     if (user?.saved?.includes(_id)) {
       setSaved(true);
     }
-  }, [comments]);
+  }, [ comments ]);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const commentBoxRef = useRef<HTMLDivElement | null>(null);
@@ -80,20 +80,21 @@ const PostCard = ({
   const HandleLike = async (): Promise<void> => {
     setLiked(true);
     setLikeCount(likeCount + 1);
-    await postRequest.likePost(_id);
+    await postRequest.likePost(_id, userId._id);
   };
 
   const HandleUnlike = async (): Promise<void> => {
     setLiked(false);
     setLikeCount(likeCount - 1);
-    await postRequest.unlikePost(_id);
+    await postRequest.unlikePost(_id, userId._id);
   };
 
   const HandleComment = async () => {
     if (comment) {
-      const data: { id: string; comment: string } = {
+      const data: { id: string; comment: string, postUserId: string } = {
         id: _id,
         comment: comment,
+        postUserId: userId._id
       };
 
       await postRequest.commentPost(data);
@@ -136,8 +137,7 @@ const PostCard = ({
         <div className="flex pb-2 items-center justify-between">
           <div className="flex">
             <Link to={`/${userId?.name}`} className="inline-block mr-4 mt-1">
-              <img
-                className="rounded-full border max-w-none w-9 h-9"
+              <img className="rounded-full border max-w-none w-9 h-9"
                 src={userId?.profilePic}
                 alt="Profile"
               />

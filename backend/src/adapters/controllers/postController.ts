@@ -46,18 +46,20 @@ const postController = (
   });
 
   const postLike = asyncHandler(async (req: CustomRequest, res: Response) => {
-    const post = await likePost(req, dbRepositoryPost);
+    await likePost(req, dbRepositoryPost);
     res.status(200).json({ status: "liked" });
   });
 
   const postUnlike = asyncHandler(async(req: CustomRequest, res: Response) => {
-    const post = await unlikePost(req, dbRepositoryPost);
+    await unlikePost(req, dbRepositoryPost);
     res.status(200).json({ status: "unliked" });
   })
 
   const PostComment = asyncHandler(async (req: CustomRequest, res: Response) => {
+    const { postUserId } = req.body;
     const comment: { userId?: string, comment: string, createdAt: Date} = { userId: req.userId, comment: req.body.comment, createdAt:  new Date()}
-    const result = await commentPost( comment, req.params.postId, dbRepositoryPost );
+    console.log( "This is request -----",postUserId, comment )
+    const result = await commentPost( comment, req.params.postId, postUserId, dbRepositoryPost );
     res.status(200).json({status: "success"});
   })
 

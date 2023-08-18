@@ -18,9 +18,9 @@ const postRouter = () => {
 
     router.get('/following-posts', controller.followPosts)
 
-    router.put('/:postId/like', controller.postLike);
+    router.put('/:postId/:postUserId/like', controller.postLike);
 
-    router.put('/:postId/unlike', controller.postUnlike);
+    router.put('/:postId/:postUserId/unlike', controller.postUnlike);
 
     router.get('/:postId/comment', controller.getPostComments);
 

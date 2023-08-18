@@ -1,10 +1,10 @@
+import asyncHandler from "express-async-handler"
+import AppError from "../../utils/appError";
 import { Request, Response } from "express";
 import { userDbInterface } from "../../application/repositories/userDbRepository";
 import { userRepositoryDbType } from "../../frameworks/database/repositories/userRepository";
-import asyncHandler from "express-async-handler"
-import { blockUser, followUser, getAllUser, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch } from "../../application/useCases/user/user";
+import { clearNotification, followUser, getNotifications, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch } from "../../application/useCases/user/user";
 import { editUserInterface, userDataInterface } from "../../types/interface/userInterface";
-import AppError from "../../utils/appError";
 import { HttpStatus } from "../../types/httpStatus";
 import { getUserPosts } from "../../application/useCases/post/post";
 import { postDbRepositoryType } from "../../application/repositories/postDbRepository";
@@ -22,15 +22,10 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
     const s3CloudServices = cloudService(s3CloudService())
 
     const isBlockedUser = asyncHandler(async (req: CustomRequest, res: Response ) => {
-        console.log("login function 7")
-
         const {userId} = req;
-        console.log("login function 8", userId)
-
         if(!userId) {
             throw new AppError("Something went wrong !", HttpStatus.OK);
         }
-
         const user = await userById( userId, dbRepositoryUser )
         if(user?.isBlocked) {
             throw new AppError("Account action blocked !", HttpStatus.OK);
@@ -63,6 +58,8 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         const posts = await getUserPosts( user._id, dbRepositoryPost )
         if(user._id == req.userId ) {
             const result = await getSavedPost( req.userId , dbRepositoryUser );
+            console.log("this is saved posts - - - - -", result?.saved)
+            
             res.status(200).json({ status: "success", user, posts, saved: result?.saved })
         }
         res.status(200).json({ status: "success", user, posts})
@@ -98,14 +95,6 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         }
     })
 
-    // const changeProfilePic = asyncHandler(async (req:CustomRequest, res: Response ) => {
-    //     const { userId } = req;
-    //     if(!userId) {
-    //         throw new AppError("Something went wrong !", HttpStatus.OK);
-    //     }
-    //     await newProfilePic(userId, req.file, dbRepositoryUser,  )
-    // })
-
 
     const userFollow = asyncHandler(async(req: CustomRequest, res: Response ) => {
         const { userId }: any = req;
@@ -119,8 +108,6 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         res.status(200).json({ status: "success", message: "Unfollowed"})
     })
 
-    
-
 
     const postSave = asyncHandler(async(req: CustomRequest, res: Response) => {
         const { userId }: any = req;
@@ -133,10 +120,26 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         }
     })
 
+    const notifications = asyncHandler( async( req: CustomRequest, res: Response ) => {
+        const { userId } = req
+        if( userId ){
+            const results = await getNotifications( userId, dbRepositoryUser )
+            res.status(200).json({ status: "success", notifications: results })
+        }
+    })
+    
+
+    const clearUserNotification = asyncHandler(async (req: CustomRequest, res: Response) => {
+        const { userId } = req
+        if (userId) {
+            await clearNotification(userId, dbRepositoryUser)
+            res.status(200).json({ status: "success"})
+        }
+    })
 
     
 
-    return { isBlockedUser, searchUser, getUserById, profileUpdate, checkPassword, changePassword, getUserByName, userFollow, userUnfollow, postSave }
+    return { isBlockedUser, searchUser, getUserById, profileUpdate, checkPassword, changePassword, getUserByName, userFollow, userUnfollow, postSave, notifications, clearUserNotification }
 }
 
 

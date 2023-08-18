@@ -46,8 +46,8 @@ const Navbar = () => {
         <div className="container mx-auto">
           <ul className="flex justify-between px-3 py-2">
             {Navlinks.map((item) => (
-              <Link to={item.href} >
-              <li key={item.name} className={`${location.pathname == item.href && hover } hover:${hover} px-3 py-2 rounded-md`}>
+              <Link to={item.href} key={item.name}>
+              <li className={`${location.pathname == item.href && hover } hover:${hover} px-3 py-2 rounded-md`}>
                 {item.icon}
               </li>
               </Link>

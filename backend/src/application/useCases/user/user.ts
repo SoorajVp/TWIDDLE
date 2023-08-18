@@ -92,3 +92,11 @@ export const unSavePost = async( postId: string, userId: string, repository: Ret
 export const getSavedPost = async( id: string, repository: ReturnType<userDbInterface> ) => {
     return await repository.getSavedPost(id);
 }
+
+export const getNotifications = async( userId: string, repository: ReturnType<userDbInterface> ) => {
+    return await repository.getNotifications( userId );
+}
+
+export const clearNotification = async (userId: string, repository: ReturnType<userDbInterface>) => {
+    return await repository.clearNotification(userId);
+}

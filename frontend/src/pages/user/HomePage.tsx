@@ -56,9 +56,10 @@ const HomePage = () => {
   return (
     <>
       <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto">
-        {isLoading && <PageLoading />}
+        
 
         <div className="lg:mx-20">
+          {isLoading && <PostShimmer />}
           {posts.length === 0 && !isLoading && <PostEmpty />}
           <Suspense fallback={<PostShimmer />}>
             {posts.map((post) => (
