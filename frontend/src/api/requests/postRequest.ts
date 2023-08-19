@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-
-import { string } from "yup";
 import { api } from "../instance/user";
 
 const blockFunction = () => {

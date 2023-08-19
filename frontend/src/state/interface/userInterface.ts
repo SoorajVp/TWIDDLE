@@ -2,7 +2,8 @@ import { ChatListInterface } from "./chatInterface";
 
 export interface userInterface {
   _id: string;
-  isAdmin?: boolean;
+  isAdmin: boolean;
+  verfied: boolean;
   bio?: string;
   email: string;
   isBlocked: boolean;
@@ -13,9 +14,9 @@ export interface userInterface {
   followers?: string[];
   following?: string[];
   saved?: string[];
-
-
 }
+
+
 
 export interface AuthState {
   darkMode?: boolean;
