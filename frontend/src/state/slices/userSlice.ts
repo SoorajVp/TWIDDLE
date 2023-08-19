@@ -25,6 +25,14 @@ const userSlice = createSlice({
       state.user = action.payload.user;
     },
 
+    setUserFollow: (state: AuthState, action: PayloadAction<{userId: string}>) => {
+      state.user.following.push(action.payload.userId)
+    },
+
+    setUserUnfollow: (state: AuthState, action: PayloadAction<{ userId: string }>) => {
+      state.user.following = state.user.following.filter(item => item !== action.payload.userId);
+    },
+
     setSavePost: ( state: AuthState, action: PayloadAction<{postId: string}>  ) => {
       state.user.saved.push(action.payload.postId)
     },
@@ -55,5 +63,5 @@ const userSlice = createSlice({
 });
 
 
-export const { setLogin, updateUser, setSavePost, setunSavePost, setLastChat, setLogout, setTheme, setAction } = userSlice.actions;
+export const { setLogin, updateUser, setSavePost, setunSavePost, setLastChat, setLogout, setTheme, setAction, setUserFollow, setUserUnfollow } = userSlice.actions;
 export default userSlice.reducer;

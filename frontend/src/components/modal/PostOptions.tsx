@@ -262,10 +262,12 @@ export const CommentOption = ({
   userId,
   postId,
   commentId,
+  postUserId
 }: {
   userId: string;
   postId: string;
   commentId: string;
+  postUserId: string
 }) => {
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const [commentOption, setCommentOption] = useState<boolean>(false);
@@ -296,10 +298,14 @@ export const CommentOption = ({
     (color = "text-gray-950"), (bgColor = "bg-white");
   }
 
+
+
+  
+
   const deleteComment = async () => {
-    console.log("clicked------");
+    console.log("clicked------", postId, commentId, userId, postUserId );
     const response: { status: string; message: string } =
-      await postRequest.deleteComment(postId, commentId);
+      await postRequest.deleteComment(postId, commentId, postUserId);
     setCommentOption(false);
     dispatch(setAction());
 

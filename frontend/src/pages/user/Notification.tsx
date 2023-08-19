@@ -28,7 +28,7 @@ const Notification = () => {
     const fetchNotifications = async () => {
         setLoading(true)
         const response = await userRequest.notifications() as ApiResponse;
-        console.log("this is reposne - ", response)
+        console.log("this is reposne - ", response.notifications)
         setNotifications(response.notifications);
         setLoading(false)
     }

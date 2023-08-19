@@ -26,7 +26,7 @@ const postRouter = () => {
 
     router.post('/:postId/comment', controller.PostComment);
 
-    router.delete('/:postId/:commentId', controller.commentDelete);
+    router.delete('/:postId/:commentId/:postUserId', controller.commentDelete);
 
     router.post('/report', controller.postReport);
 

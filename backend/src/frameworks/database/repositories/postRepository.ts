@@ -1,8 +1,8 @@
-import { Types } from "mongoose";
 import Post from "../models/postModel"
 import User from "../models/userModel";
 import ReportPost from "../models/reportModel";
 import Notification from "../models/notificationModel";
+import { userDataInterface } from "../../../types/interface/userInterface";
 
 export const PostRespository = () => {
     
@@ -20,11 +20,11 @@ export const PostRespository = () => {
     }
 
     const getFollowPosts = async ( userId?: string ) => {
-        const user = await User.findById(userId).populate("following");
+        const user: userDataInterface | null = await User.findById(userId);
         if (user) {
-          const followingUserIds = user.following.map((followedUser) => followedUser._id);
-          userId && followingUserIds.push(new Types.ObjectId(userId))
-          return await Post.find({ userId: { $in: followingUserIds } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
+            const followingArray: string[] = user.following as string[];
+            userId && followingArray?.push(userId)
+            return await Post.find({ userId: { $in: user.following } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
         }
     }
 
@@ -33,13 +33,15 @@ export const PostRespository = () => {
     }
  
     const likePost = async ( postId: string, userId?: string, postUserId?:string ) => {
-        const notify = {
-            userId: postUserId,
-            user: userId,
-            liked: postId
+        if( userId !== postUserId ) {
+            const notify = {
+                userId: postUserId,
+                user: userId,
+                liked: postId
+            }
+            const notification = new Notification(notify) 
+            await notification.save()
         }
-        const notification = new Notification(notify) 
-        await notification.save()
         return await Post.findByIdAndUpdate({ _id: postId}, { $push: {likes: userId}}, { new: true })
     }
 
@@ -49,22 +51,18 @@ export const PostRespository = () => {
     }
 
     const commentPost = async ( comment: { userId?: string, comment: string}, postId: string, postUserId: string ) => {
-        console.log("function -- 3")
-
-        const notify = {
-            userId: postUserId,
-            user: comment.userId,
-            comment: {
-                postId: postId,
-                text: comment.comment
+        if (comment.userId !== postUserId ) {
+            const notify = {
+                userId: postUserId,
+                user: comment.userId,
+                comment: {
+                    postId: postId,
+                    text: comment.comment
+                }
             }
+            const notification = new Notification(notify)
+            await notification.save()
         }
-        console.log("function -- 4", notify )
-
-        const notification = new Notification(notify)
-        await notification.save()
-        console.log("function -- 4")
-
         return await Post.findByIdAndUpdate({ _id: postId}, {$push: {comments: comment}}, { new: true })
     }
 
@@ -72,7 +70,8 @@ export const PostRespository = () => {
         return await Post.findById({ _id: postId}).populate({ path: 'comments.userId', select: 'name profilePic' })
     }
 
-    const deleteComment = async ( postId: string, commentId: string ) => {
+    const deleteComment = async (postId: string, postUserId: string, commentId: string, userId: string ) => {
+        await Notification.findOneAndDelete({ userId: postUserId, user: userId, 'comment.postId': postId })
         return await Post.findOneAndUpdate( { _id: postId }, { $pull: { comments: { _id: commentId } } }, { new: true })
     }
 
@@ -82,6 +81,7 @@ export const PostRespository = () => {
     }
 
     const deletePost = async ( id: string ) => {
+        await Notification.deleteMany({ $or: [{ liked: id }, { 'comment.postId': id }] });
         await ReportPost.deleteMany({ postId: id })
         return await Post.findByIdAndDelete({ _id: id })
     }

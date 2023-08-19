@@ -78,8 +78,8 @@ export const getComments = async ( postId: string, repository: ReturnType<postDb
   return result;
 }
 
-export const deleteComment = async ( postId: string, commentId: string, repository: ReturnType<postDbRepositoryType> ) => {
-  const result = await repository.deleteComment(postId, commentId)
+export const deleteComment = async (postId: string, postUserId: string, commentId: string, userId: string, repository: ReturnType<postDbRepositoryType> ) => {
+  const result = await repository.deleteComment(postId, postUserId, commentId, userId)
   return result;
 }
 

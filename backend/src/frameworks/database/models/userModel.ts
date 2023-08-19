@@ -32,9 +32,9 @@ const userSchema = new Schema({
     type: String,
     default: ''
   },
-  followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  saved: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+  followers: [{ type: String, ref: 'User' }],
+  following: [{ type: String, ref: 'User' }],
+  saved: [{ type: String, ref: 'Post' }],
   createdAt: {
      type: Date,
      default: Date.now 

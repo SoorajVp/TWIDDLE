@@ -58,8 +58,6 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
         const posts = await getUserPosts( user._id, dbRepositoryPost )
         if(user._id == req.userId ) {
             const result = await getSavedPost( req.userId , dbRepositoryUser );
-            console.log("this is saved posts - - - - -", result?.saved)
-            
             res.status(200).json({ status: "success", user, posts, saved: result?.saved })
         }
         res.status(200).json({ status: "success", user, posts})

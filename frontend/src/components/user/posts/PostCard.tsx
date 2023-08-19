@@ -96,7 +96,6 @@ const PostCard = ({
         comment: comment,
         postUserId: userId._id
       };
-
       await postRequest.commentPost(data);
       dispatch(setAction());
       setComment("");
@@ -305,6 +304,7 @@ const PostCard = ({
                     userId={item?.userId?._id}
                     postId={_id}
                     commentId={item?._id}
+                    postUserId={userId?._id}
                   />
                 </li>
               ))}

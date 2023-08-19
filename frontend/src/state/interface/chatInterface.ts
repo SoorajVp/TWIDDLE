@@ -16,7 +16,6 @@ export interface ChatListInterface {
     __v?: number;
   }
 
-
   export type activeUsersType = {
     userId: string,
     socketId: string

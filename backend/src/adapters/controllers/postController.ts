@@ -68,10 +68,13 @@ const postController = (
     res.status(200).json({status: "success", comments: comments})
   })
 
-  const commentDelete = asyncHandler(async (req: Request, res: Response) => {
-    const { postId, commentId } = req.params
-    await deleteComment(postId, commentId, dbRepositoryPost);
-    res.status(200).json({status: "success", message: "Deleted successfully"})
+  const commentDelete = asyncHandler(async (req: CustomRequest, res: Response) => {
+    const { postId, commentId, postUserId } = req.params
+    const { userId } = req;
+    if (userId) {
+      await deleteComment(postId, postUserId, commentId, userId, dbRepositoryPost);
+      res.status(200).json({status: "success", message: "Deleted successfully"})
+    }
   })
 
   const postReport = asyncHandler (async( req: CustomRequest, res: Response) => {

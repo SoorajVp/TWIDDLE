@@ -13,7 +13,7 @@ import { chatRequest } from "../../../api/requests/chatRequest";
 import { ChatListInterface } from "../../../state/interface/chatInterface";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLastChat } from "../../../state/slices/userSlice";
+import { setLastChat, setUserFollow, setUserUnfollow } from "../../../state/slices/userSlice";
 
 type profileInterface = {
   accountProfile: boolean;
@@ -42,27 +42,30 @@ const UserProfile = ({
   followBack,
 }: profileInterface) => {
   const [postItems, setPostItems] = useState<PostInterface[]>(userPosts);
+  const [savedButton, setSavedButton ] = useState<boolean>(false)
   const [follow, setFollow] = useState<boolean>(isFollowing);
   const [followers, setFollowers] = useState<number>(userData.followers.length);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  let color: string, hover: string;
+  let color: string, hover: string, active: string ;
 
   if (darkMode) {
-    (color = "text-white"), (hover = "hover:bg-black rounded-lg");
+    (color = "text-white"), (hover = "hover:bg-black rounded-lg"), (active= "bg-gray-800");
   } else {
-    (color = "text-gray-950"), (hover = "hover:bg-gray-100 rounded-lg");
+    (color = "text-gray-950"), (hover = "hover:bg-gray-100 rounded-lg"), (active = "bg-gray-100");
   }
+
   const PostsClick = () => {
+    setSavedButton(false)
     setPostItems(userPosts.reverse());
   };
 
   const SavedClick = () => {
+    setSavedButton(true)
     setPostItems(savedPosts.reverse());
   };
   useEffect(() => {
-    console.log("again rendering -----");
     setPostItems(userPosts);
     setFollowers(userData.followers.length);
   }, [userData]);
@@ -71,11 +74,14 @@ const UserProfile = ({
     setFollow(!follow);
     await userRequest.followUser(userData._id);
     setFollowers(followers + 1);
+    dispatch(setUserFollow({ userId: userData._id }))
   };
+
   const HandleUnfollow = async (): Promise<void> => {
     setFollow(!follow);
     await userRequest.unFollowUser(userData._id);
     setFollowers(followers - 1);
+    dispatch(setUserUnfollow({ userId: userData._id }))
   };
 
   const HandleSendMessage = async () => {
@@ -84,7 +90,6 @@ const UserProfile = ({
       receiverId: userData._id,
     };
     const response = (await chatRequest.createChat(data)) as ApiResponse;
-    console.log("Chat created - - - - - - -", response);
     if (response.status === "success") {
       const { newChat } = response;
       dispatch(setLastChat({ newChat: newChat }));
@@ -135,8 +140,7 @@ const UserProfile = ({
               )}
               {!accountProfile && (
                 <div>
-                  <button
-                    onClick={HandleSendMessage}
+                  <button onClick={HandleSendMessage}
                     className="border text-white bg-slate-500 py-2.5 text-xs font-medium rounded px-3 lg:px-5"
                   >
                     MESSAGE
@@ -182,20 +186,20 @@ const UserProfile = ({
           {accountProfile ? stateUser?.name : userData.name}
         </p>
         <p className="text-xs py-1 pb-5">
-          {accountProfile ? stateUser?.bio : userData.bio}{" "}
+          {accountProfile ? stateUser?.bio : userData.bio}
         </p>
       </div>
       <hr />
-      <div className="flex justify-around  py-2">
+      <div className="flex justify-around py-1 ">
         <div
-          className="flex gap-1 cursor-pointer text-sm "
+          className={`${ !savedButton && active } rounded-md flex gap-1 py-1 px-7 cursor-pointer text-sm`}
           onClick={PostsClick}
         >
           POSTS <RiTable2 size={25} />
         </div>
         {accountProfile && (
           <div
-            className="flex gap-1 cursor-pointer text-sm"
+            className={`${savedButton && active } rounded-md flex gap-1 py-1 px-7 cursor-pointer text-sm`}
             onClick={SavedClick}
           >
             SAVED <BiBookmark size={25} />

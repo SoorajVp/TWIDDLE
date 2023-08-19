@@ -18,7 +18,7 @@ type responseInterface = {
 };
 
 const ProfilePage = () => {
-  const { user, darkMode } = useSelector((store: RootState) => store.user);
+  const { user, darkMode, actions } = useSelector((store: RootState) => store.user);
 
   const [accountProfile, setAccountProfile] = useState<boolean>(false);
   const [userData, setUserData] = useState<userInterface>(null);
@@ -31,7 +31,7 @@ const ProfilePage = () => {
   useEffect(() => {
     console.log("render");
     fetchUserData(userName);
-  }, [userName]);
+  }, [ userName, actions ]);
 
   const fetchUserData = async (name: string): Promise<void> => {
     const response: responseInterface = await userRequest.getUserByName(name);

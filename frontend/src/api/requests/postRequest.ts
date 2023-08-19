@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
+import { string } from "yup";
 import { api } from "../instance/user";
 
 const blockFunction = () => {
@@ -68,8 +69,8 @@ export const postRequest = {
     return response.data;
   },
 
-  deleteComment: async (postId: string, commentId: string ) => {
-    const response = await api.delete(`/post/${postId}/${commentId}`);
+  deleteComment: async (postId: string, commentId: string, userId: string ) => {
+    const response = await api.delete(`/post/${postId}/${commentId}/${userId}`);
     if(response.data.status == "blocked") {
       blockFunction()
     }

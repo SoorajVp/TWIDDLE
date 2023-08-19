@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import { editUserInterface, registerInterface, userDataInterface } from "../../../types/interface/userInterface";
 import Notification from "../models/notificationModel";
 import User from "../models/userModel";
@@ -61,6 +60,7 @@ export const userRepositoryDb = () => {
     }
 
     const unfollowUser = async ( id: string, userId?: string ) => {
+        await Notification.findOneAndDelete({ userId: id, user: userId, follow: true })
         await User.findByIdAndUpdate({ _id: id }, {$pull: {followers: userId} }, { new: true })
         return await User.findByIdAndUpdate({ _id: userId }, {$pull: {following: id} }, { new: true })
     }

@@ -5,6 +5,7 @@ type postType = {
 }
 
 type userType = {
+    _id: string,
     name: string,
     profilePic: string
 }
@@ -16,6 +17,7 @@ type CommentType = {
 
 
 export interface NotificationInterface {
+    _id: string,
     userId: string;
     user: userType | null;
     comment?: CommentType | null;

@@ -12,7 +12,6 @@ import { toast } from "react-toastify";
 import RightBar from "../../components/user/layout/Rightbar";
 // import PostCard from "../../components/user/posts/PostCard";
 import { postRequest } from "../../api/requests/postRequest";
-import { PageLoading } from "../../components/shimmer/Loading";
 import PostShimmer from "../../components/shimmer/postShimmer";
 import PostEmpty from "../../components/user/posts/PostEmpty";
 
