@@ -26,6 +26,7 @@ const HomePage = () => {
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
+      return
     }
     console.log("started ")
     const fetchPosts = async () => {
@@ -60,11 +61,13 @@ const HomePage = () => {
         <div className="lg:mx-20">
           {isLoading && <PostShimmer />}
           {posts.length === 0 && !isLoading && <PostEmpty />}
+
           <Suspense fallback={<PostShimmer />}>
             {posts.map((post) => (
               <LazyPostCard {...post} key={post._id} />
             ))}
           </Suspense>
+          
         </div>
 
       </div>

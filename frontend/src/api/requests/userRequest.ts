@@ -5,7 +5,7 @@ import { api } from "../instance/user";
 
 const blockFunction = () => {
   localStorage.removeItem('token');
-  location.reload()
+  // location.reload()
 }
 
 export const userRequest = {
@@ -92,6 +92,14 @@ export const userRequest = {
 
   clearNotifications: async () => {
     const response = await api.delete(`/user/clear-notifications`);
+    if (response.data.status == "blocked") {
+      blockFunction()
+    }
+    return response.data;
+  },
+
+  payment: async (payload: object) => {
+    const response = await api.post(`/user/payment`, payload);
     if (response.data.status == "blocked") {
       blockFunction()
     }

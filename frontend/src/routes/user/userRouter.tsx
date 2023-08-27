@@ -6,12 +6,13 @@ import ProfilePage from "../../pages/user/ProfilePage";
 import SearchPage from "../../pages/user/SearchPage";
 import SignupPage from "../../pages/user/SignupPage";
 import SecretToken from "../../pages/user/SecretToken";
-import ChatPage from "../../pages/user/ChatPage";
 import ErrorElement from "../../pages/error/ErrorElement";
 import Notification from "../../pages/user/Notification";
+import VideoCall from "../../components/user/videoCall/VideoCall";
+import ChatPage from "../../pages/user/ChatPage";
+import PaymentPage from "../../pages/user/PaymentPage";
 
 // const HomePage = lazy(() => import('../../pages/user/HomePage'));
-
 
 export const secretPage = {
    path: "/api/auth/:id/token", 
@@ -59,6 +60,16 @@ export const userRouter = {
       path: "/notifications",
       element: <Notification />,
     },
+    {
+      path: "/room/:roomId",
+      element: <VideoCall />,
+    },
+    {
+      path: "/payment",
+      element: <PaymentPage />,
+    }
     
   ],
+
 };
+ 

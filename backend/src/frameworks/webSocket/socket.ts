@@ -10,9 +10,9 @@ let activeUsers: activeUsersType[] = []
 
 const socketConfig = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) => {
     
-    console.log("socket-console")
-
     io.on("connection", (socket) => {
+
+        // Messaging socket 
         console.log("Socket connected ----", socket.id);
 
         socket.on('new-user-add', (newUserId: string) => {
@@ -32,6 +32,19 @@ const socketConfig = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEven
                 io.to( user.socketId ).emit("receive-message", data )
             }
         })
+
+        // Video call socket
+        socket.emit('me', socket.id);
+
+        socket.on('start-call', ( data ) => {
+            console.log("call started - - - -", data )
+            io.to(data.userToCall).emit('recieve-call', data )
+        })
+
+        // socket.on('answerCall', (data) => {
+        //     io.to(data.to).emit('callAccepted', data.signal )
+        // })
+
 
         socket.on('disconnect', () => {
             activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);

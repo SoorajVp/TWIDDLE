@@ -5,13 +5,13 @@ import { io, Socket } from "socket.io-client";
 import ChatList from "../../components/user/chats/ChatList";
 import Messages from "../../components/user/chats/Messages";
 import { RootState } from "../../state/interface/userInterface";
+import { SOCKET_URL } from "../../constants";
+import { chatRequest } from "../../api/requests/chatRequest";
 import {
   ChatListInterface,
   MessageInterface,
   activeUsersType,
 } from "../../state/interface/chatInterface";
-import { SOCKET_URL } from "../../constants";
-import { chatRequest } from "../../api/requests/chatRequest";
 
 type ApiReponse = {
   status: string;
@@ -26,9 +26,7 @@ type sendMessageType = {
 };
 
 const ChatPage = () => {
-  const { user, darkMode, lastChat } = useSelector(
-    (store: RootState) => store.user
-  );
+  const { user, darkMode, lastChat } = useSelector((store: RootState) => store.user);
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState<ChatListInterface>(null);
   const [onlineUsers, setOnlineUsers] = useState<activeUsersType[]>([]);
@@ -64,14 +62,16 @@ const ChatPage = () => {
       setReceiveMessage(data);
       console.log("Received messages -----", receiveMessage);
     });
-  });
+  },[]);
+
 
   useEffect(() => {
     if (sendMessage !== null) {
       socket.current.emit("send-message", sendMessage);
-      console.log("message sedning -----", sendMessage);
     }
   }, [sendMessage]);
+
+
 
   return (
     <>
@@ -80,6 +80,7 @@ const ChatPage = () => {
           !currentChat ? "hidden" : "col-span-7"
         } md:block lg:px-10 px-2 md:col-span-4 overflow-auto`}
       >
+
         <Messages
           chat={currentChat}
           setCurrentChat={setCurrentChat}

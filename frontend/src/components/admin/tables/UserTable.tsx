@@ -8,10 +8,11 @@ import {
   RootState,
   userInterface,
 } from "../../../state/interface/userInterface";
+import Loading from "../../shimmer/Loading";
 
 const UserTable = () => {
   const { actions } = useSelector((store: RootState) => store.user);
-
+  const [ isLoading, setLoading ] = useState<boolean>(false);
   const [users, setUsers] = useState<userInterface[]>([]);
 
   useEffect(() => {
@@ -20,13 +21,18 @@ const UserTable = () => {
   }, [actions]);
 
   const fetchUserList = async (): Promise<any> => {
+    setLoading(true)
     const resposnse: { status: string; users: userInterface[] } = await adminRequest.getAllUsers();
     console.log(resposnse);
     setUsers(resposnse.users);
+    setLoading(false)
+
   };
 
   return (
     <div className="flex justify-center mt-8">
+      {isLoading && <Loading />}
+
       <div className="flex overflow-x-auto">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">

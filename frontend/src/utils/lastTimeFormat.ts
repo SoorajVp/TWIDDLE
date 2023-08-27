@@ -30,7 +30,7 @@ export const lastTimeFormat = (timestamp: string): string  => {
   
   
   // Example usage:
-  const timestamp = "2023-07-28T06:28:41.119Z";
-  const formattedTime: string = lastTimeFormat(timestamp);
-  console.log(formattedTime); // Output: "2 months ago"
+  // const timestamp = "2023-07-28T06:28:41.119Z";
+  // const formattedTime: string = lastTimeFormat(timestamp);
+  // console.log(formattedTime);
   

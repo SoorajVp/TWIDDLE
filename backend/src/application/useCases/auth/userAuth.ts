@@ -25,8 +25,7 @@ export const userRegister = async (
     throw new AppError("Username already taken !", HttpStatus.OK);
   }
 
-  user.password =
-    user.password && (await authService.encryptPassword(user?.password));
+  user.password = user.password && (await authService.encryptPassword(user?.password));
 
   const users = await userRepository.addUser(user);
   const payload: { userId: string, isAdmin: boolean} = { userId: users._id.toString(), isAdmin: users.isAdmin}

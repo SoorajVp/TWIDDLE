@@ -12,7 +12,7 @@ const routes = [
   userLogin,
   userRegister,
   userRouter,
-  secretPage
+  secretPage,
   
 ];
 

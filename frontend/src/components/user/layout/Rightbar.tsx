@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
+import { Link } from "react-router-dom";
 
 const RightBar = () => {
 
@@ -20,16 +21,16 @@ const RightBar = () => {
             src="https://www.searchenginejournal.com/wp-content/uploads/2023/03/paid-verification-programs-twitter-blue-meta-verified-641e2764953c9-sej.jpg"
             alt="Mountain"
           />
-          <div className="px-6 py-6">
+          <div className="px-6 pt-6 text-center">
             <div className="font-bold text-base mb-2">Make Verify your Account</div>
             <p className="text-sm">
               Just wait for the new incoming feature. Make something more about your account with verified mark. 
             </p>
           </div>
-          <div className="px-6 pt-2 pb-2">
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-500 mr-2 mb-2">
-              #verifyTick
-            </span>
+          <div className="px-6 py-4">
+           <Link to='/payment'>
+            <button className="bg-green-600 hover:bg-green-700 text-white w-full py-1 rounded-md shadow-md"> Verify account now</button>
+           </Link>
             
           </div>
         </div>

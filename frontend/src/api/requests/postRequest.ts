@@ -4,7 +4,7 @@ import { api } from "../instance/user";
 
 const blockFunction = () => {
   localStorage.removeItem('token');
-  location.reload()
+  // location.reload()
 }
 
 export const postRequest = {

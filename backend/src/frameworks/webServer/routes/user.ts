@@ -9,12 +9,14 @@ import { authService } from "../../services/authService";
 import { cloudService } from "../../../application/services/cloudServiceInterface";
 import { s3CloudService } from "../../services/s3CloudService";
 import upload from "../middlewares/multer";
+import { paymentServiceInterface } from "../../../application/services/paymentServiceInterface";
+import { paymentService } from "../../services/paymentService";
 
 const userRouter = () => {
 
     const router = express.Router();
 
-    const controller = userController( userDbRepository, userRepositoryDb, postDbRepository, PostRespository, authServiceInterface, authService, cloudService, s3CloudService );
+    const controller = userController( userDbRepository, userRepositoryDb, postDbRepository, PostRespository, authServiceInterface, authService, cloudService, s3CloudService, paymentServiceInterface, paymentService );
     
     router.get("/find/:id", controller.getUserById);
 
@@ -38,7 +40,9 @@ const userRouter = () => {
 
     router.get('/notifications/list', controller.notifications );
 
-    router.delete('/clear-notifications', controller.clearUserNotification)
+    router.delete('/clear-notifications', controller.clearUserNotification);
+
+    router.post('/payment', controller.verifiedAccount);
 
 
     

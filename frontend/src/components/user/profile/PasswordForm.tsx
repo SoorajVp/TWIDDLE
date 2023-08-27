@@ -131,7 +131,7 @@ const PasswordForm: React.FC<stateType> = ({ setIsOpen }) => {
 
                 <div className="mt-1">
                   <input
-                    type="text"
+                    type="password"
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     className={`${
                       darkMode && "bg-gray-800 text-gray-200"

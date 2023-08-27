@@ -28,8 +28,8 @@ const Notification = () => {
     const fetchNotifications = async () => {
         setLoading(true)
         const response = await userRequest.notifications() as ApiResponse;
-        console.log("this is reposne - ", response.notifications)
-        setNotifications(response.notifications);
+        console.log("this is reposne - ", response?.notifications)
+        setNotifications(response?.notifications);
         setLoading(false)
     }
 
@@ -38,7 +38,7 @@ const Notification = () => {
             <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto ">
                 { isLoading ? <PageLoading /> :
                 <>
-                    {notifications.length == 0 && <NotificationEmpty />}
+                    { notifications?.length == 0 && <NotificationEmpty /> }
                     <NotificationList notifications={notifications} setLoading={setLoading} />
                 </>}
             </div>

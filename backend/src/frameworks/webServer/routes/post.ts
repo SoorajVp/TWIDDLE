@@ -30,8 +30,6 @@ const postRouter = () => {
 
     router.post('/report', controller.postReport);
 
-    // router.get('/reports', controller.postReports);
-
     router.put('/:postId/:key', controller.postDelete);
 
 

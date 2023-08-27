@@ -78,6 +78,12 @@ export const userDbRepository = (
     return await repository.clearNotification( userId );
   }
 
+  const verificationTick = async (userId: string) => {
+    console.log("Account verification function - - - - - -5")
+
+    return await repository.verificationTick(userId);
+  }
+
 
 
   return { 
@@ -98,7 +104,8 @@ export const userDbRepository = (
     unSavePost, 
     getSavedPost, 
     getNotifications,
-    clearNotification
+    clearNotification,
+    verificationTick
   };
 };
 

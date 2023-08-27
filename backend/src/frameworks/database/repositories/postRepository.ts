@@ -24,7 +24,7 @@ export const PostRespository = () => {
         if (user) {
             const followingArray: string[] = user.following as string[];
             userId && followingArray?.push(userId)
-            return await Post.find({ userId: { $in: user.following } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
+            return await Post.find({ isBlocked: false, userId: { $in: user.following } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
         }
     }
 

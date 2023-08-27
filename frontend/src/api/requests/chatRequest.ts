@@ -3,8 +3,9 @@
 import { api } from "../instance/user";
 
 const blockFunction = () => {
+  console.log("blocked user - - -")
   localStorage.removeItem('token');
-  location.reload()
+  // location.reload()
 }
 
 export const chatRequest = {

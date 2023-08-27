@@ -8,7 +8,6 @@ import { HttpStatus } from '../../types/httpStatus';
 const confirmEmail = (email: string, token: string): Promise<boolean> => {
   
     return new Promise<boolean>((resolve, reject) => {
-      console.log("wwwwwwwwwwwwww")
       const transporter: Transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {

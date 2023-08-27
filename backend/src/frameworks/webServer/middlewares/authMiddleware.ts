@@ -30,11 +30,9 @@ export const userAuthMiddleware = async (
         res.json({status: "blocked", message: "Account action Blocked "})
     }
     req.userId = payload.userId;
-    console.log("no matter in middleware function -------")
     next();
 
   } catch (error) {
-    console.log("error - - - - - ", error)
     res.json({status: "blocked", message: "Account action Blocked "})
   }
 };

@@ -7,12 +7,7 @@ import { authServiceInterface } from "../../../application/services/authServiceI
 
 const authRouter = () => {
   const router = express.Router();
-  const controller = authController(
-    authServiceInterface,
-    authService,
-    userDbRepository,
-    userRepositoryDb,
-  );
+  const controller = authController( authServiceInterface, authService, userDbRepository, userRepositoryDb, );
 
   router.post("/register", controller.registerUser );
 

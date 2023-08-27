@@ -3,7 +3,7 @@ import AppError from "../../utils/appError";
 import { Request, Response } from "express";
 import { userDbInterface } from "../../application/repositories/userDbRepository";
 import { userRepositoryDbType } from "../../frameworks/database/repositories/userRepository";
-import { clearNotification, followUser, getNotifications, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch } from "../../application/useCases/user/user";
+import { VerificationPayment, clearNotification, followUser, getNotifications, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch } from "../../application/useCases/user/user";
 import { editUserInterface, userDataInterface } from "../../types/interface/userInterface";
 import { HttpStatus } from "../../types/httpStatus";
 import { getUserPosts } from "../../application/useCases/post/post";
@@ -14,12 +14,16 @@ import { authServiceInterfaceType } from "../../application/services/authService
 import { authServiceType } from "../../frameworks/services/authService";
 import { cloudServiceType } from "../../application/services/cloudServiceInterface";
 import { s3ServiceType } from "../../frameworks/services/s3CloudService";
+import { paymentInterface } from "../../application/services/paymentServiceInterface";
+import { paymentServiceType } from "../../frameworks/services/paymentService";
 
-const userController = ( userDbRepository: userDbInterface, userRepositoryDb: userRepositoryDbType, postDbRepository: postDbRepositoryType, postRepository: PostRespositoryType, authServiceInterface: authServiceInterfaceType, authServiceImpl: authServiceType, cloudService: cloudServiceType, s3CloudService: s3ServiceType ) => {
+
+const userController = (userDbRepository: userDbInterface, userRepositoryDb: userRepositoryDbType, postDbRepository: postDbRepositoryType, postRepository: PostRespositoryType, authServiceInterface: authServiceInterfaceType, authServiceImpl: authServiceType, cloudService: cloudServiceType, s3CloudService: s3ServiceType, paymentInterface: paymentInterface, paymentServiceType: paymentServiceType ) => {
     const dbRepositoryUser = userDbRepository(userRepositoryDb())
     const dbRepositoryPost = postDbRepository(postRepository())
     const authService = authServiceInterface(authServiceImpl());
-    const s3CloudServices = cloudService(s3CloudService())
+    const s3CloudServices = cloudService(s3CloudService());
+    const paymentService = paymentInterface(paymentServiceType())
 
     const isBlockedUser = asyncHandler(async (req: CustomRequest, res: Response ) => {
         const {userId} = req;
@@ -128,16 +132,24 @@ const userController = ( userDbRepository: userDbInterface, userRepositoryDb: us
     
 
     const clearUserNotification = asyncHandler(async (req: CustomRequest, res: Response) => {
-        const { userId } = req
+        const { userId } = req;
         if (userId) {
             await clearNotification(userId, dbRepositoryUser)
             res.status(200).json({ status: "success"})
         }
     })
 
+    const verifiedAccount = asyncHandler( async (req: CustomRequest, res: Response) => {
+        console.log("Account verification function - - - - - -1")
+        const { userId } = req
+        if(userId) {
+            await VerificationPayment(userId, req.body, dbRepositoryUser, paymentService )
+        }
+    })
+
     
 
-    return { isBlockedUser, searchUser, getUserById, profileUpdate, checkPassword, changePassword, getUserByName, userFollow, userUnfollow, postSave, notifications, clearUserNotification }
+    return { isBlockedUser, searchUser, getUserById, profileUpdate, checkPassword, changePassword, getUserByName, userFollow, userUnfollow, postSave, notifications, clearUserNotification, verifiedAccount }
 }
 
 

@@ -24,7 +24,7 @@ const PostTable = () => {
     const response: { status: string; reports: ReportPosts[] } =
       await adminRequest.getReports();
     console.log(response);
-    setItems(response?.reports);
+    setItems(response?.reports.reverse());
   };
 
   return (
@@ -40,12 +40,6 @@ const PostTable = () => {
                     className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Post
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Description
                   </th>
                   <th
                     scope="col"
@@ -88,17 +82,10 @@ const PostTable = () => {
                             alt=""
                           />
                         </div>
-                        {/* <div className="ml-4">
-                         <div className="text-sm font-medium text-gray-900">{item?.postId.description}</div>
-                       </div> */}
+                        
                       </div>
                     </td>
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
-                        {item?.postId?.description}
-                      </div>
-                    </td>
-
+                  
                     <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
                       {item?.userId?.name}
                     </td>

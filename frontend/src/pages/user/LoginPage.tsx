@@ -26,14 +26,7 @@ import Loading from "../../components/shimmer/Loading";
 import { authRequest } from "../../api/requests/authRequest";
 
 const loginSchema = Yup.object({
-  name: Yup.string()
-    .min(4)
-    .max(15)
-    .required("Please enter your name ")
-    .matches(
-      /^[a-zA-Z0-9]+$/,
-      "* This field cannot contain white space and special character"
-    ),
+  name: Yup.string().min(4).max(15).required("Please enter your name ").matches(/^[a-zA-Z0-9]+$/, "* This field cannot contain white space and special character"),
   password: Yup.string().required("Please enter your password"),
 });
 

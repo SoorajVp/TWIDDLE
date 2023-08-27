@@ -4,9 +4,9 @@ import AppError from "../../../utils/appError";
 import { userDbInterface } from "../../repositories/userDbRepository";
 import { authServiceInterfaceType } from "../../services/authServiceInterface";
 import { cloudServiceType } from "../../services/cloudServiceInterface";
+import { paymentInterface } from "../../services/paymentServiceInterface";
 
 export const getAllUser = async(repository: ReturnType<userDbInterface> ) => {
-    console.log("function 2 ----")
     const users = await repository.getAllUser()
     return users;
 }
@@ -35,6 +35,7 @@ export const updateProfile = async ( userData: editUserInterface, repository: Re
     if(isNameExists && isNameExists?._id != userData.id) {
         throw new AppError("Name is already exists", HttpStatus.OK);
     }
+    
     if(userData.profilePic) {
         if(userData.key != "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg") {
             const key: string | undefined = userData.key.split("/").pop()?.toString()
@@ -44,6 +45,7 @@ export const updateProfile = async ( userData: editUserInterface, repository: Re
         await repository.newProfilePic( userData.id, imgUrl)
     }
 
+    
     return await repository.updateProfile(userData);
 }
 
@@ -99,4 +101,20 @@ export const getNotifications = async( userId: string, repository: ReturnType<us
 
 export const clearNotification = async (userId: string, repository: ReturnType<userDbInterface>) => {
     return await repository.clearNotification(userId);
+}
+
+
+export const VerificationPayment = async ( userId: string, data: any, repository: ReturnType<userDbInterface>, service: ReturnType<paymentInterface> ) => {
+    console.log("Account verification function - - - - - -2")
+
+    const result = await service.payAmount(data);
+
+    console.log("last result from payment function ----", result );
+
+    if( result ) {
+        return await repository.verificationTick(userId);
+    } else {
+        throw new AppError ( "Something went wrong", HttpStatus.OK)
+    }
+
 }

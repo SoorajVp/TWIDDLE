@@ -1,20 +1,23 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { BiVideo } from "react-icons/bi";
+import { BiSolidVideoPlus } from "react-icons/bi";
 import { useEffect, useRef, useState } from "react";
 import { userRequest } from "../../../api/requests/userRequest";
-import { userInterface } from "../../../state/interface/userInterface";
+import { RootState, userInterface } from "../../../state/interface/userInterface";
 import { chatRequest } from "../../../api/requests/chatRequest";
 import { lastTimeFormat } from "../../../utils/lastTimeFormat";
 import InputEmoji from "react-input-emoji";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { MdSend } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { ZIM } from "zego-zim-web"
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import {
   ChatListInterface,
   MessageInterface,
   activeUsersType,
 } from "../../../state/interface/chatInterface";
+import { useSelector } from "react-redux";
 
 type PropsTypes = {
   chat: ChatListInterface;
@@ -57,30 +60,41 @@ const Messages: React.FC<PropsTypes> = ({
 }) => {
   const [userData, setUserData] = useState<userInterface>(null);
   const [messages, setMessages] = useState<MessageInterface[]>([]);
+  const { user } = useSelector((store: RootState) => store.user)
   const [newMessage, setNewMessage] = useState<string>("");
   const scroll = useRef<HTMLDivElement | null>(null);
 
+  const zeroCloudInstance = useRef<ZegoUIKitPrebuilt | null>(null)
+
+
+  const appID = 1123183254;
+  const serverSecret = "17d4269f2ff9f62fc4715c910b7a7135";
+  const userID = currentUserId;
+  const roomId = chat?._id;
+
+
+
   useEffect(() => {
-    console.log("This is rendering effect  -----", messages);
     const fetchMessages = async () => {
       const response = (await chatRequest.getMessages(
         chat._id
       )) as ApiChatResponse;
-      console.log("Messaaaging response ----------------", response);
       setMessages(response.messages);
     };
     if (chat !== null) fetchMessages();
   }, [chat]);
+ 
 
   useEffect(() => {
-    console.log("I got this messageeeee - - - - - - - ");
+    console.log("message receiving useEffect ..... ", receiveMessage)
     if (receiveMessage !== null && receiveMessage?.chatId === chat?._id) {
-      console.log("I got this messageeeee - - - - - - - ", receiveMessage);
       const currentDate = new Date();
       receiveMessage.createdAt = currentDate.toISOString();
       setMessages([...messages, receiveMessage]);
     }
-  }, [receiveMessage]);
+  }, [ receiveMessage ]);
+
+
 
   useEffect(() => {
     const chatUserId = chat?.members.find((id) => id !== currentUserId);
@@ -93,14 +107,21 @@ const Messages: React.FC<PropsTypes> = ({
     if (chat !== null) getChatUser(chatUserId);
   }, [chat, currentUserId]);
 
-  // Auto messsage botton scroll
+
+
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+
+
   const handleChange = (newMessage: string) => {
     setNewMessage(newMessage);
   };
+
+
+
+
 
   const HandleMessageSend = async () => {
     if (newMessage) {
@@ -110,9 +131,7 @@ const Messages: React.FC<PropsTypes> = ({
           text: newMessage,
           chatId: chat._id,
         };
-        const response = (await chatRequest.addMessage(
-          message
-        )) as ApiMessageResponse;
+        const response = (await chatRequest.addMessage( message )) as ApiMessageResponse;
         setMessages([...messages, response.message]);
         setNewMessage("");
         const receiverId = chat?.members?.find((id) => id !== currentUserId);
@@ -123,14 +142,44 @@ const Messages: React.FC<PropsTypes> = ({
     }
   };
 
+
+
+
   const checkOnline = (chat: ChatListInterface) => {
-    const chatMembers = chat.members.find((member) => member !== currentUserId);
+    const chatMembers = chat.members.find((member) => member !== currentUserId)
     const online = onlineUsers.find(
       (userData) => userData.userId === chatMembers
     );
-    console.log("online user - - - - - ", online);
     return online ? true : false;
   };
+
+
+
+
+  const startVideoCall = () => {
+    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomId, userID, user?.name);
+
+    zeroCloudInstance.current = ZegoUIKitPrebuilt.create(kitToken);
+    zeroCloudInstance.current.addPlugins({ ZIM })
+
+
+    zeroCloudInstance.current.sendCallInvitation({
+        callees: [{ userID: userData._id, userName: "user_" + roomId }],
+        callType: ZegoUIKitPrebuilt.InvitationTypeVideoCall,
+        timeout: 60,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.errorInvitees.length) {
+          alert("The user dose not exist or is offline.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
 
   return (
     <div className="">
@@ -153,7 +202,7 @@ const Messages: React.FC<PropsTypes> = ({
                   src={userData?.profilePic}
                   alt=""
                   className="w-10 h-10 rounded-full"
-                /> 
+                />
               </Link>
               <Link to={`/${userData?.name}`} >
                 <div className="flex flex-col leading-tight">
@@ -166,14 +215,16 @@ const Messages: React.FC<PropsTypes> = ({
                 </div>
               </Link>
             </div>
+
             <div className="flex items-center space-x-2">
-              <button
+              <button onClick={startVideoCall}
                 type="button"
-                className="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-200 focus:outline-none"
+                className="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-blue-700 hover:bg-gray-200 focus:outline-none"
               >
-                <BiVideo size={30} />
+                <BiSolidVideoPlus size={34} />
               </button>
             </div>
+
           </div>
           {messages.length === 0 ? (
             <div className="flex justify-center justify-items-center">

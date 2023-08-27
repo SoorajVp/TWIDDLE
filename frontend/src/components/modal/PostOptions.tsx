@@ -10,6 +10,7 @@ import { setAction } from "../../state/slices/userSlice";
 import { RootState } from "../../state/interface/userInterface";
 import { SlOptionsVertical } from "react-icons/sl";
 import { postRequest } from "../../api/requests/postRequest";
+import Loading from "../shimmer/Loading";
 
 const customStyles = {
   content: {
@@ -38,6 +39,7 @@ export const ReportPost = ({
   darkMode: boolean;
 }) => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [reason, setReason] = useState<string>(null);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
 
@@ -57,12 +59,14 @@ export const ReportPost = ({
   const HandleReport = async () => {
     if (reason && reason !== " ") {
       console.log(reason);
+      setLoading(true)
       const data: { userId: string; postId: string; reason: string } = {
         userId: userId,
         postId: postId,
         reason: reason,
       };
       const response: ReportPostResponse = await postRequest.reportPost(data);
+      setLoading(false)
       if (response.status === "success") {
         closeModal();
         toast.success(response.message, {
@@ -80,6 +84,7 @@ export const ReportPost = ({
 
   return (
     <div>
+      { isLoading && <Loading /> }
       <li
         onClick={openModal}
         className={`${
@@ -159,7 +164,9 @@ export const DeletePost = ({
   darkMode: boolean;
   image: string;
 }) => {
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
+
   const subtitleRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
 
@@ -178,8 +185,11 @@ export const DeletePost = ({
 
   console.log(image.split("/").pop());
   const HandlePostDelete = async () => {
+    setLoading(true)
     const response: { status: string; message: string } =
-      await postRequest.deletePost(postId, image.split("/").pop());
+    await postRequest.deletePost(postId, image.split("/").pop());
+    setLoading(false)
+
     console.log(response);
     dispatch(setAction());
     setIsOpen(false);
@@ -190,6 +200,7 @@ export const DeletePost = ({
   };
   return (
     <div>
+      {isLoading && <Loading />}
       <li
         onClick={openModal}
         className={`${
@@ -271,6 +282,7 @@ export const CommentOption = ({
 }) => {
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const [commentOption, setCommentOption] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const commentOptionRef = useRef<HTMLDivElement | null>(null);
 
@@ -319,6 +331,7 @@ export const CommentOption = ({
 
   return (
     <div ref={commentOptionRef} className="relative inline-block text-left">
+      
       {commentOption && (
         <div
           className={`${darkMode && bgColor} ${color} ${

@@ -100,6 +100,12 @@ export const userRepositoryDb = () => {
         return await Notification.deleteMany({ userId: userId });
     }
 
+    const verificationTick = async (userId: string) => {
+        console.log("Account verification function - - - - - -6")
+
+        return await User.findByIdAndUpdate( { _id: userId},{ verfied: true });
+    }
+
 
 
     return { 
@@ -121,7 +127,8 @@ export const userRepositoryDb = () => {
         unSavePost, 
         getSavedPost, 
         getNotifications, 
-        clearNotification 
+        clearNotification,
+        verificationTick
     }
 }
 

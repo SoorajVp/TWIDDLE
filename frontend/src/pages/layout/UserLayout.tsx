@@ -14,7 +14,7 @@ const UserLayout = () => {
       if (!localStorage.getItem("token") ) {
         navigate("/login");
       } 
-  }, []);
+  });
   
 
   let color: string, bgColor: string;
@@ -23,6 +23,7 @@ const UserLayout = () => {
   } else {
     (color = "text-gray-950"), (bgColor = "bg-white");
   }
+  
   return (
 
 
@@ -34,9 +35,7 @@ const UserLayout = () => {
             <SideBar />
 
             {/* <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto "> */}
-              
               <Outlet />
-
             {/* </div> */}
 
             {/* <ChatList /> */}

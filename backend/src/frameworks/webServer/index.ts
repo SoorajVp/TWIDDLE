@@ -22,8 +22,6 @@ const routes = ( app: Application ) => {
     app.use("/api/message", userAuthMiddleware, messageRouter());
 
 
-
-    
 }
 
 export default routes;
