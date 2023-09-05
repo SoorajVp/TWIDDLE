@@ -1,7 +1,9 @@
 import Stripe from 'stripe';
-import { v4 as uuidv4 } from 'uuid';
+import configKeys from '../../config';
+import AppError from '../../utils/appError';
+import { HttpStatus } from '../../types/httpStatus';
 
-const stripe = new Stripe('sk_test_51NjHLbSBJxcGv2xCqp0BOY4RcMlHSFTGj8rbXHr1TqEt8e7Kem7QCF7zy6ucyPNu0DnDxbBtZVmulK4BmmOWeioW00vpGmmyN0', {
+const stripe = new Stripe(configKeys.STRIPE_SECRET_KEY, {
     apiVersion: '2023-08-16',
 });
 
@@ -9,37 +11,47 @@ const stripe = new Stripe('sk_test_51NjHLbSBJxcGv2xCqp0BOY4RcMlHSFTGj8rbXHr1TqEt
 
 export const paymentService = () => {
 
-    const payAmount = (data: any) => {
-        console.log("Account verification function - - - - - -4")
-
-        const { details, token } = data
-        console.log("this is data - - - - ", token)
-        const idempotencyKey = uuidv4()
-        stripe.customers.create({
-            email: token.email,
-            source: token.id
-        })
-            .then(customer => {
-                console.log(customer);
-                stripe.charges.create({
-                    amount: details.price,
-                    currency: 'usd',
-                    customer: customer.id,
-                    receipt_email: token.email,
-                    description: `Verification of user ${details.name}`
-                }, { idempotencyKey })
-            })
-            .then((result) => {
-                console.log("this is payment result - ", result);
-                return { status: true }
-            })
-            .catch((error) => {
-                console.log("payment service error -- - -", error )
-                return { status: false }
+    const payAmount = async( userId: string ) => {
+        try {
+            const lineItems = [
+                {
+                    price_data: {
+                        currency: "inr",
+                        product_data: {
+                            name: "Verification Process"
+                        },
+                        unit_amount: 5000 * 100
+                    },
+                    quantity: 1
+                }
+            ];
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ["card"],
+                line_items: lineItems,
+                mode: 'payment',
+                success_url: `${configKeys.CLIENT_PORT}/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${configKeys.CLIENT_PORT}/payment`,
             });
+            
+            return session.id;
+
+        } catch (error) {
+            throw new AppError("Something went wrong", HttpStatus.OK)
+        }
     }
 
-    return { payAmount }
+    const checkSubscription = async( sessionId: string) => {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        console.log("payment service function - - - -", session )
+        if(session) {
+            return session.payment_status;
+        } else {
+            throw new AppError("Invalid payment session", HttpStatus.OK)
+        }
+        
+    }
+
+    return { payAmount, checkSubscription }
 }
 
 export type paymentServiceType = typeof paymentService;

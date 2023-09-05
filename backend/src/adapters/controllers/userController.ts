@@ -3,7 +3,7 @@ import AppError from "../../utils/appError";
 import { Request, Response } from "express";
 import { userDbInterface } from "../../application/repositories/userDbRepository";
 import { userRepositoryDbType } from "../../frameworks/database/repositories/userRepository";
-import { VerificationPayment, clearNotification, followUser, getNotifications, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch } from "../../application/useCases/user/user";
+import { VerificationPayment, checkSubscription, clearNotification, followUser, getNotifications, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch } from "../../application/useCases/user/user";
 import { editUserInterface, userDataInterface } from "../../types/interface/userInterface";
 import { HttpStatus } from "../../types/httpStatus";
 import { getUserPosts } from "../../application/useCases/post/post";
@@ -139,17 +139,50 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
         }
     })
 
-    const verifiedAccount = asyncHandler( async (req: CustomRequest, res: Response) => {
-        console.log("Account verification function - - - - - -1")
+    const verifySubscription = asyncHandler( async (req: CustomRequest, res: Response) => {
+        console.log("Account verification function - - - - - - 1");
         const { userId } = req
+        console.log(userId)
+           
         if(userId) {
-            await VerificationPayment(userId, req.body, dbRepositoryUser, paymentService )
+            const sesssionId = await VerificationPayment(userId, paymentService );
+            console.log("payment result - - - - ", sesssionId)
+            res.status(200).json({ status: "success", sesssionId })
+        }
+    })
+
+    const subscriptionStatus = asyncHandler(async(req: CustomRequest, res: Response) => {
+        const { userId } = req
+        const { sessionId } = req.params;
+        if(userId) {
+            const result = await checkSubscription( sessionId, userId, dbRepositoryUser, paymentService ) 
+            if(result) {
+                res.status(200).json({ status: "success", message: "Verification success" });
+            } else {
+                throw new AppError("Something went wrong !", HttpStatus.OK);
+            }
         }
     })
 
     
 
-    return { isBlockedUser, searchUser, getUserById, profileUpdate, checkPassword, changePassword, getUserByName, userFollow, userUnfollow, postSave, notifications, clearUserNotification, verifiedAccount }
+    return { 
+        isBlockedUser, 
+        searchUser, 
+        getUserById, 
+        profileUpdate, 
+        checkPassword, 
+        changePassword, 
+        getUserByName, 
+        userFollow, 
+        userUnfollow, 
+        postSave, 
+        notifications, 
+        clearUserNotification, 
+        verifySubscription,
+        subscriptionStatus 
+    }
+
 }
 
 

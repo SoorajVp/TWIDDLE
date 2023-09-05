@@ -104,17 +104,27 @@ export const clearNotification = async (userId: string, repository: ReturnType<u
 }
 
 
-export const VerificationPayment = async ( userId: string, data: any, repository: ReturnType<userDbInterface>, service: ReturnType<paymentInterface> ) => {
+export const VerificationPayment = async ( userId: string, service: ReturnType<paymentInterface> ) => {
     console.log("Account verification function - - - - - -2")
 
-    const result = await service.payAmount(data);
+    const result = await service.payAmount(userId);
 
     console.log("last result from payment function ----", result );
 
     if( result ) {
-        return await repository.verificationTick(userId);
+        return result;
     } else {
         throw new AppError ( "Something went wrong", HttpStatus.OK)
     }
 
+}
+
+export const checkSubscription = async (sessionId: string, userId: string, repository: ReturnType<userDbInterface>, service: ReturnType<paymentInterface> ) => {
+    const paymentStatus = await service.checkSubscription(sessionId);
+    if(paymentStatus === "paid") {
+        await repository.verificationTick(userId);
+        return true
+    } else {
+        throw new AppError("Invalid payment session", HttpStatus.OK)
+    }
 }

@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { io, Socket } from "socket.io-client";
+import { socket } from "../../socket";
 import ChatList from "../../components/user/chats/ChatList";
 import Messages from "../../components/user/chats/Messages";
 import { RootState } from "../../state/interface/userInterface";
-import { SOCKET_URL } from "../../constants";
 import { chatRequest } from "../../api/requests/chatRequest";
 import {
   ChatListInterface,
@@ -32,7 +30,7 @@ const ChatPage = () => {
   const [onlineUsers, setOnlineUsers] = useState<activeUsersType[]>([]);
   const [sendMessage, setSendMessage] = useState<sendMessageType>(null);
   const [receiveMessage, setReceiveMessage] = useState<MessageInterface>(null);
-  const socket = useRef<Socket>();
+  // const socket = useRef<Socket>();
 
   useEffect(() => {
     if (lastChat) {
@@ -48,16 +46,16 @@ const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    socket.current = io(SOCKET_URL);
-    socket.current.emit("new-user-add", user._id);
-    socket.current.on("get-users", (users: activeUsersType[]) => {
+    // socket.current = io(SOCKET_URL);
+    socket.emit("new-user-add", user._id);
+    socket.on("get-users", (users: activeUsersType[]) => {
       console.log("Online user ----", users);
       setOnlineUsers(users);
     });
   }, [user]);
 
   useEffect(() => {
-    socket.current.on("receive-message", (data: MessageInterface) => {
+    socket.on("receive-message", (data: MessageInterface) => {
       console.log("message receiving -----", data);
       setReceiveMessage(data);
       console.log("Received messages -----", receiveMessage);
@@ -67,7 +65,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (sendMessage !== null) {
-      socket.current.emit("send-message", sendMessage);
+      socket.emit("send-message", sendMessage);
     }
   }, [sendMessage]);
 

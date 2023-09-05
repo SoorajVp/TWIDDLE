@@ -11,6 +11,7 @@ import Notification from "../../pages/user/Notification";
 import VideoCall from "../../components/user/videoCall/VideoCall";
 import ChatPage from "../../pages/user/ChatPage";
 import PaymentPage from "../../pages/user/PaymentPage";
+import VerifySuccess from "../../components/user/verifyTic/VerifySuccess";
 
 // const HomePage = lazy(() => import('../../pages/user/HomePage'));
 
@@ -67,6 +68,10 @@ export const userRouter = {
     {
       path: "/payment",
       element: <PaymentPage />,
+    },
+    {
+      path: "/subscription/success",
+      element: <VerifySuccess />
     }
     
   ],

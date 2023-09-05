@@ -97,8 +97,8 @@ const PostCard = ({
         postUserId: userId._id
       };
       await postRequest.commentPost(data);
-      dispatch(setAction());
       setComment("");
+      dispatch(setAction());
     }
   };
 
@@ -106,13 +106,13 @@ const PostCard = ({
     setSaved(true);
     dispatch(setSavePost({ postId: _id }));
     await postRequest.savePost(_id);
-    dispatch(setSavePost({ postId: _id }));
   };
 
   const HandleUnSave = async () => {
     setSaved(false);
     dispatch(setunSavePost({ postId: _id }));
     await postRequest.savePost(_id);
+    dispatch(setAction());
   };
 
   const handleCommentText = (newMessage: string) => {

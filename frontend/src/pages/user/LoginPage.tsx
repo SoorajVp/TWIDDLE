@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable no-var */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +5,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { setLogin } from "../../state/slices/userSlice";
 import { useEffect, useState } from "react";
-import {
-  AuthResponse,
-  userInterface,
-} from "../../state/interface/userInterface";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,6 +15,11 @@ import { GOOGLE_CLIENT_ID } from "../../constants";
 import jwt_decode from "jwt-decode";
 import Loading from "../../components/shimmer/Loading";
 import { authRequest } from "../../api/requests/authRequest";
+
+import {
+  AuthResponse,
+  userInterface,
+} from "../../state/interface/userInterface";
 
 const loginSchema = Yup.object({
   name: Yup.string().min(4).max(15).required("Please enter your name ").matches(/^[a-zA-Z0-9]+$/, "* This field cannot contain white space and special character"),

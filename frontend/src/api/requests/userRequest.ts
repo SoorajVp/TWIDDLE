@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import { api } from "../instance/user";
 
@@ -98,8 +96,16 @@ export const userRequest = {
     return response.data;
   },
 
-  payment: async (payload: object) => {
-    const response = await api.post(`/user/payment`, payload);
+  payment: async () => {
+    const response = await api.put(`/user/account-verify-payment`);
+    if (response.data.status == "blocked") {
+      blockFunction()
+    }
+    return response.data;
+  },
+
+  checkSessionStatus: async (sessionId: string) => {
+    const response = await api.get(`/user/check-session-status/${sessionId}`);
     if (response.data.status == "blocked") {
       blockFunction()
     }

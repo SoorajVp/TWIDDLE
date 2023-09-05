@@ -1,12 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
-import {
-  AuthResponse,
-  userInterface,
-} from "../../state/interface/userInterface";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../state/slices/userSlice";
@@ -14,6 +8,10 @@ import { useEffect, useState } from "react";
 import Loading from "../../components/shimmer/Loading";
 import { toast } from "react-toastify";
 import { authRequest } from "../../api/requests/authRequest";
+import {
+  AuthResponse,
+  userInterface,
+} from "../../state/interface/userInterface";
 
 const signupSchema = Yup.object({
   name: Yup.string()

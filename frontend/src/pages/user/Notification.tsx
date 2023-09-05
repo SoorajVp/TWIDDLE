@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from "react"
 import RightBar from "../../components/user/layout/Rightbar"
 import NotificationList from "../../components/user/notification/NotificationList"

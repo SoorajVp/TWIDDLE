@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -10,7 +5,6 @@ import { RootState } from "../../state/interface/userInterface";
 import { PostInterface } from "../../state/interface/postInterface";
 import { toast } from "react-toastify";
 import RightBar from "../../components/user/layout/Rightbar";
-// import PostCard from "../../components/user/posts/PostCard";
 import { postRequest } from "../../api/requests/postRequest";
 import PostShimmer from "../../components/shimmer/postShimmer";
 import PostEmpty from "../../components/user/posts/PostEmpty";

@@ -6,13 +6,10 @@ import { HttpStatus } from "../../../types/httpStatus";
 import { userDataInterface } from "../../../types/interface/userInterface";
 import User from "../../database/models/userModel";
 
-export const userAuthMiddleware = async (
-  req: CustomRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const userAuthMiddleware = async ( req: CustomRequest, res: Response, next: NextFunction ) => {
 
   try {
+    console.log("Middleware function - - - ")
     let token: string | null = "";
     if (req.headers.authorization) {
       token = req.headers.authorization.split(" ")[1];
@@ -30,8 +27,8 @@ export const userAuthMiddleware = async (
         res.json({status: "blocked", message: "Account action Blocked "})
     }
     req.userId = payload.userId;
+    console.log("No problem")
     next();
-
   } catch (error) {
     res.json({status: "blocked", message: "Account action Blocked "})
   }

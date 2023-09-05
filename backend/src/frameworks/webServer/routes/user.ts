@@ -42,7 +42,10 @@ const userRouter = () => {
 
     router.delete('/clear-notifications', controller.clearUserNotification);
 
-    router.post('/payment', controller.verifiedAccount);
+    router.put('/account-verify-payment', controller.verifySubscription);
+
+    router.get('/check-session-status/:sessionId', controller.subscriptionStatus);
+
 
 
     

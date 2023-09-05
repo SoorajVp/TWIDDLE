@@ -12,6 +12,7 @@ const configKeys = {
     S3_SECRET_KEY: process.env.S3_BUCKET_SECRET_ACCESS_KEY as string,
     S3_REGION: process.env.S3_BUCKET_REGION as string,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME as string,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string
 }
 
 export default configKeys;

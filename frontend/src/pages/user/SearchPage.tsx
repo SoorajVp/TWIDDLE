@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { useEffect, useState } from "react";
 import SearchBar from "../../components/user/search/SearchBar";
 import { PageLoading } from "../../components/shimmer/Loading";

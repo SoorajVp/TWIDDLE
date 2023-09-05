@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Params, useParams } from "react-router-dom";
 import UserProfile from "../../components/user/profile/UserProfile";
 import { useEffect, useState } from "react";
@@ -29,7 +27,7 @@ const ProfilePage = () => {
   const { userName } = useParams<Params>();
 
   useEffect(() => {
-    console.log("render");
+    console.log("fetching");
     fetchUserData(userName);
   }, [ userName, actions ]);
 

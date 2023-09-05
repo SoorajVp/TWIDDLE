@@ -2,14 +2,17 @@ import { paymentServiceType } from "../../frameworks/services/paymentService"
 
 export const paymentServiceInterface = (service: ReturnType<paymentServiceType> ) => {
 
-    const payAmount = ( data: any) => {
+    const payAmount = ( userId: string) => {
         console.log("Account verification function - - - - - - 3")
-
-        service.payAmount(data);
-        return true
+        return service.payAmount(userId);
     }
 
-    return { payAmount };
+    const checkSubscription = (sessionId: string) => {
+        console.log("Account verification function - - - - - - 3")
+        return service.checkSubscription(sessionId);
+    }
+
+    return { payAmount, checkSubscription };
 }
 
 
