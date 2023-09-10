@@ -79,9 +79,11 @@ export const userDbRepository = (
   }
 
   const verificationTick = async (userId: string) => {
-    console.log("Account verification function - - - - - -5")
-
     return await repository.verificationTick(userId);
+  }
+
+  const randomUser = async() => {
+    return await repository.randomUsers();
   }
 
 
@@ -105,7 +107,8 @@ export const userDbRepository = (
     getSavedPost, 
     getNotifications,
     clearNotification,
-    verificationTick
+    verificationTick,
+    randomUser
   };
 };
 

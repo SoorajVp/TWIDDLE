@@ -8,6 +8,7 @@ const PostEmpty = () => {
 
 
   return (
+    <>
     <div className="flex justify-center w-full mt-8">
       <div className="text-center">
         <div className="flex justify-center">
@@ -16,10 +17,11 @@ const PostEmpty = () => {
 
         <h2 className={`${darkMode ? "text-gray-300" : "text-gray-700"} text-base`}>Discover new friends <br /> Connections in our vibrant community.</h2>
         <Link to="/search" >
-          <button className="py-1 px-7 hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-700 mt-3 rounded">Explore</button>
+          <button className="py-1 px-7 hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-700 mt-3 rounded transition duration-300 ease-in">Explore</button>
         </Link>
       </div>
     </div>
+    </>
   )
 }
 

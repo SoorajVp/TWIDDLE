@@ -110,8 +110,15 @@ export const userRequest = {
       blockFunction()
     }
     return response.data;
-  }
+  },
 
+  getSuggestedUsers: async() => {
+    const response = await api.get(`/user/random-users`);
+    if (response.data.status == "blocked") {
+      blockFunction()
+    }
+    return response.data;
+  }
 
 
 };

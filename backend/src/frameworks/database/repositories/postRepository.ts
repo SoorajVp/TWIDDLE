@@ -12,11 +12,11 @@ export const PostRespository = () => {
     }
 
     const getAllPosts = async () => {
-        return await Post.find({isBlocked: false}).populate('userId').populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
+        return await Post.find({ isBlocked: false }).populate('userId').populate({ path: 'comments.userId', select: 'name profilePic verfied'} ).sort({_id: -1})
     }
 
     const getUserPosts = async ( id: string ) => {
-        return await Post.find({ userId: id }).populate('userId').populate({ path: 'comments.userId', select: 'name profilePic' }).sort({_id: -1})
+        return await Post.find({ userId: id }).populate('userId').populate({ path: 'comments.userId', select: 'name profilePic verfied' }).sort({_id: -1})
     }
 
     const getFollowPosts = async ( userId?: string ) => {
@@ -24,7 +24,7 @@ export const PostRespository = () => {
         if (user) {
             const followingArray: string[] = user.following as string[];
             userId && followingArray?.push(userId)
-            return await Post.find({ isBlocked: false, userId: { $in: user.following } }).populate("userId").populate({path:'comments.userId',select: 'name profilePic'} ).sort({_id: -1})
+            return await Post.find({ isBlocked: false, userId: { $in: user.following } }).populate("userId").populate({ path: 'comments.userId', select: 'name profilePic verfied'} ).sort({_id: -1})
         }
     }
 

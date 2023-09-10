@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import React from "react"
 import { NotificationInterface } from "../../../state/interface/notificationsInterface"
 import { userRequest } from "../../../api/requests/userRequest"

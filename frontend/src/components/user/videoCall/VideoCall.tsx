@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
-import RightBar from "../layout/Rightbar";
+import RightBar from "../layout/rightBar/Rightbar";
 import { useEffect, useRef } from "react";
 import { ZIM } from "zego-zim-web"
 
@@ -44,30 +44,30 @@ const VideoCall = () => {
     // const myMeeting = (element) => {
 
 
-        // const zc = ZegoUIKitPrebuilt.create(kitToken);
+    // const zc = ZegoUIKitPrebuilt.create(kitToken);
 
-        // zc.joinRoom({
-        //     container: element,
-        //     sharedLinks: [
-        //         {
-        //             name: 'Personal link',
-        //             url: `http://localhost:5173/room/${roomId}`
-        //         },
-        //     ],
-        //     scenario: {
-        //         mode: ZegoUIKitPrebuilt.OneONoneCall
-        //     },
-            // showScreenSharingButton: true,
-        //     showTurnOffRemoteCameraButton: false,
-        //     showTurnOffRemoteMicrophoneButton: false,
-        //     showRemoveUserButton: false
-        // })
+    // zc.joinRoom({
+    //     container: element,
+    //     sharedLinks: [
+    //         {
+    //             name: 'Personal link',
+    //             url: `http://localhost:5173/room/${roomId}`
+    //         },
+    //     ],
+    //     scenario: {
+    //         mode: ZegoUIKitPrebuilt.OneONoneCall
+    //     },
+    // showScreenSharingButton: true,
+    //     showTurnOffRemoteCameraButton: false,
+    //     showTurnOffRemoteMicrophoneButton: false,
+    //     showRemoveUserButton: false
+    // })
 
 
 
     // }
 
-    
+
     return (
         <>
             <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto flex justify-center">

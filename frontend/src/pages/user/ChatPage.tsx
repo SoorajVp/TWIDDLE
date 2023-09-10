@@ -76,7 +76,7 @@ const ChatPage = () => {
       <div
         className={` ${
           !currentChat ? "hidden" : "col-span-7"
-        } md:block lg:px-10 px-2 md:col-span-4 overflow-auto`}
+        } md:block lg:px-10 px-2 sm:col-span-6 md:col-span-6 lg:col-span-4 overflow-auto`}
       >
 
         <Messages

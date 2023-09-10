@@ -3,7 +3,7 @@ import AppError from "../../utils/appError";
 import { Request, Response } from "express";
 import { userDbInterface } from "../../application/repositories/userDbRepository";
 import { userRepositoryDbType } from "../../frameworks/database/repositories/userRepository";
-import { VerificationPayment, checkSubscription, clearNotification, followUser, getNotifications, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch } from "../../application/useCases/user/user";
+import { VerificationPayment, checkSubscription, clearNotification, followUser, getNotifications, getSavedPost, passwordChange, passwordCheck, savePost, unSavePost, unfollowUser, updateProfile, userById, userByName, userSearch, userSuggestions } from "../../application/useCases/user/user";
 import { editUserInterface, userDataInterface } from "../../types/interface/userInterface";
 import { HttpStatus } from "../../types/httpStatus";
 import { getUserPosts } from "../../application/useCases/post/post";
@@ -164,6 +164,11 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
         }
     })
 
+    const randomUserSuggestions = asyncHandler(async(req: Request, res: Response) => {
+        const users = await userSuggestions(dbRepositoryUser);
+        res.status(200).json({status: "success", users })
+    })
+
     
 
     return { 
@@ -180,7 +185,8 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
         notifications, 
         clearUserNotification, 
         verifySubscription,
-        subscriptionStatus 
+        subscriptionStatus,
+        randomUserSuggestions 
     }
 
 }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useEffect, useRef, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { HiOutlineChatBubbleLeft } from "react-icons/hi2";
@@ -20,7 +19,7 @@ import {
 } from "../../../state/interface/postInterface";
 import { CommentOption, DeletePost, ReportPost } from "../../modal/PostOptions";
 import { postRequest } from "../../../api/requests/postRequest";
-import { MdSend } from "react-icons/md";
+import { MdSend, MdVerified } from "react-icons/md";
 
 const PostCard = ({
   _id,
@@ -37,21 +36,20 @@ const PostCard = ({
   const [likeCount, setLikeCount] = useState<number>(likes?.length);
   const [comment, setComment] = useState<string>("");
   const [commentList, setCommentList] = useState<CommentInterface[]>(comments);
-
   const [dropDown, setDropDown] = useState<boolean>(false);
 
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setCommentList( comments );
+    setCommentList(comments);
     if (likes?.includes(user._id)) {
       setLiked(true);
     }
     if (user?.saved?.includes(_id)) {
       setSaved(true);
     }
-  }, [ comments ]);
+  }, [comments]);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const commentBoxRef = useRef<HTMLDivElement | null>(null);
@@ -142,13 +140,15 @@ const PostCard = ({
               />
             </Link>
             <div className="flex flex-col">
-              <div>
+              <div className="flex">
                 <Link
                   to={`/${userId?.name}`}
                   className="inline-block text-sm font-medium"
                 >
                   {userId?.name}
                 </Link>
+                {userId.verfied &&
+                  <div className=" pl-1 pt-0.5 text-blue-600"><MdVerified size={19} /></div>}
               </div>
               <div className="text-slate-500" style={{ fontSize: "13px" }}>
                 {lastTime}
@@ -159,9 +159,8 @@ const PostCard = ({
             <div ref={dropdownRef} className="relative inline-block text-left">
               {dropDown && (
                 <div
-                  className={`${
-                    darkMode && "bg-black"
-                  } ${color} origin-top-right absolute -mt-2 right-0 mr-8 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-1 ring-gray-200 ring-opacity-5`}
+                  className={`${darkMode && "bg-black"
+                    } ${color} origin-top-right absolute -mt-2 right-0 mr-8 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-1 ring-gray-200 ring-opacity-5`}
                 >
                   <ul
                     className="py-1 border rounded-md"
@@ -202,9 +201,8 @@ const PostCard = ({
               style={{ width: "100%", height: "auto" }}
             >
               <img
-                className={`w-full h-full object-cover ${
-                  darkMode ? "bg-gray-800" : "bg-gray-200"
-                }`}
+                className={`w-full h-full object-cover ${darkMode ? "bg-gray-800" : "bg-gray-200"
+                  }`}
                 src={image}
                 alt="Image 1"
               />
@@ -266,7 +264,7 @@ const PostCard = ({
         {CommentBox && (
           <div ref={commentBoxRef} >
             <div className="flex pt-1">
-              <InputEmoji value={comment} onChange={handleCommentText} placeholder="Type your comment..." 
+              <InputEmoji value={comment} onChange={handleCommentText} placeholder="Type your comment..."
                 className="" />
               <button onClick={HandleComment} type="button"
                 className="inline-flex items-center justify-center rounded-lg px-2 text-blue-700 hover:bg-slate-100" >
@@ -285,17 +283,21 @@ const PostCard = ({
                         alt="Profile"
                       />
                       <div className="flex-2 pl-2">
-                        <p className="text-sm font-medium">
-                          {item?.userId?.name}
-                        </p>
-                        <p
-                          className="text-gray-500 truncate"
+                        <div className="flex">
+                          <p className="text-sm font-medium">
+                            {item?.userId?.name}
+                          </p>
+                          {item.userId.verfied && <div className=" pl-1 pt-0.5 text-blue-600"><MdVerified size={18} /></div>}
+                        </div>
+                        <p className="text-gray-500 truncate"
                           style={{ fontSize: "13px" }}
                         >
                           {lastTimeFormat(item.createdAt.toString())}
                         </p>
                       </div>
                     </Link>
+
+
 
                     <p className="pt-0.5 pl-3 text-sm">{item?.comment}</p>
                   </div>

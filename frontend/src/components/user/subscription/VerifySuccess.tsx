@@ -2,9 +2,10 @@ import { useEffect } from "react"
 import Loading from "../../shimmer/Loading"
 import { userRequest } from "../../../api/requests/userRequest";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import { toast } from "react-toastify";
+import { setVerified } from "../../../state/slices/userSlice";
 
 type ApiResponse = {
     status: string,
@@ -14,6 +15,7 @@ type ApiResponse = {
 
 const VerifySuccess = () => {
     const { user } = useSelector((store: RootState) => store.user )
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -30,6 +32,7 @@ const VerifySuccess = () => {
                 position: toast.POSITION.TOP_CENTER,
                 hideProgressBar: true,
             });
+            dispatch(setVerified())
             navigate(`/${user.name}`)
         } else {
             toast.error(response.message, {

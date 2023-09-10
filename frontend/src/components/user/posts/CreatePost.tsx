@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ChangeEvent, useState } from "react";
 import Cropper from "react-easy-crop";
 import { dataURLtoFile } from "../../../utils/ImageCropDialog";
@@ -102,12 +98,12 @@ const CreatePost = () => {
       {loading && <Loading />}
       <div className="flex my-2 justify-between">
         <div className="font-medium text-lg pt-4 pl-1">New Post</div>
-        <div
-          className="p-2 px-4 mt-3 text-xs bg-blue-600 text-white font-semibold hover:bg-blue-500 cursor-pointer rounded"
+        <button
+          className="p-1 px-5 text-xs font-bold hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-700 mt-3 rounded transition duration-300 ease-in"
           onClick={handleCreatePost}
         >
           CREATE
-        </div>
+        </button>
       </div>
       <div className="flex items-center justify-center w-full">
         <label

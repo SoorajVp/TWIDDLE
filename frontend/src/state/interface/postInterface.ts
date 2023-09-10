@@ -14,10 +14,10 @@ export interface PostInterface {
 }
 
 export interface CommentInterface {
-   _id: string
-    userId: { _id: string, name:string, profilePic: string};
-    comment?: string;
-    createdAt: Date;
+  _id: string
+  userId: { _id: string, name: string, profilePic: string, verfied: boolean };
+  comment?: string;
+  createdAt: Date;
 }
 
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { BiBookmark } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
 import { RiTable2 } from "react-icons/ri";
@@ -14,6 +13,7 @@ import { ChatListInterface } from "../../../state/interface/chatInterface";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLastChat, setUserFollow, setUserUnfollow } from "../../../state/slices/userSlice";
+import { MdVerified } from "react-icons/md";
 
 type profileInterface = {
   accountProfile: boolean;
@@ -110,9 +110,15 @@ const UserProfile = ({
         <div className="col-span-3 md:mt-4">
           <div className=" flex lg:justify-between md:px-8 justify-end">
             <div className="hidden lg:block">
-              <h3 className="p-2 font-medium text-base">
+              <div className="p-2 font-medium flex text-base">
+
+              <h3>
                 {accountProfile ? stateUser?.name : userData.name}
-              </h3>
+              </h3> 
+                {userData.verfied && 
+                <div className="p-1 text-blue-600"><MdVerified /></div> }
+                
+              </div>
             </div>
             <div className="flex gap-1 justify-between">
               {accountProfile ? (

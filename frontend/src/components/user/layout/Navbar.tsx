@@ -7,9 +7,6 @@ import { RootState } from '../../../state/interface/userInterface';
 import { Link, useLocation } from 'react-router-dom';
 
 
-
-
-
 const Navbar = () => {
   const { user, darkMode } =useSelector((store: RootState) => store.user )
   const location = useLocation()
@@ -21,6 +18,7 @@ const Navbar = () => {
     { name: "Profile", href: `/${user?.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 border rounded-full" alt="ProfilePic" />},
   ];
 
+  
   let color: string, bgColor: string, hover: string;
   if (darkMode) {
     (color = "text-white"),

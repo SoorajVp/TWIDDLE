@@ -1,15 +1,11 @@
-import RightBar from "../../components/user/layout/Rightbar"
-import AccountVerification from "../../components/user/verifyTic/AccountVerification"
+import RightBar from "../../components/user/layout/rightBar/Rightbar"
+import AccountVerification from "../../components/user/subscription/AccountVerification"
 
 const PaymentPage = () => {
 
     return (
         <>
-            <div className="lg:px-10 px-2 col-span-7 sm:col-span-4 overflow-auto">
-                <AccountVerification />
-            </div>
-            
-            <RightBar />
+            <AccountVerification />
 
         </>
     )

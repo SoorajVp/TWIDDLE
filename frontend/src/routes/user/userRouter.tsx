@@ -11,13 +11,13 @@ import Notification from "../../pages/user/Notification";
 import VideoCall from "../../components/user/videoCall/VideoCall";
 import ChatPage from "../../pages/user/ChatPage";
 import PaymentPage from "../../pages/user/PaymentPage";
-import VerifySuccess from "../../components/user/verifyTic/VerifySuccess";
+import VerifySuccess from "../../components/user/subscription/VerifySuccess";
 
 // const HomePage = lazy(() => import('../../pages/user/HomePage'));
 
 export const secretPage = {
-   path: "/api/auth/:id/token", 
-   element: <SecretToken /> 
+  path: "/api/auth/:id/token",
+  element: <SecretToken />
 }
 
 export const userLogin = {
@@ -40,7 +40,7 @@ export const userRouter = {
     {
       path: "/",
       element: <HomePage />
-    }, 
+    },
     {
       path: "/:userName",
       element: <ProfilePage />,
@@ -73,8 +73,7 @@ export const userRouter = {
       path: "/subscription/success",
       element: <VerifySuccess />
     }
-    
+
   ],
 
 };
- 

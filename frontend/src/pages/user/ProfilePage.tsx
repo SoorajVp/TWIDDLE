@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState, userInterface } from "../../state/interface/userInterface";
 import { PostInterface } from "../../state/interface/postInterface";
 import { PageLoading } from "../../components/shimmer/Loading";
-import RightBar from "../../components/user/layout/Rightbar";
+import RightBar from "../../components/user/layout/rightBar/Rightbar";
 
 type responseInterface = {
   status: string;
@@ -18,6 +18,7 @@ type responseInterface = {
 const ProfilePage = () => {
   const { user, darkMode, actions } = useSelector((store: RootState) => store.user);
 
+  const [isloading, setLoading] = useState<boolean>(false);
   const [accountProfile, setAccountProfile] = useState<boolean>(false);
   const [userData, setUserData] = useState<userInterface>(null);
   const [userPosts, setuserPosts] = useState<PostInterface[]>([]);
@@ -29,9 +30,10 @@ const ProfilePage = () => {
   useEffect(() => {
     console.log("fetching");
     fetchUserData(userName);
-  }, [ userName, actions ]);
+  }, [userName, actions]);
 
   const fetchUserData = async (name: string): Promise<void> => {
+    setLoading(true)
     const response: responseInterface = await userRequest.getUserByName(name);
     console.log(response);
     if (response.user?.name == user.name) {
@@ -46,15 +48,16 @@ const ProfilePage = () => {
     if (response.saved) {
       setSavedPosts(response.saved);
     }
-
     setUserData(response.user);
     setuserPosts(response.posts);
+
+    setLoading(false)
+
   };
 
   return (
     <>
-      <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto">
-        {!userData ? (
+        {!userData || isloading ? (
           <PageLoading />
         ) : (
           <UserProfile
@@ -68,8 +71,6 @@ const ProfilePage = () => {
             followBack={followBack}
           />
         )}
-      </div>
-      <RightBar />
     </>
   );
 };

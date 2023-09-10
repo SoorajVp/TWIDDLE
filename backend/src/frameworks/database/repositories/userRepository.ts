@@ -1,7 +1,6 @@
 import { editUserInterface, registerInterface, userDataInterface } from "../../../types/interface/userInterface";
 import Notification from "../models/notificationModel";
 import User from "../models/userModel";
-import Post from "../models/postModel";
 
 export const userRepositoryDb = () => {
     
@@ -91,9 +90,9 @@ export const userRepositoryDb = () => {
 
     const getNotifications = async( userId: string ) => {
         return await Notification.find({ userId: userId })
-        .populate({ path: "user", select: "name profilePic" })
-        .populate({ path: "liked", select: "_id image" })
-        .populate({ path: 'comment.postId', select: '_id image' }).sort({ _id: -1 })
+            .populate({ path: "user", select: "name profilePic verfied" })
+            .populate({ path: "liked", select: "_id image" })
+            .populate({ path: 'comment.postId', select: '_id image' }).sort({ _id: -1 })
     }
 
     const clearNotification = async( userId: string ) => {
@@ -101,9 +100,14 @@ export const userRepositoryDb = () => {
     }
 
     const verificationTick = async (userId: string) => {
-        console.log("Account verification function - - - - - -6")
-
         return await User.findByIdAndUpdate( { _id: userId},{ verfied: true });
+    }
+
+    const randomUsers = async( ) => {
+        return await User.aggregate([
+            { $sample: { size: 10 } }
+        ]).exec()
+        // console.log("This is random user suggestion -- ",randomDocuments)
     }
 
 
@@ -128,7 +132,8 @@ export const userRepositoryDb = () => {
         getSavedPost, 
         getNotifications, 
         clearNotification,
-        verificationTick
+        verificationTick,
+        randomUsers
     }
 }
 

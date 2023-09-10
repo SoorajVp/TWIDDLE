@@ -3,7 +3,7 @@ import SearchBar from "../../components/user/search/SearchBar";
 import { PageLoading } from "../../components/shimmer/Loading";
 import { PostInterface } from "../../state/interface/postInterface";
 import PostSingleView from "../../components/modal/PostSingleView";
-import RightBar from "../../components/user/layout/Rightbar";
+import RightBar from "../../components/user/layout/rightBar/Rightbar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/interface/userInterface";
 import { postRequest } from "../../api/requests/postRequest";
@@ -24,7 +24,6 @@ const SearchPage = () => {
 
   return (
     <>
-      <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto ">
         {posts.length === 0 ? (
           <PageLoading />
         ) : (
@@ -37,9 +36,7 @@ const SearchPage = () => {
             </div>
           </div>
         )}
-      </div>
-
-      <RightBar />
+      
     </>
   );
 };

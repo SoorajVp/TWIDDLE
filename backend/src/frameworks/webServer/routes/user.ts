@@ -18,6 +18,8 @@ const userRouter = () => {
 
     const controller = userController( userDbRepository, userRepositoryDb, postDbRepository, PostRespository, authServiceInterface, authService, cloudService, s3CloudService, paymentServiceInterface, paymentService );
     
+    router.get("/random-users", controller.randomUserSuggestions);
+
     router.get("/find/:id", controller.getUserById);
 
     router.get("/is-blocked", controller.isBlockedUser);

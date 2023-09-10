@@ -1,13 +1,8 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { useEffect, useRef, useState } from "react";
 import { userRequest } from "../../../api/requests/userRequest";
 import { userInterface } from "../../../state/interface/userInterface";
 import { useNavigate } from "react-router-dom";
+import { MdVerified } from "react-icons/md";
 
 const SearchBar = () => {
   const [value, setValue] = useState<string>(null);
@@ -102,10 +97,11 @@ const SearchBar = () => {
                         alt="Neil image"
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex min-w-0">
                       <p className="text-xs font-medium text-gray-900 truncate">
                         {user.name}
                       </p>
+                      { user.verfied && <div className="pl-1 text-blue-600"><MdVerified /></div>}
                     </div>
                   </div>
                 </li>

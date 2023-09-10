@@ -1,10 +1,11 @@
 import { IoMdSettings } from "react-icons/io";
 import LogoutModal from "../../modal/Logout";
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { MdDarkMode, MdOutlineDarkMode, MdVerified } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import { setTheme } from "../../../state/slices/userSlice";
 import ChangePassword from "../../modal/ChangePassword";
+import { Link } from "react-router-dom";
 
 
 const Settings = () => {
@@ -48,6 +49,19 @@ const Settings = () => {
                 <span className="ml-3 ">Theme</span>
               </div>
             </li>
+
+            { !user.verfied &&
+              <li className={`${color} ${hover} ${bgColor} py-1 rounded-r-lg`}>
+              <Link to='/payment'
+                className={`${color} px-3 cursor-pointer flex items-center p-1`}
+              >
+                <div className="">
+                  <MdVerified size={24} />
+                </div>
+                <span className="ml-3 ">Premium</span>
+              </Link>
+            </li>}
+
             <li className={`text-red-800 ${hover} ${bgColor} py-1 pl-1 rounded-r-lg`}>
               <LogoutModal />
             </li>

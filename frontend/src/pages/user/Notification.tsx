@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import RightBar from "../../components/user/layout/Rightbar"
+import RightBar from "../../components/user/layout/rightBar/Rightbar"
 import NotificationList from "../../components/user/notification/NotificationList"
 import { NotificationInterface } from "../../state/interface/notificationsInterface"
 import { userRequest } from "../../api/requests/userRequest"
@@ -18,7 +18,7 @@ const Notification = () => {
     const { actions } = useSelector((store: RootState) => store.user);
 
     const [notifications, setNotifications] = useState<NotificationInterface[]>([]);
-    const [isLoading, setLoading ] = useState<boolean>(false)
+    const [isLoading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
         fetchNotifications()
@@ -34,14 +34,11 @@ const Notification = () => {
 
     return (
         <>
-            <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto ">
-                { isLoading ? <PageLoading /> :
+            {isLoading ? <PageLoading /> :
                 <>
-                    { notifications?.length == 0 && <NotificationEmpty /> }
+                    {notifications?.length == 0 && <NotificationEmpty />}
                     <NotificationList notifications={notifications} setLoading={setLoading} />
                 </>}
-            </div>
-            <RightBar />
         </>
     )
 }

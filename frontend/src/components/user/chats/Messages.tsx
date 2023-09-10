@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import { BiSolidVideoPlus } from "react-icons/bi";
 import { useEffect, useRef, useState } from "react";
 import { userRequest } from "../../../api/requests/userRequest";
@@ -304,8 +302,8 @@ const Messages: React.FC<PropsTypes> = ({
       ) : (
         <div className="flex justify-center  mt-10">
           <div className="text-center">
-            <img src="../../../../public/chat-image.png" alt="" width={430} />
-            <p className="text-lg text-gray-500 font-mono">Tap on chat to start conversation</p>
+              <img src="../../../../public/messaging-image.png" alt="" width={430} />
+            <p className="text-base text-gray-500 font-mono">Tap on chat to start conversation</p>
           </div>
         </div>
       )}

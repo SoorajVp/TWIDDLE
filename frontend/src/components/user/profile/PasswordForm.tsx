@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import React, { useState } from "react";

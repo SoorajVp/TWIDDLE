@@ -7,7 +7,8 @@ type postType = {
 type userType = {
     _id: string,
     name: string,
-    profilePic: string
+    profilePic: string,
+    verfied: boolean
 }
 
 type CommentType = {

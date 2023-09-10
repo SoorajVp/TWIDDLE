@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../state/interface/userInterface";
 import { PostInterface } from "../../state/interface/postInterface";
 import { toast } from "react-toastify";
-import RightBar from "../../components/user/layout/Rightbar";
+import RightBar from "../../components/user/layout/rightBar/Rightbar";
 import { postRequest } from "../../api/requests/postRequest";
 import PostShimmer from "../../components/shimmer/postShimmer";
 import PostEmpty from "../../components/user/posts/PostEmpty";
@@ -28,6 +28,7 @@ const HomePage = () => {
       try {
         const response = await postRequest.getFollowPosts();
         if (response.status === "success") {
+          console.log("this is posts data -", response.posts)
           setPosts(response.posts);
         } else {
           toast.error(response.message, {
@@ -45,13 +46,10 @@ const HomePage = () => {
     console.log("end")
   }, [actions]);
 
-  
+
 
   return (
     <>
-      <div className="lg:px-10 px-2 col-span-7 my-12 pt-4 sm:my-0 sm:col-span-4 overflow-auto">
-        
-
         <div className="lg:mx-20">
           {isLoading && <PostShimmer />}
           {posts.length === 0 && !isLoading && <PostEmpty />}
@@ -61,12 +59,9 @@ const HomePage = () => {
               <LazyPostCard {...post} key={post._id} />
             ))}
           </Suspense>
-          
+
         </div>
 
-      </div>
-
-      <RightBar />
     </>
   );
 };

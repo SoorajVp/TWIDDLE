@@ -57,11 +57,15 @@ const userSlice = createSlice({
 
     setAction: (state: AuthState) => {
       state.actions ++;
-    }
+    },
+
+    setVerified: (state: AuthState) => {
+      state.user.verfied = true;
+    },
     
   },
 });
 
 
-export const { setLogin, updateUser, setSavePost, setunSavePost, setLastChat, setLogout, setTheme, setAction, setUserFollow, setUserUnfollow } = userSlice.actions;
+export const { setLogin, updateUser, setSavePost, setunSavePost, setLastChat, setLogout, setTheme, setAction, setUserFollow, setUserUnfollow, setVerified } = userSlice.actions;
 export default userSlice.reducer;

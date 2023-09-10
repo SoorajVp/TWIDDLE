@@ -105,12 +105,7 @@ export const clearNotification = async (userId: string, repository: ReturnType<u
 
 
 export const VerificationPayment = async ( userId: string, service: ReturnType<paymentInterface> ) => {
-    console.log("Account verification function - - - - - -2")
-
     const result = await service.payAmount(userId);
-
-    console.log("last result from payment function ----", result );
-
     if( result ) {
         return result;
     } else {
@@ -127,4 +122,10 @@ export const checkSubscription = async (sessionId: string, userId: string, repos
     } else {
         throw new AppError("Invalid payment session", HttpStatus.OK)
     }
+}
+
+export const userSuggestions = async (repository: ReturnType<userDbInterface> ) => {
+    const users = await repository.randomUser();
+    console.log("user lists - - - -", users );
+    return users 
 }

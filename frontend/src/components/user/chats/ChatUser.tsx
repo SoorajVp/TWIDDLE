@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from "react";
 import { ChatListInterface } from "../../../state/interface/chatInterface";
 import { userInterface } from "../../../state/interface/userInterface";
