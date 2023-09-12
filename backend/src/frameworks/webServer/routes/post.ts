@@ -16,6 +16,8 @@ const postRouter = () => {
     
     router.get('/', controller.getPosts);
 
+    router.put('/update-post', controller.editPostDescription)
+
     router.get('/following-posts', controller.followPosts)
 
     router.put('/:postId/:postUserId/like', controller.postLike);

@@ -48,7 +48,7 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
         const { id } = req.params;
         const user: userDataInterface | null = await userById( id, dbRepositoryUser )
         if(!user) {
-            throw new AppError("Something went wrong !", HttpStatus.OK);
+            res.json({ status: "failed", message: "user not found" })
         }
         res.status(200).json({ status: "success", user })
     })
@@ -109,7 +109,6 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
         await unfollowUser( req.params.id, userId, dbRepositoryUser );
         res.status(200).json({ status: "success", message: "Unfollowed"})
     })
-
 
     const postSave = asyncHandler(async(req: CustomRequest, res: Response) => {
         const { userId }: any = req;

@@ -10,7 +10,7 @@ import { MdVerified } from "react-icons/md";
 const navItems = [
   { text: "Handle users", href: "/admin/users", icon: <FaUsers size={28} /> },
   { text: "Handle posts", href: "/admin/posts", icon: <BsFillCollectionFill size={28} /> },
-  { text: "Account varify", href: "/admin/", icon: <MdVerified size={29} /> }
+  { text: "Account varify", href: "/admin/verified-list", icon: <MdVerified size={29} /> }
 
 
 ]

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from "react";
 import { adminRequest } from "../../../api/requests/adminRequests";
 import { ReportPosts } from "../../../state/interface/postInterface";
@@ -8,7 +5,7 @@ import { lastTimeFormat } from "../../../utils/lastTimeFormat";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import { BlockPost } from "../../modal/BlockPost";
-import { DeletePost } from "../../modal/DeletePost";
+import { DeletePost } from "../../modal/DeletePostAdmin";
 
 const PostTable = () => {
   const [items, setItems] = useState<ReportPosts[]>([]);
@@ -71,13 +68,13 @@ const PostTable = () => {
                 {items?.map((item) => (
                   <tr
                     key={item._id}
-                    className={`${item?.postId?.isBlocked && "bg-gray-200"}  `}
+                    className={`${item?.postId?.isBlocked && "bg-gray-100"}  `}
                   >
                     <td className="px-3 py-2 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0">
                           <img
-                            className="w-16"
+                            className="w-16 bg-gray-100"
                             src={item?.postId?.image}
                             alt=""
                           />

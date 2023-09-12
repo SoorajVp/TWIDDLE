@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState, userInterface } from "../../state/interface/userInterface";
 import { PostInterface } from "../../state/interface/postInterface";
 import { PageLoading } from "../../components/shimmer/Loading";
-import RightBar from "../../components/user/layout/rightBar/Rightbar";
+import ErrorElement from "../error/ErrorElement";
 
 type responseInterface = {
   status: string;
@@ -19,6 +19,8 @@ const ProfilePage = () => {
   const { user, darkMode, actions } = useSelector((store: RootState) => store.user);
 
   const [isloading, setLoading] = useState<boolean>(false);
+  const [notFound, setNotFound] = useState<boolean>(false);
+
   const [accountProfile, setAccountProfile] = useState<boolean>(false);
   const [userData, setUserData] = useState<userInterface>(null);
   const [userPosts, setuserPosts] = useState<PostInterface[]>([]);
@@ -36,27 +38,39 @@ const ProfilePage = () => {
     setLoading(true)
     const response: responseInterface = await userRequest.getUserByName(name);
     console.log(response);
-    if (response.user?.name == user.name) {
-      setAccountProfile(true);
-    }
-    if (response.user?.followers.includes(user._id)) {
-      setFollowing(true);
-    }
-    if (response.user?.following.includes(user._id)) {
-      setFollowBack(true);
-    }
-    if (response.saved) {
-      setSavedPosts(response.saved);
-    }
-    setUserData(response.user);
-    setuserPosts(response.posts);
-
     setLoading(false)
+    if(response.status == "success") {
+      if (response.user?.name == user.name) {
+        setAccountProfile(true);
+      }
+      if (response.user?.followers.includes(user._id)) {
+        setFollowing(true);
+      }
+      if (response.user?.following.includes(user._id)) {
+        setFollowBack(true);
+      }
+      if (response.saved) {
+        setSavedPosts(response.saved);
+      }
+      setUserData(response.user);
+      setuserPosts(response.posts);
+
+    } else {
+      setNotFound(true)
+    }
+    
 
   };
 
+  if(notFound) {
+    return <ErrorElement />
+  }
+  
+
   return (
     <>
+
+    
         {!userData || isloading ? (
           <PageLoading />
         ) : (

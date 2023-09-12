@@ -16,6 +16,15 @@ export const postRequest = {
     return response.data;
   },
 
+  editPost: async (payload: object) => {
+    const response = await api.put("/post/update-post", payload);
+    console.log(response.data)
+    if (response.data.status == "blocked") {
+      blockFunction()
+    }
+    return response.data;
+  },
+
   getFollowPosts: async () => {
     const response = await api.get("/post/following-posts");
     console.log(response.data)

@@ -11,19 +11,20 @@ export const getAllUser = async(repository: ReturnType<userDbInterface> ) => {
     return users;
 }
 
+export const verfiedUsers = async (repository: ReturnType<userDbInterface> ) => {
+    return await repository.verfiedUsers();
+}
+
 export const userSearch = async( name: string, repository: ReturnType<userDbInterface> ) => {
-    const users = await repository.userSearch(name);
-    return users;
+    return await repository.userSearch(name);
 }
 
 export const userById = async ( id: string, repository: ReturnType<userDbInterface> ) => {
-    const user = await repository.getUserById( id );
-    return user;
+    return await repository.getUserById( id );
 }
 
 export const userByName = async ( name: string, repository: ReturnType<userDbInterface> ) => {
-    const user = await repository.getUserByName( name );
-    return user;
+    return await repository.getUserByName( name );
 }
 
 export const updateProfile = async ( userData: editUserInterface, repository: ReturnType<userDbInterface>, service: ReturnType<cloudServiceType> ) => {
@@ -44,7 +45,6 @@ export const updateProfile = async ( userData: editUserInterface, repository: Re
         const { imgUrl } = await service.uploadAndGetUrl(userData.profilePic);
         await repository.newProfilePic( userData.id, imgUrl)
     }
-
     
     return await repository.updateProfile(userData);
 }
@@ -125,7 +125,5 @@ export const checkSubscription = async (sessionId: string, userId: string, repos
 }
 
 export const userSuggestions = async (repository: ReturnType<userDbInterface> ) => {
-    const users = await repository.randomUser();
-    console.log("user lists - - - -", users );
-    return users 
+    return await repository.randomUser();
 }

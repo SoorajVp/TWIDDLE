@@ -9,6 +9,7 @@ import {
   commentPost,
   deleteComment,
   deletePost,
+  editPost,
   getAllPosts,
   getComments,
   getFollowPosts,
@@ -32,6 +33,11 @@ const postController = (
   const createPost = asyncHandler(async (req: CustomRequest, res: Response) => {
     const result = await postCreate(req, dbRepositoryPost, postService);
     res.status(200).json({ status: "success", message: "Post Uploaded ", data: result});
+  });
+
+  const editPostDescription = asyncHandler(async (req: Request, res: Response) => {
+    await editPost(req.body.postId, req.body.text, dbRepositoryPost );
+    res.status(200).json({ status: "success", message: "Updated successfully" });
   });
 
   const getPosts = asyncHandler(async (req: Request, res: Response) => {
@@ -58,8 +64,7 @@ const postController = (
   const PostComment = asyncHandler(async (req: CustomRequest, res: Response) => {
     const { postUserId } = req.body;
     const comment: { userId?: string, comment: string, createdAt: Date} = { userId: req.userId, comment: req.body.comment, createdAt:  new Date()}
-    console.log( "This is request -----",postUserId, comment )
-    const result = await commentPost( comment, req.params.postId, postUserId, dbRepositoryPost );
+    await commentPost( comment, req.params.postId, postUserId, dbRepositoryPost );
     res.status(200).json({status: "success"});
   })
 
@@ -92,15 +97,21 @@ const postController = (
 
   
 
-  
-
-  
-
-  
 
 
-
-  return { createPost, getPosts, followPosts, postLike, postUnlike, PostComment, getPostComments, commentDelete, postReport, postDelete };
+  return { 
+    createPost, 
+    editPostDescription,
+    getPosts, 
+    followPosts, 
+    postLike, 
+    postUnlike, 
+    PostComment, 
+    getPostComments, 
+    commentDelete, 
+    postReport, 
+    postDelete 
+  };
 };
 
 export default postController;

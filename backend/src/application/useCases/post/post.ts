@@ -21,9 +21,16 @@ export const postCreate = async (
   if (!newPost) {
     throw new AppError("Something went wrong !", HttpStatus.BAD_REQUEST);
   }
-
   return newPost;
 };
+
+export const editPost = async (
+  postId: string, text: string,
+  repository: ReturnType<postDbRepositoryType>
+) => {
+  return await repository.editPost( postId, text );
+};
+
 
 export const getAllPosts = async (
   repository: ReturnType<postDbRepositoryType>
@@ -68,7 +75,6 @@ export const unlikePost = async(req: CustomRequest, repository: ReturnType<postD
 }
 
 export const commentPost = async ( comment: {userId?: string, comment: string}, postId: string, postUserId:string, repository: ReturnType<postDbRepositoryType> ) => {
-  console.log("function -- 1")
   const result = await repository.commentPost(comment, postId, postUserId );
   return result;
 }

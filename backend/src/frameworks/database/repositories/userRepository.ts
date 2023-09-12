@@ -103,11 +103,15 @@ export const userRepositoryDb = () => {
         return await User.findByIdAndUpdate( { _id: userId},{ verfied: true });
     }
 
+    const verfiedUsers = async() => {
+        const users = await User.find({ verfied: true })
+        return users
+    }
+
     const randomUsers = async( ) => {
         return await User.aggregate([
             { $sample: { size: 10 } }
         ]).exec()
-        // console.log("This is random user suggestion -- ",randomDocuments)
     }
 
 
@@ -133,6 +137,7 @@ export const userRepositoryDb = () => {
         getNotifications, 
         clearNotification,
         verificationTick,
+        verfiedUsers,
         randomUsers
     }
 }

@@ -76,7 +76,7 @@ export const DeletePost: React.FC<BlockPostProps> = ({ postId, imgKey }) => {
       {loading && <Loading />}
       <div
         onClick={openModal}
-        className="text-gray-800 bg-gray-300 py-1.5 px-3 rounded-md shadow-md hover:text-black hover:bg-gray-400 cursor-pointer"
+        className="text-gray-800 bg-gray-200 py-1.5 px-3 rounded-md shadow-md hover:text-black hover:bg-gray-200 cursor-pointer"
       >
         Delete
       </div>

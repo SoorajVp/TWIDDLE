@@ -11,12 +11,16 @@ export const PostRespository = () => {
         return await newPost.save();
     }
 
+    const editPost = async (postId: string,text: string ) => {
+        return await Post.findOneAndUpdate({ _id: postId }, { description: text })
+    }
+
     const getAllPosts = async () => {
         return await Post.find({ isBlocked: false }).populate('userId').populate({ path: 'comments.userId', select: 'name profilePic verfied'} ).sort({_id: -1})
     }
 
     const getUserPosts = async ( id: string ) => {
-        return await Post.find({ userId: id }).populate('userId').populate({ path: 'comments.userId', select: 'name profilePic verfied' }).sort({_id: -1})
+        return await Post.find({ userId: id, isBlocked: false }).populate('userId').populate({ path: 'comments.userId', select: 'name profilePic verfied' }).sort({_id: -1})
     }
 
     const getFollowPosts = async ( userId?: string ) => {
@@ -98,7 +102,23 @@ export const PostRespository = () => {
 
 
 
-    return { createPost, getAllPosts, getUserPosts, getFollowPosts, likePost, unlikePost, getPostById, commentPost, getComments, reportPost, deletePost, getReports, deleteComment, blockPost };
+    return { 
+        createPost, 
+        editPost,
+        getAllPosts, 
+        getUserPosts, 
+        getFollowPosts, 
+        likePost, 
+        unlikePost, 
+        getPostById, 
+        commentPost, 
+        getComments, 
+        reportPost, 
+        deletePost, 
+        getReports, 
+        deleteComment, 
+        blockPost 
+    };
 }
 
 export type PostRespositoryType = typeof PostRespository;

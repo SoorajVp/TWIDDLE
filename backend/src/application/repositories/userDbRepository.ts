@@ -70,7 +70,6 @@ export const userDbRepository = (
   }
 
   const getNotifications = async ( userId: string ) => {
-        console.log("function ---- 3")
     return await repository.getNotifications( userId );
   }
 
@@ -80,6 +79,10 @@ export const userDbRepository = (
 
   const verificationTick = async (userId: string) => {
     return await repository.verificationTick(userId);
+  }
+
+  const verfiedUsers = async() => {
+    return await repository.verfiedUsers();
   }
 
   const randomUser = async() => {
@@ -108,6 +111,7 @@ export const userDbRepository = (
     getNotifications,
     clearNotification,
     verificationTick,
+    verfiedUsers,
     randomUser
   };
 };

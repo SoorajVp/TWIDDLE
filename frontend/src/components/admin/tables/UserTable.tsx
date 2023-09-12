@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from "react";
 import { adminRequest } from "../../../api/requests/adminRequests";
 import { BlockUser } from "../../modal/BlockUser";
 import { useSelector } from "react-redux";
+import Loading from "../../shimmer/Loading";
 import {
   RootState,
   userInterface,
 } from "../../../state/interface/userInterface";
-import Loading from "../../shimmer/Loading";
 
 const UserTable = () => {
   const { actions } = useSelector((store: RootState) => store.user);
@@ -16,7 +14,6 @@ const UserTable = () => {
   const [users, setUsers] = useState<userInterface[]>([]);
 
   useEffect(() => {
-    console.log("fetching users - - - - - -")
     fetchUserList();
   }, [actions]);
 
@@ -81,7 +78,7 @@ const UserTable = () => {
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-9 w-9">
                           <img
-                            className="h-9 w-9 rounded-full"
+                            className="h-9 w-9 rounded-full bg-slate-300"
                             src={person?.profilePic}
                             alt=""
                           />

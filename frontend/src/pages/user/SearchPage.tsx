@@ -3,7 +3,6 @@ import SearchBar from "../../components/user/search/SearchBar";
 import { PageLoading } from "../../components/shimmer/Loading";
 import { PostInterface } from "../../state/interface/postInterface";
 import PostSingleView from "../../components/modal/PostSingleView";
-import RightBar from "../../components/user/layout/rightBar/Rightbar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/interface/userInterface";
 import { postRequest } from "../../api/requests/postRequest";

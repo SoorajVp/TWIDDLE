@@ -17,9 +17,13 @@ import {
   CommentInterface,
   PostInterface,
 } from "../../../state/interface/postInterface";
-import { CommentOption, DeletePost, ReportPost } from "../../modal/PostOptions";
 import { postRequest } from "../../../api/requests/postRequest";
 import { MdSend, MdVerified } from "react-icons/md";
+import CommentOption from "../../modal/DeleteComment";
+import { DeletePost } from "../../modal/DeletePostUser";
+import ReportPost from "../../modal/ReportPost";
+import EditPost from "../../modal/EditPost";
+
 
 const PostCard = ({
   _id,
@@ -37,9 +41,12 @@ const PostCard = ({
   const [comment, setComment] = useState<string>("");
   const [commentList, setCommentList] = useState<CommentInterface[]>(comments);
   const [dropDown, setDropDown] = useState<boolean>(false);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
+
+  
 
   useEffect(() => {
     setCommentList(comments);
@@ -79,15 +86,18 @@ const PostCard = ({
     setLiked(true);
     setLikeCount(likeCount + 1);
     await postRequest.likePost(_id, userId._id);
+    dispatch(setAction());
   };
 
   const HandleUnlike = async (): Promise<void> => {
     setLiked(false);
     setLikeCount(likeCount - 1);
     await postRequest.unlikePost(_id, userId._id);
+    dispatch(setAction());
   };
 
   const HandleComment = async () => {
+    setButtonLoading(true)
     if (comment) {
       const data: { id: string; comment: string, postUserId: string } = {
         id: _id,
@@ -96,6 +106,7 @@ const PostCard = ({
       };
       await postRequest.commentPost(data);
       setComment("");
+      setButtonLoading(false)
       dispatch(setAction());
     }
   };
@@ -163,17 +174,24 @@ const PostCard = ({
                     } ${color} origin-top-right absolute -mt-2 right-0 mr-8 w-24 min-w-1/2 max-w-screen-md shadow-lg ring-1 ring-gray-200 ring-opacity-5`}
                 >
                   <ul
-                    className="py-1 border rounded-md"
+                    className={`${darkMode ? "bg-black" : "bg-gray-50"} py-1 border  rounded-md`}
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
                     {userId?._id == user?._id ? (
-                      <DeletePost
-                        postId={_id}
-                        darkMode={darkMode}
-                        image={image}
-                      />
+                      <>
+                        <DeletePost
+                          postId={_id}
+                          darkMode={darkMode}
+                          image={image}
+                        />
+                        <EditPost
+                          postId={_id}
+                          description={description}
+                          darkMode={darkMode}
+                        />
+                      </>
                     ) : (
                       <ReportPost
                         userId={user?._id}
@@ -267,8 +285,13 @@ const PostCard = ({
               <InputEmoji value={comment} onChange={handleCommentText} placeholder="Type your comment..."
                 className="" />
               <button onClick={HandleComment} type="button"
-                className="inline-flex items-center justify-center rounded-lg px-2 text-blue-700 hover:bg-slate-100" >
-                <MdSend size={35} />
+                className="inline-flex items-center justify-center rounded-lg px-2 text-blue-700 hover:text-blue-500" >
+                {  buttonLoading ?
+                <img className="w-7" src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif"
+                alt="Loading"
+                /> :
+                <MdSend size={35} /> 
+                }
               </button>
             </div>
 
@@ -319,5 +342,3 @@ const PostCard = ({
 };
 
 export default PostCard;
-
-// onChange = {(e) => setComment(e.target.value)}

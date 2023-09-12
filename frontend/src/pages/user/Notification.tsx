@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import RightBar from "../../components/user/layout/rightBar/Rightbar"
 import NotificationList from "../../components/user/notification/NotificationList"
 import { NotificationInterface } from "../../state/interface/notificationsInterface"
 import { userRequest } from "../../api/requests/userRequest"

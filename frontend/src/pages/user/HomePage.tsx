@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../state/interface/userInterface";
 import { PostInterface } from "../../state/interface/postInterface";
 import { toast } from "react-toastify";
-import RightBar from "../../components/user/layout/rightBar/Rightbar";
 import { postRequest } from "../../api/requests/postRequest";
 import PostShimmer from "../../components/shimmer/postShimmer";
 import PostEmpty from "../../components/user/posts/PostEmpty";

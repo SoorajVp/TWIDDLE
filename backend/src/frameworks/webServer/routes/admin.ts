@@ -14,6 +14,8 @@ const adminRouter = () => {
 
     router.get("/list", controller.getAllUserList);
 
+    router.get("/verified-list", controller.getVerifiedUsers);
+
     router.get('/reports', controller.postReports);
 
     router.put('/block-post/:postId', controller.postBlock);

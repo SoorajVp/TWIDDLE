@@ -300,9 +300,9 @@ const Messages: React.FC<PropsTypes> = ({
           </div>
         </div>
       ) : (
-        <div className="flex justify-center  mt-10">
+        <div className="flex justify-center  mt-5">
           <div className="text-center">
-              <img src="../../../../public/messaging-image.png" alt="" width={430} />
+              <img src="../../../../public/messaging-image.png" alt="" width={500} />
             <p className="text-base text-gray-500 font-mono">Tap on chat to start conversation</p>
           </div>
         </div>

@@ -34,11 +34,16 @@ const socketConfig = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEven
         })
 
         // Video call socket
-        socket.emit('me', socket.id);
+        socket.emit('notification', socket.id);
 
-        socket.on('start-call', ( data ) => {
-            console.log("call started - - - -", data )
-            io.to(data.userToCall).emit('recieve-call', data )
+        socket.on('notification-send ', (data) => {
+            const { receiverId } = data;
+            const user = activeUsers.find((user) => user.userId === receiverId);
+            console.log("sending from socket -", receiverId);
+            console.log(" data ", data);
+            if (user) {
+                io.to(user.socketId).emit("notification-receive", data)
+            }
         })
 
         // socket.on('answerCall', (data) => {

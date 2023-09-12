@@ -2,6 +2,7 @@ import AdminLogin from "../../pages/admin/AdminLogin";
 import Dashboard from "../../pages/admin/Dashboard";
 import PostList from "../../pages/admin/PostList";
 import UserList from "../../pages/admin/UserList";
+import VerifiedList from "../../pages/admin/VerifiedList";
 import ErrorElement from "../../pages/error/ErrorElement";
 import AdminLayout from "../../pages/layout/AdminLayout";
 
@@ -26,6 +27,10 @@ export const dashboard = {
     {
       path: "/admin/posts",
       element: <PostList />,
+    },
+    {
+      path: "/admin/verified-list",
+      element: <VerifiedList />,
     }
   ]
 }

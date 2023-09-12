@@ -18,5 +18,5 @@ export interface ChatListInterface {
 
   export type activeUsersType = {
     userId: string,
-    socketId: string
+    socketId: string,
   }

@@ -6,6 +6,10 @@ export const postDbRepository = ( repository: ReturnType<PostRespositoryType> ) 
         return await repository.createPost(post);
     }
 
+    const editPost = async ( postId: string, text: string ) => {
+        return await repository.editPost( postId, text );
+    }
+
     const getAllPosts =async () => {
         return await repository.getAllPosts();
     }
@@ -60,7 +64,23 @@ export const postDbRepository = ( repository: ReturnType<PostRespositoryType> ) 
 
 
  
-    return { createPost, getAllPosts, getUserPosts, getFollowPosts, likePost, unlikePost, getPostById, commentPost, getComments, deleteComment, reportPost, deletepost, getReports, blockPost };
+    return { 
+        createPost, 
+        editPost,
+        getAllPosts, 
+        getUserPosts, 
+        getFollowPosts, 
+        likePost, 
+        unlikePost, 
+        getPostById, 
+        commentPost, 
+        getComments, 
+        deleteComment, 
+        reportPost, 
+        deletepost, 
+        getReports, 
+        blockPost 
+    };
 }
 
 export type postDbRepositoryType = typeof postDbRepository;

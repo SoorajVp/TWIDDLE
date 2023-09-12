@@ -7,7 +7,7 @@ import { PostRespositoryType } from "../../frameworks/database/repositories/post
 import { blockPost, deletePost, getReports } from "../../application/useCases/post/post";
 import { userDbInterface } from "../../application/repositories/userDbRepository";
 import { userRepositoryDbType } from "../../frameworks/database/repositories/userRepository";
-import { blockUser, getAllUser, unBlockUser, userById } from "../../application/useCases/user/user";
+import { blockUser, getAllUser, unBlockUser, userById, verfiedUsers } from "../../application/useCases/user/user";
 import { userDataInterface } from "../../types/interface/userInterface";
 import AppError from "../../utils/appError";
 import { HttpStatus } from "../../types/httpStatus";
@@ -26,12 +26,15 @@ const adminController = (
     const postService = cloudService(s3CloudService());
  
     const getAllUserList = asyncHandler(async (req: Request, res: Response ) => {
-    console.log("function 1 ----")
         const users = await getAllUser( dbRepositoryUser )
-        console.log("this is user list - - - --", users);
         res.status(200).json({ status: "success", users })
     })
 
+  const getVerifiedUsers = asyncHandler(async (req: Request, res: Response )=> {
+    const users = await verfiedUsers(dbRepositoryUser);
+    res.status(200).json({ status: "success", users })
+  })
+ 
     const blockUserById = asyncHandler(async (req: Request, res: Response ) => {
         const user: userDataInterface | null = await userById( req.params.userId, dbRepositoryUser )
         if(!user) {
@@ -68,7 +71,7 @@ const adminController = (
 
   
 
-  return { getAllUserList, blockUserById, postReports, postBlock, postDelete };
+  return { getAllUserList, blockUserById, postReports, postBlock, postDelete, getVerifiedUsers };
 
 };
 
