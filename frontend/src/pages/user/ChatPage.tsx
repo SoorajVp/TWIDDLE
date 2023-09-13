@@ -24,6 +24,7 @@ type sendMessageType = {
 };
 
 const ChatPage = () => {
+  
   const { user, darkMode, lastChat } = useSelector((store: RootState) => store.user);
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState<ChatListInterface>(null);
@@ -49,7 +50,6 @@ const ChatPage = () => {
     // socket.current = io(SOCKET_URL);
     socket.emit("new-user-add", user._id);
     socket.on("get-users", (users: activeUsersType[]) => {
-      console.log("Online user ----", users);
       setOnlineUsers(users);
     });
   }, [user]);

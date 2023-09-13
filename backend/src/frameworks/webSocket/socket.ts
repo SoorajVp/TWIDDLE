@@ -28,13 +28,14 @@ const socketConfig = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEven
         })
 
         // Video call socket
-        socket.emit('notification', socket.id);
+        // socket.emit('notification', socket.id);
 
-        socket.on('notification-send ', (data) => {
+        socket.on('notification', (data) => {
             const { receiverId } = data;
+            console.log("get notification - ", data)
             const user = activeUsers.find((user) => user.userId === receiverId);
             if (user) {
-                io.to(user.socketId).emit("notification-receive", data)
+                io.to(user.socketId).emit("receive-notification", data)
             }
         })
 

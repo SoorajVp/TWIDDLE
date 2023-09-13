@@ -23,7 +23,13 @@ import CommentOption from "../../modal/DeleteComment";
 import { DeletePost } from "../../modal/DeletePostUser";
 import ReportPost from "../../modal/ReportPost";
 import EditPost from "../../modal/EditPost";
+import { socket } from "../../../socket";
 
+type notificationType = {
+  receiverId: string,
+  text: string
+}
+ 
 
 const PostCard = ({
   _id,
@@ -42,6 +48,7 @@ const PostCard = ({
   const [commentList, setCommentList] = useState<CommentInterface[]>(comments);
   const [dropDown, setDropDown] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+  const [notification, setNotification] = useState <notificationType>(null)
 
   const { darkMode, user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
@@ -86,6 +93,11 @@ const PostCard = ({
     setLiked(true);
     setLikeCount(likeCount + 1);
     await postRequest.likePost(_id, userId._id);
+    const message = {
+      receiverId: userId._id,
+      text: `${user.name} liked your post`
+    }
+    setNotification(message)
     dispatch(setAction());
   };
 
@@ -123,6 +135,14 @@ const PostCard = ({
     await postRequest.savePost(_id);
     dispatch(setAction());
   };
+
+  useEffect(() => {
+    socket.emit("new-user-add", user._id);
+    if (notification) {
+      console.log("sending notification", notification)
+      socket.emit("notification", notification);
+    }
+  }, [notification]);
 
   const handleCommentText = (newMessage: string) => {
     setComment(newMessage);

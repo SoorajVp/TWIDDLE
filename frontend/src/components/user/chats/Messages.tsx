@@ -118,9 +118,6 @@ const Messages: React.FC<PropsTypes> = ({
   };
 
 
-
-
-
   const HandleMessageSend = async () => {
     if (newMessage) {
       try {
