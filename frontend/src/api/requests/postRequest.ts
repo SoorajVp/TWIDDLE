@@ -9,7 +9,6 @@ export const postRequest = {
   
   getAllPosts: async () => {
     const response = await api.get("/post");
-    console.log(response.data)
     if(response.data.status == "blocked") {
       blockFunction()
     }
@@ -18,7 +17,6 @@ export const postRequest = {
 
   editPost: async (payload: object) => {
     const response = await api.put("/post/update-post", payload);
-    console.log(response.data)
     if (response.data.status == "blocked") {
       blockFunction()
     }
@@ -27,7 +25,6 @@ export const postRequest = {
 
   getFollowPosts: async () => {
     const response = await api.get("/post/following-posts");
-    console.log(response.data)
     if(response.data.status == "blocked") {
       blockFunction()
     }
@@ -84,6 +81,9 @@ export const postRequest = {
 
   savePost: async (id: string) => {
     const response = await api.put(`/user/${id}/save`);
+    if (response.data.status == "blocked") {
+      blockFunction()
+    }
     return response.data;
   },
 

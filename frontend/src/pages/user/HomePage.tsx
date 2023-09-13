@@ -11,45 +11,62 @@ import PostEmpty from "../../components/user/posts/PostEmpty";
 const LazyPostCard = lazy(() => import("../../components/user/posts/PostCard"));
 
 const HomePage = () => {
+
   const { actions } = useSelector((store: RootState) => store.user);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [posts, setPosts] = useState<PostInterface[]>([]);
   const navigate = useNavigate();
+
+  const fetchPosts = async () => {
+    setLoading(true);
+
+
+    try {
+      const response = await postRequest.getFollowPosts();
+      if (response.status === "success") {
+        setPosts(response.posts);
+      } else {
+        toast.error(response.message, {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    } finally {
+      setLoading(false);
+    }
+
+  };
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
       return
     }
-    console.log("started ")
-    const fetchPosts = async () => {
-      setLoading(true);
-      try {
-        const response = await postRequest.getFollowPosts();
-        if (response.status === "success") {
-          console.log("this is posts data -", response.posts)
-          setPosts(response.posts);
-        } else {
-          toast.error(response.message, {
-            position: toast.POSITION.TOP_CENTER,
-            hideProgressBar: true,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPosts();
-    console.log("end")
   }, [actions]);
 
+
+  const handelInfiniteScroll = async () => {
+
+    console.log("scrollHeight" + document.documentElement.scrollHeight);
+    console.log("innerHeight" + window.innerHeight);
+    console.log("scrollTop" + document.documentElement.scrollTop);
+
+  };
+
+  useEffect(() => {
+    console.log("render")
+    window.addEventListener("scroll", handelInfiniteScroll);
+    return () => window.removeEventListener("scroll", handelInfiniteScroll);
+  }, []);
 
 
   return (
     <>
         <div className="lg:mx-20">
+
           {isLoading && <PostShimmer />}
           {posts.length === 0 && !isLoading && <PostEmpty />}
 

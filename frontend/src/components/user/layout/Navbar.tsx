@@ -8,8 +8,10 @@ import { Link, useLocation } from 'react-router-dom';
 
 
 const Navbar = () => {
+
   const { user, darkMode } =useSelector((store: RootState) => store.user )
   const location = useLocation()
+
   const Navlinks = [
     { name: "Home", href: "/", icon: <AiOutlineHome size={30} /> },
     { name: "Message", href: "/messages", icon: <RiMailSendLine size={30} /> },
@@ -30,6 +32,7 @@ const Navbar = () => {
       (hover = "bg-gray-100");
   }
 
+  
   return (
     <>
     <nav className={`${bgColor} ${color} fixed top-0 w-full border-b py-4 sm:hidden`}>

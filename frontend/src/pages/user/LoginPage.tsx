@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import { GOOGLE_CLIENT_ID } from "../../constants";
+import { GOOGLE_CLIENT_ID } from "../../config";
 
 import jwt_decode from "jwt-decode";
 import Loading from "../../components/shimmer/Loading";

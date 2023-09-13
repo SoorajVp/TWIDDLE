@@ -2,7 +2,9 @@
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
+    "target": "ESNext",
     "module": "ESNext",
+    // "importMeta": true, 
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
