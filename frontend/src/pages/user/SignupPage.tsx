@@ -207,7 +207,7 @@ const SignupPage = () => {
           <div className="relative hidden xl:block xl:w-1/2 h-full">
             <img
               className="absolute h-auto p-5 w-full object-cover"
-              src="../../../public/signup-image.png"
+              src="signup-image.png"
               alt="my zomato
           "
             />

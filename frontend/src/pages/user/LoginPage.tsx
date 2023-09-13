@@ -128,7 +128,7 @@ const LoginPage = () => {
           <div className="relative hidden xl:block xl:w-1/2 h-full">
             <img
               className="absolute h-auto w-full object-cover"
-              src="../../../public/login-image.png"
+              src="login-image.png"
               alt="Login image
           "
             />
