@@ -7,17 +7,14 @@ import { toast } from "react-toastify";
 import { postRequest } from "../../api/requests/postRequest";
 import PostShimmer from "../../components/shimmer/postShimmer";
 import PostEmpty from "../../components/user/posts/PostEmpty";
-import { activeUsersType } from "../../state/interface/chatInterface";
-import { socket } from "../../socket";
 
 const LazyPostCard = lazy(() => import("../../components/user/posts/PostCard"));
 
 const HomePage = () => {
 
-  const { actions, user } = useSelector((store: RootState) => store.user);
+  const { actions } = useSelector((store: RootState) => store.user);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [posts, setPosts] = useState<PostInterface[]>([]);
-  const [onlineUsers, setOnlineUsers] = useState<activeUsersType[]>([]);
 
   const navigate = useNavigate();
 
@@ -63,19 +60,6 @@ const HomePage = () => {
     window.addEventListener("scroll", handelInfiniteScroll);
     return () => window.removeEventListener("scroll", handelInfiniteScroll);
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      socket.emit("new-user-add", user._id);
-      socket.on("get-users", (users: activeUsersType[]) => {
-        console.log("Online user ----", users);
-        setOnlineUsers(users);
-      });
-    }
-      
-  }, [user]);
-
-  
 
 
   return (

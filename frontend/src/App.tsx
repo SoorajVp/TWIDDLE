@@ -8,12 +8,9 @@ const App = () => {
 
   useEffect(() => {
     socket.on("receive-notification", (notification) => {
-      console.log("receiving notification", notification)
-
       toast.info(notification.text, {
         position: toast.POSITION.TOP_CENTER,
         hideProgressBar: true,
-        icon: null,
       });
     });
   }, []);
