@@ -6,13 +6,12 @@ const PostEmpty = () => {
 
   const { darkMode } = useSelector((store: RootState) => store.user);
 
-
   return (
     <>
     <div className="flex justify-center w-full mt-8">
       <div className="text-center">
         <div className="flex justify-center">
-          <img className="w-[60%]  -m-8"  src="../../../../public/post-image.png" alt="Loading" />
+          <img className="w-[60%]  -m-8"  src="post-image.png" alt="Loading" />
         </div><br />
 
         <h2 className={`${darkMode ? "text-gray-300" : "text-gray-700"} text-base`}>Discover new friends <br /> Connections in our vibrant community.</h2>

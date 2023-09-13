@@ -9,7 +9,7 @@ const NotificationEmpty = () => {
       <div className="flex justify-center w-full mt-16">
           <div className="text-center">
               <div className="flex justify-center">
-                  <img className="w-[40%] -m-8" src="../../../../public/notification-image.png"
+                  <img className="w-[40%] -m-8" src="notification-image.png"
                       alt="Loading"
                   />
               </div>
