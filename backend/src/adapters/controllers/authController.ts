@@ -28,17 +28,12 @@ const authController = (
   const loginUser = asyncHandler(async ( req:Request, res: Response ) => {
     const { name, password } = req.body;
     const user = { name, password }
-    console.log("login function 1")
     const result = await userLogin( user, dbRespositoryUser, authService );
     res.status(200).json({ status: "success", message: "Loggedin successfully", user: result.userData, token:result.token })
   })
 
   const googleLogin = asyncHandler(async (req: Request, res: Response ) => {
-    console.log("login function 1")
-
     const result = await loginWithGoogle(req.body, dbRespositoryUser, authService  )
-    console.log("login function 6", result )
-
     res.status(200).json({ status: "success", message: "Loggedin successfully", user: result.userData, token:result.token })
 
   })

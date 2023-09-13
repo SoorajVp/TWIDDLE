@@ -3,8 +3,6 @@ import { authServiceReturn } from "../../frameworks/services/authService";
 export const authServiceInterface = ( service: authServiceReturn ) => {
 
     const encryptPassword = ( password: string ) => {
-        console.log("encrypting - 1 -")
-
        return service.encryptPassword(password)
     } 
 

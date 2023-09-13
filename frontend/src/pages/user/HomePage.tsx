@@ -49,7 +49,6 @@ const HomePage = () => {
 
 
   const handelInfiniteScroll = async () => {
-
     console.log("scrollHeight" + document.documentElement.scrollHeight);
     console.log("innerHeight" + window.innerHeight);
     console.log("scrollTop" + document.documentElement.scrollTop);
@@ -57,7 +56,6 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    console.log("render")
     window.addEventListener("scroll", handelInfiniteScroll);
     return () => window.removeEventListener("scroll", handelInfiniteScroll);
   }, []);

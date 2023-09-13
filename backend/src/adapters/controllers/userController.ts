@@ -139,13 +139,9 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
     })
 
     const verifySubscription = asyncHandler( async (req: CustomRequest, res: Response) => {
-        console.log("Account verification function - - - - - - 1");
         const { userId } = req
-        console.log(userId)
-           
         if(userId) {
             const sesssionId = await VerificationPayment(userId, paymentService );
-            console.log("payment result - - - - ", sesssionId)
             res.status(200).json({ status: "success", sesssionId })
         }
     })

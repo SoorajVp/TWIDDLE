@@ -13,7 +13,6 @@ const messageController = (messageDbrepository: messageDbRepositoryType, message
     const addNewMessage = asyncHandler(async( req: Request, res: Response ) =>{
         const {chatId, senderId, text } = req.body;
         const message = await addMessage( chatId, senderId, text, dbMessageRepository)
-        console.log(message)
         res.status(200).json({ status: "success", message })
     })
 

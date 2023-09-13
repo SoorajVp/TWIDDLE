@@ -7,7 +7,6 @@ const PostList= ({ items } ) => {
   const singleView = () => {
     console.log("Clicked")
   }
-  console.log("this is list items ------", items )
   return (
     <>
       <div className="grid grid-cols-3 gap-1 mt-5">

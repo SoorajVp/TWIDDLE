@@ -7,12 +7,9 @@ export const createChat = async ( senderId: string, receiverId: string, reposito
     const chat = await repository.findChats( senderId, receiverId );
 
     if(chat) {
-        console.log("Chat is already exists -------")
         return chat;
     } 
     const newChat = await repository.createChat( senderId, receiverId );
-    console.log("New Chat created  -------")
-
     if(!newChat) {
         throw new AppError("User not found", HttpStatus.OK);
     }

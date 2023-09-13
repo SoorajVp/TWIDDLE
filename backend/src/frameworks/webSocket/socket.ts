@@ -12,22 +12,16 @@ const socketConfig = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEven
     
     io.on("connection", (socket) => {
 
-        // Messaging socket 
-        console.log("Socket connected ----", socket.id);
-
         socket.on('new-user-add', (newUserId: string) => {
             if (!activeUsers.some((user) => user.userId === newUserId)) {
                 activeUsers.push({ userId: newUserId, socketId: socket.id })
             }
-            console.log("Connected users -", activeUsers);
             io.emit('get-users', activeUsers);
         });
 
         socket.on('send-message', (data) => {
             const { receiverId } = data;
             const user = activeUsers.find((user) => user.userId === receiverId );
-            console.log("sending from socket -", receiverId );
-            console.log(" data ", data);
             if(user) {
                 io.to( user.socketId ).emit("receive-message", data )
             }
@@ -39,8 +33,6 @@ const socketConfig = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEven
         socket.on('notification-send ', (data) => {
             const { receiverId } = data;
             const user = activeUsers.find((user) => user.userId === receiverId);
-            console.log("sending from socket -", receiverId);
-            console.log(" data ", data);
             if (user) {
                 io.to(user.socketId).emit("notification-receive", data)
             }
@@ -53,7 +45,6 @@ const socketConfig = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEven
 
         socket.on('disconnect', () => {
             activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
-            console.log("Users disconnected -", activeUsers);
             io.emit('get-users', activeUsers);
         });
     });

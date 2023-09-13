@@ -42,7 +42,6 @@ export const paymentService = () => {
 
     const checkSubscription = async( sessionId: string) => {
         const session = await stripe.checkout.sessions.retrieve(sessionId);
-        console.log("payment service function - - - -", session )
         if(session) {
             return session.payment_status;
         } else {

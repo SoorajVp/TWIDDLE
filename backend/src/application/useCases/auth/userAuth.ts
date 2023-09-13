@@ -41,14 +41,10 @@ export const userLogin = async (
   userRepository: ReturnType<userDbInterface>,
   authService: ReturnType<authServiceInterfaceType>
 ) => {
-  console.log("login function 2")
 
   const userData: userDataInterface | null = await userRepository.getUserByName(
     user.name
   );
-  console.log("login function 3")
-
-
   if (!userData) {
     throw new AppError("User not found !", HttpStatus.OK);
   }
@@ -62,8 +58,6 @@ export const userLogin = async (
       throw new AppError("Incorrect password !", HttpStatus.OK);
     }
   }
-  console.log("login function 4")
-
 
   if (userData.isBlocked) {
     throw new AppError("Account action blocked !", HttpStatus.OK);
@@ -71,8 +65,6 @@ export const userLogin = async (
 
   const payload: { userId: string, isAdmin: boolean} = { userId: userData._id.toString(), isAdmin:  Boolean(userData.isAdmin)}
   const token = authService.generateToken(payload);
-  console.log("login function 5")
-
 
   return { token, userData };
 };
@@ -83,11 +75,9 @@ export const loginWithGoogle = async (
   userRepository: ReturnType<userDbInterface>,
   authService: ReturnType<authServiceInterfaceType>
 ) => {
-  console.log("login function 2")
 
   user.name = user.name.split(" ").join(""); 
   const userData: any = await userRepository.getUserByEmail( user.email );
-  console.log("login function 3")
 
   if (!userData) {
     user.googleUser = true;
@@ -97,13 +87,11 @@ export const loginWithGoogle = async (
     const token = authService.generateToken(payload);
     return { token, userData: users };
   }
-  console.log("login function 4")
 
   if(userData.googleUser) {
     if (userData.isBlocked) {
       throw new AppError("Account action blocked !", HttpStatus.OK);
     }
-    console.log("login function 5")
     const payload: { userId: string; isAdmin: boolean } = {
       userId: userData._id.toString(),
       isAdmin: userData.isAdmin,

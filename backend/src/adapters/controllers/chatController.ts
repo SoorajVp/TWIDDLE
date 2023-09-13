@@ -13,7 +13,6 @@ const chatController = ( chatDbRepository: chatDbRepositoryType, chatRepository:
     const ChatCreate = asyncHandler(async(req: Request, res: Response) => {
         const { senderId, receiverId } = req.body;
         const newChat = await createChat( senderId, receiverId, dbChatRepository );
-        console.log("this is new Chat - - - - - ", newChat )
         res.status(200).json({ status: "success", newChat })
     })
 

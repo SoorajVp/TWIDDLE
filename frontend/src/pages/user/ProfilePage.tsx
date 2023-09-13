@@ -30,14 +30,12 @@ const ProfilePage = () => {
   const { userName } = useParams<Params>();
 
   useEffect(() => {
-    console.log("fetching");
     fetchUserData(userName);
   }, [userName, actions]);
 
   const fetchUserData = async (name: string): Promise<void> => {
     setLoading(true)
     const response: responseInterface = await userRequest.getUserByName(name);
-    console.log(response);
     setLoading(false)
     if(response.status == "success") {
       if (response.user?.name == user.name) {

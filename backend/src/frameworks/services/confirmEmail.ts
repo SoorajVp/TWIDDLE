@@ -26,8 +26,6 @@ const confirmEmail = (email: string, token: string): Promise<boolean> => {
       });
 
       const user = email.split("@")[0].toUpperCase()
-      console.log(user)
-  
       const emailItems = {
         body: {
           name: user, // Recipient's name
@@ -59,7 +57,6 @@ const confirmEmail = (email: string, token: string): Promise<boolean> => {
         if (error) {
           throw new AppError( "This email is not valid", HttpStatus.BAD_REQUEST )
         } else {
-          console.log('Email sent:', info.response);
           resolve(true);
         }
       });
