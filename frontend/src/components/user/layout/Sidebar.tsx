@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
-import { BiMenu } from "react-icons/bi";
+import { BiMenu, BiMessageDetail } from "react-icons/bi";
 import { BsGrid1X2 } from "react-icons/bs";
-import { RiMailSendLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import {
   AiOutlineHeart,
@@ -24,7 +23,7 @@ const SideBar = () => {
     { name: "Search", href: "/search", icon: <AiOutlineSearch size={30} /> },
     { name: "Create", href: "/create", icon: <AiOutlinePlusSquare size={30} /> },
     { name: "Notification", href: "/notifications", icon: <AiOutlineHeart size={30} /> },
-    { name: "Messages", href: "/messages", icon: <RiMailSendLine size={28} /> },
+    { name: "Messages", href: "/messages", icon: <BiMessageDetail size={28} /> },
     { name: "Profile", href: `/${user?.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 rounded-full border border-blue-600" alt="ProfilePic" /> },
   ];
 
