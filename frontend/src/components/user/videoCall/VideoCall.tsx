@@ -62,11 +62,7 @@ const VideoCall = () => {
     //     showTurnOffRemoteMicrophoneButton: false,
     //     showRemoveUserButton: false
     // })
-
-
-
     // }
-
 
     return (
         <>

@@ -58,13 +58,13 @@ const AccountVerification = () => {
                             <img className="w-[45%]  -m-8" src="verified-image.png" alt="Loading" />
                         </div><br />
 
-                        <h2 className={`${darkMode ? "text-gray-300" : "text-gray-700"} text-base`}>Discover new friends <br /> Connections in our vibrant community.</h2>
-                        <button onClick={makePayment} className="py-1 px-8 hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-700 mt-3 rounded transition duration-300 ease-in">Make Payment</button>
+                        <h2 className={`${darkMode ? "text-gray-300" : "text-gray-700"} text-sm font-semibold`}>Your security matters.<br /> We take your privacy seriously and want to ensure that your account is protected. <br /> To maintain a secure environment for you, we require account verification.<br /> This extra step ensures that you, and only you,<br /> have access to your account, keeping your personal information safe.<br /> </h2>
+                        <button onClick={makePayment} className="font-semibold py-1 px-8 hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-700 mt-3 rounded transition duration-300 ease-in">Make Payment</button>
                     </div>
                 </div>
             }
         </>
-    )
+    ) 
 }
 
 export default AccountVerification

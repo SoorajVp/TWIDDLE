@@ -1,10 +1,10 @@
 import SideBar from "../../components/user/layout/Sidebar";
 import Navbar from "../../components/user/layout/Navbar";
+import RightBar from "../../components/user/layout/rightBar/Rightbar";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/interface/userInterface";
 import { useEffect } from "react";
-import RightBar from "../../components/user/layout/rightBar/Rightbar";
 
 
 const UserLayout = () => {

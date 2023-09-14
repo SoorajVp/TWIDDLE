@@ -5,7 +5,6 @@ const PaymentPage = () => {
     return (
         <>
             <AccountVerification />
-
         </>
     )
 }

@@ -12,8 +12,8 @@ type ApiResponse = {
     message: string
 }
 
-
 const VerifySuccess = () => {
+
     const { user } = useSelector((store: RootState) => store.user )
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -21,11 +21,11 @@ const VerifySuccess = () => {
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
         const sessionId = searchParams.get('session_id');
-        console.log("sessionId result - - - ", sessionId)
         checkValidSession(sessionId)
     }, [])
 
     const checkValidSession = async (sessionId: string ) => {
+        
         const response = await userRequest.checkSessionStatus(sessionId) as ApiResponse;
         if (response.status == "success") {
             toast.success(response.message, {

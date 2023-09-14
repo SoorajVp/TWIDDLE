@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const Navlinks = [
     { name: "Home", href: "/", icon: <AiOutlineHome size={30} /> },
-    { name: "Message", href: "/messages", icon: <RiMailSendLine size={30} /> },
+    { name: "Search", href: "/search", icon: <AiOutlineSearch size={30} /> },
     { name: "Create", href: "/create", icon: <AiOutlinePlusSquare size={30} /> },
     { name: "Notification", href: "/notifications", icon: <AiOutlineHeart size={30} /> },
     { name: "Profile", href: `/${user?.name}`, icon: <img src={user?.profilePic} className="w-6 h-6 border rounded-full" alt="ProfilePic" />},
@@ -39,7 +39,7 @@ const Navbar = () => {
         <div className="container flex px-8 justify-between">
            <div className="font-bold flex gap-2" > <div className='text-blue-600'><BsGrid1X2 size={28} /></div> TWIDDLE</div> 
             
-           <div><Link to="/search"><AiOutlineSearch size={30} /> </Link></div> 
+          <div><Link to="/messages"> <RiMailSendLine size={30} /> </Link></div> 
         </div>
       </nav>
 

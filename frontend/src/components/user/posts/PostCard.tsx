@@ -119,6 +119,11 @@ const PostCard = ({
       await postRequest.commentPost(data);
       setComment("");
       setButtonLoading(false)
+      const message = {
+        receiverId: userId._id,
+        text: `${user.name} comment on your post`
+      }
+      setNotification(message)
       dispatch(setAction());
     }
   };
@@ -138,8 +143,7 @@ const PostCard = ({
 
   useEffect(() => {
     socket.emit("new-user-add", user._id);
-    if (notification) {
-      console.log("sending notification", notification)
+    if (notification && userId._id !== user._id) {
       socket.emit("notification", notification);
     }
   }, [notification]);

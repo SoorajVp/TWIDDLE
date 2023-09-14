@@ -39,15 +39,12 @@ const ChatPage = () => {
     }
     const getChats = async () => {
       const response = (await chatRequest.getUserChats(user._id)) as ApiReponse;
-      console.log(response);
       setChats(response.chats);
-      console.log(chats);
     };
     getChats();
   }, []);
 
   useEffect(() => {
-    // socket.current = io(SOCKET_URL);
     socket.emit("new-user-add", user._id);
     socket.on("get-users", (users: activeUsersType[]) => {
       setOnlineUsers(users);
@@ -56,9 +53,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     socket.on("receive-message", (data: MessageInterface) => {
-      console.log("message receiving -----", data);
       setReceiveMessage(data);
-      console.log("Received messages -----", receiveMessage);
     });
   },[]);
 

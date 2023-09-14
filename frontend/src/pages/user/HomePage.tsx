@@ -33,7 +33,7 @@ const HomePage = () => {
         });
       }
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -49,17 +49,16 @@ const HomePage = () => {
   }, [actions]);
 
 
-  const handelInfiniteScroll = async () => {
-    console.log("scrollHeight" + document.documentElement.scrollHeight);
-    console.log("innerHeight" + window.innerHeight);
-    console.log("scrollTop" + document.documentElement.scrollTop);
+  // const handelInfiniteScroll = async () => {
+  //   console.log("scrollHeight" + document.documentElement.scrollHeight);
+  //   console.log("innerHeight" + window.innerHeight);
+  //   console.log("scrollTop" + document.documentElement.scrollTop);
+  // };
 
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handelInfiniteScroll);
-    return () => window.removeEventListener("scroll", handelInfiniteScroll);
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handelInfiniteScroll);
+  //   return () => window.removeEventListener("scroll", handelInfiniteScroll);
+  // }, []);
 
 
   return (
@@ -76,7 +75,6 @@ const HomePage = () => {
           </Suspense>
 
         </div>
-
     </>
   );
 };
