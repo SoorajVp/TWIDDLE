@@ -21,4 +21,9 @@ export const authRequest = {
     const response = await api.post("/auth/googleLogin", payload);
     return response.data;
   },
+
+  // googleAuth: async (payload: object) => {
+  //   const response = await api.post("/auth/googleLogin", payload);
+  //   return response.data;
+  // },
 };

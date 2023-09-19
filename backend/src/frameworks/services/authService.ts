@@ -12,8 +12,8 @@ export const authService = () => {
         return password;
     }
 
-    const verifyEmail = async( email: string, token: string ) => {
-        const result: boolean = await confirmEmail(email, token)
+    const verifyEmail = async (email: string, userId: string, token: string ) => {
+        const result: boolean = await confirmEmail(email, userId, token)
         return result;
     }
 

@@ -5,7 +5,7 @@ import AppError from '../../utils/appError';
 import { HttpStatus } from '../../types/httpStatus';
 
 
-const confirmEmail = (email: string, token: string): Promise<boolean> => {
+const confirmEmail = (email: string, userId: string, token: string): Promise<boolean> => {
   
     return new Promise<boolean>((resolve, reject) => {
       const transporter: Transporter = nodemailer.createTransport({
@@ -35,7 +35,7 @@ const confirmEmail = (email: string, token: string): Promise<boolean> => {
             button: {
               color: '#22BC66', // Button color
               text: 'Click here', // Button text
-              link: `${configKeys.CLIENT_PORT}/api/auth/${token}/token` // Button link
+              link: `${configKeys.CLIENT_PORT}/auth/${token}/token/${userId}` // Button link
             }
           },
           outro: 'Need help? Contact us at soorajvp2017@gmail.com' // Outro text

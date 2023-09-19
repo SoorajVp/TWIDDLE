@@ -84,7 +84,6 @@ const Messages: React.FC<PropsTypes> = ({
  
 
   useEffect(() => {
-    console.log("message receiving useEffect ..... ", receiveMessage)
     if (receiveMessage !== null && receiveMessage?.chatId === chat?._id) {
       const currentDate = new Date();
       receiveMessage.createdAt = currentDate.toISOString();

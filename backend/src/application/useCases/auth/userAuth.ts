@@ -31,7 +31,7 @@ export const userRegister = async (
   const payload: { userId: string, isAdmin: boolean} = { userId: users._id.toString(), isAdmin: users.isAdmin}
 
   const token = authService.generateToken(payload);
-  await authService.verifyEmail(user.email, token);
+  await authService.verifyEmail(user.email, users._id.toString(), token);
   return { token, userData: users };
 };
 

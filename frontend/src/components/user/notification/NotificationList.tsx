@@ -32,7 +32,7 @@ const NotificationList: React.FC<propsType> = ({ notifications, setLoading }) =>
             </div>
 
             { notifications.map((item) => (
-                <NotificationCard item={item} user={user} />
+                <NotificationCard item={item} user={user} key={item._id} />
             )) }
 
         </div>

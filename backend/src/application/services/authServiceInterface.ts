@@ -6,8 +6,8 @@ export const authServiceInterface = ( service: authServiceReturn ) => {
        return service.encryptPassword(password)
     } 
 
-    const verifyEmail = ( email: string, token: string ) => {
-        return service.verifyEmail(email, token)
+    const verifyEmail = ( email: string, userId: string, token: string ) => {
+        return service.verifyEmail(email, userId, token)
     }
 
     const generateToken = ( payload?: { userId: string, isAdmin: boolean} ) => {

@@ -5,15 +5,18 @@ import { toast } from "react-toastify";
 
 type Params = {
   id: string | undefined;
+  userId: string | undefined
 };
 
 const SecretToken = () => {
+
   const navigate = useNavigate();
   const { id } = useParams<Params>();
 
   useEffect(() => {
    
     id && localStorage.setItem("token", id);
+    
     navigate("/");
     toast.success( "Loggedin successfully ", {
       position: toast.POSITION.TOP_RIGHT,
@@ -21,6 +24,8 @@ const SecretToken = () => {
     });
 
   },[]);
+
+
   return (
     <div>
       <Loading />

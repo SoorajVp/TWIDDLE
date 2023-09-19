@@ -22,6 +22,8 @@ const userRouter = () => {
 
     router.get("/find/:id", controller.getUserById);
 
+    router.get("/direct-email/:userId", controller.getUserById);
+
     router.get("/is-blocked", controller.isBlockedUser);
 
     router.post("/search", controller.searchUser);

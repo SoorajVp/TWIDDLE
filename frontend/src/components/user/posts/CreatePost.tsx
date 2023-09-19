@@ -76,8 +76,6 @@ const CreatePost = () => {
       formData.append("description", description);
       formData.append("image", result);
       const response = await postRequest.CreatePost(formData);
-      console.log(response);
-
       if (response.status == "success") {
         toast.success(response.message, {
           position: toast.POSITION.TOP_RIGHT,

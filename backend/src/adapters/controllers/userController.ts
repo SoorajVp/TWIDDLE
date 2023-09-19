@@ -45,12 +45,23 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
     })
 
     const getUserById = asyncHandler( async (req: Request, res: Response) => {
-        const { id } = req.params;
-        const user: userDataInterface | null = await userById( id, dbRepositoryUser )
+        const { userId } = req.params;
+        const user: userDataInterface | null = await userById(userId, dbRepositoryUser )
         if(!user) {
             res.json({ status: "failed", message: "user not found" })
         }
         res.status(200).json({ status: "success", user })
+    })
+
+    const getUserData = asyncHandler(async (req: CustomRequest, res: Response) => {
+        const { userId } = req;
+        if(userId) {
+            const user: userDataInterface | null = await userById(userId, dbRepositoryUser)
+            if (!user) {
+                res.json({ status: "failed", message: "user not found" })
+            }
+            res.status(200).json({ status: "success", user })
+        }
     })
 
     const getUserByName = asyncHandler( async (req: CustomRequest, res: Response) => {
@@ -170,6 +181,7 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
         isBlockedUser, 
         searchUser, 
         getUserById, 
+        getUserData,
         profileUpdate, 
         checkPassword, 
         changePassword, 
