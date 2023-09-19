@@ -334,12 +334,12 @@ const PostCard = ({
                           <p className="text-sm font-medium">
                             {item?.userId?.name}
                           </p>
-                          {item.userId.verfied && <div className=" pl-1 pt-0.5 text-blue-600"><MdVerified size={18} /></div>}
+                          {item?.userId?.verfied && <div className=" pl-1 pt-0.5 text-blue-600"><MdVerified size={18} /></div>}
                         </div>
                         <p className="text-gray-500 truncate"
                           style={{ fontSize: "13px" }}
                         >
-                          {lastTimeFormat(item.createdAt.toString())}
+                          {lastTimeFormat(item?.createdAt?.toString())}
                         </p>
                       </div>
                     </Link>
