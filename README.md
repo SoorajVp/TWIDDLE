@@ -1,4 +1,4 @@
-# TWIDDLE: The Complete Social Media Application 🌟
+# TWIDDLE Social Media Web Application 
 
 
 ## Overview
