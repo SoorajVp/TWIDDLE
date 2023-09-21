@@ -5,12 +5,11 @@
 
 Introducing TWIDDLE as a social media platform built using cutting-edge technologies that offer users a seamless and feature-rich experience. Our technology stack includes both backend and frontend components, as well as various integration packages, to ensure a robust and efficient application.
 
+
+## Technologies Used
 ## Overview
 
 - Live link : www.twiddles.online/
-
-## Technologies Used
-
 ### Backend
 - Node.js and Express for a scalable and maintainable backend, with TypeScript for clean code architecture.
 - MongoDB for a flexible and reliable database solution.
