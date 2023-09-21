@@ -1,10 +1,9 @@
 # TWIDDLE: The Complete Social Media Application 🌟
 
-![TWIDDLE Logo](https://www.svgrepo.com/show/344887/grid-1x2.svg)
 
 ## Overview
 
-TWIDDLE is a revolutionary social media platform built using cutting-edge technologies that offer users a seamless and feature-rich experience. Our technology stack includes both backend and frontend components, as well as various integration packages, to ensure a robust and efficient application.
+Introducing TWIDDLE as a social media platform built using cutting-edge technologies that offer users a seamless and feature-rich experience. Our technology stack includes both backend and frontend components, as well as various integration packages, to ensure a robust and efficient application.
 
 ## Overview
 
@@ -31,18 +30,18 @@ TWIDDLE is a revolutionary social media platform built using cutting-edge techno
 
 ## Features
 
-### 1️⃣ Authentication
+### Authentication
 - Allow users to log in directly using email credentials.
 - Send registration confirmation emails with login links using Nodemailer.
 
-### 2️⃣ Posts
+### Posts
 - Empower users to create, edit, and report posts.
 - Utilize react-easy-crop for easy image cropping during post uploads.
 - Store post images in an AWS S3 bucket for optimal performance and scalability.
 - Enable users to like, comment, and save posts.
 - Allow users to add and delete comments.
 
-### 3️⃣ Profile
+### Profile
 - Enable users to follow/unfollow other users.
 - Facilitate direct messaging between users.
 - Empower users to edit their bio, change profile photos, and update passwords.
@@ -51,11 +50,11 @@ TWIDDLE is a revolutionary social media platform built using cutting-edge techno
 - Offer a customizable theme with dark mode and light mode options.
 - Enable users to search for other users.
 
-### 4️⃣ Messages and Notifications
+### Messages and Notifications
 - Utilize socket.io for real-time messaging and notifications.
 - Implement Zego Cloud for efficient video call functionality.
 
-### 5️⃣ Admin Side
+### Admin Side
 - Provide administrators with the ability to block users.
 - Allow admins to block posts reported by users and delete them if necessary.
 - Enable admin management of verified users from a centralized list.
@@ -69,7 +68,8 @@ TWIDDLE is hosted on an AWS instance, leveraging Nginx for optimal performance a
 1. Clone this repository.
 2. Install dependencies using `npm install`.
 3. Configure environment variables (e.g., database connection, Stripe API keys).
-4. Run the application using `npm start`.
+4. Build the application using `npm run dev`.
+5. Run the application using `npm run dev`.
 
 ## Contribute
 
