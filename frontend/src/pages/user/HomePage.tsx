@@ -68,7 +68,7 @@ const HomePage = () => {
           {isLoading && <PostShimmer />}
           {posts.length === 0 && !isLoading && <PostEmpty />}
 
-          <Suspense fallback={<PostShimmer />}>
+          <Suspense fallback={ <PostShimmer /> }>
             {posts.map((post) => (
               <LazyPostCard {...post} key={post._id} />
             ))}

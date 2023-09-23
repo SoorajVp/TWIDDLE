@@ -23,8 +23,15 @@ const ChatUser: React.FC<PropsTypes> = ({ chats, userId, online }) => {
   }, []);
 
   const getChatUser = async (chatUserId: string) => {
-    const response = (await userRequest.getUserById(chatUserId)) as ApiReponse;
-    setUserData(response.user);
+    try {
+      console.log(chatUserId)
+      const response = (await userRequest.getUserById(chatUserId)) as ApiReponse;
+      console.log(response)
+      setUserData(response.user);
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   return (

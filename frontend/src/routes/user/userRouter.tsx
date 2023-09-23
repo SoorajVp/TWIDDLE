@@ -70,7 +70,7 @@ export const userRouter = {
       element: <PaymentPage />,
     },
     {
-      path: "/subscription/success",
+      path: "/success",
       element: <VerifySuccess />
     }
 

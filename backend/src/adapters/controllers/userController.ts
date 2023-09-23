@@ -45,8 +45,8 @@ const userController = (userDbRepository: userDbInterface, userRepositoryDb: use
     })
 
     const getUserById = asyncHandler( async (req: Request, res: Response) => {
-        const { userId } = req.params;
-        const user: userDataInterface | null = await userById(userId, dbRepositoryUser )
+        const { id } = req.params;
+        const user: userDataInterface | null = await userById( id, dbRepositoryUser )
         if(!user) {
             res.json({ status: "failed", message: "user not found" })
         }
