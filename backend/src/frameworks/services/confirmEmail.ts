@@ -35,7 +35,7 @@ const confirmEmail = (email: string, userId: string, token: string): Promise<boo
             button: {
               color: '#22BC66', // Button color
               text: 'Click here', // Button text
-              link: `${configKeys.CLIENT_PORT}/auth/${token}/token/${userId}` // Button link
+              link: `${configKeys.CLIENT_PORT}/${token}/token/${userId}` // Button link
             }
           },
           outro: 'Need help? Contact us at soorajvp2017@gmail.com' // Outro text

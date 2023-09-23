@@ -41,6 +41,8 @@ const SecretToken = () => {
   }
 
   useEffect(() => {
+    console.log("rendering secret page - - - -")
+
     id && localStorage.setItem("token", id);
     fetchUserData()
   },[]);

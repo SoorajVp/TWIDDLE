@@ -16,7 +16,7 @@ import VerifySuccess from "../../components/user/subscription/VerifySuccess";
 // const HomePage = lazy(() => import('../../pages/user/HomePage'));
 
 export const secretPage = {
-  path: "/auth/:id/token/:userId",
+  path: "/:id/token/:userId",
   element: <SecretToken />
 }
 
