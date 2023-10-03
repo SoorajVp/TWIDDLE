@@ -7,9 +7,7 @@ import { toast } from "react-toastify";
 const App = () => {
 
   useEffect(() => {
-    console.log("rendering")
     socket.on("receive-notification", (notification) => {
-      console.log("Receiving ----")
       toast.info(notification.text, {
         position: toast.POSITION.TOP_CENTER,
         hideProgressBar: true,

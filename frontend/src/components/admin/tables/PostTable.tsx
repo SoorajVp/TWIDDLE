@@ -6,26 +6,28 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../state/interface/userInterface";
 import { BlockPost } from "../../modal/BlockPost";
 import { DeletePost } from "../../modal/DeletePostAdmin";
+import Loading from "../../shimmer/Loading";
 
 const PostTable = () => {
   const [items, setItems] = useState<ReportPosts[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const { actions } = useSelector((store: RootState) => store.user);
 
   useEffect(() => {
-    console.log("render");
     fetchUserList();
   }, [actions]);
 
   const fetchUserList = async (): Promise<any> => {
-    console.log("fetchinggg.....");
+    setLoading(true)
     const response: { status: string; reports: ReportPosts[] } =
       await adminRequest.getReports();
-    console.log(response);
-    setItems(response?.reports.reverse());
+      setItems(response?.reports.reverse());
+      setLoading(false)
   };
 
   return (
     <div className="flex justify-center mt-8">
+      {isLoading && <Loading />}
       <div className="flex overflow-x-auto">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">

@@ -20,8 +20,7 @@ const VerifiedTable = () => {
     const fetchUserList = async (): Promise<any> => {
         setLoading(true)
         const resposnse: { status: string; users: userInterface[] } = await adminRequest.getVerifiedUsers();
-        console.log(resposnse);
-        setUsers(resposnse.users);
+        setUsers(resposnse.users.reverse());
         setLoading(false)
 
     };

@@ -99,7 +99,6 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
   //   formData.append("profilePic", files);
   // };
 
-  console.log("this is selected image --------", image);
 
   let color: string, bgColor: string;
   if (darkMode) {
@@ -118,11 +117,10 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
             <div className="flex justify-between pb-1">
               <button
                 onClick={() => setIsOpen(false)}
-                className={`${
-                  darkMode
-                    ? "bg-gray-900 text-gray-200 hover:bg-slate-800"
-                    : "bg-gray-200 text-gray-900 hover:bg-slate-100"
-                } justify-center rounded-sm px-5 py-1 text-sm font-semibold leading-6  hover:shadow-sm border   focus-visible:outline focus-visible:outline-2 `}
+                className={`${darkMode
+                  ? "bg-gray-900 text-gray-200 hover:bg-slate-800"
+                  : "bg-gray-200 text-gray-900 hover:bg-slate-100"
+                  } justify-center rounded-sm px-5 py-1 text-sm font-semibold leading-6  hover:shadow-sm border   focus-visible:outline focus-visible:outline-2 `}
               >
                 Cancel
               </button>
@@ -173,7 +171,7 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
                   UserName
                 </label>
                 <div className="text-sm">
-                  <div className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <div className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
                     Edit
                   </div>
                 </div>
@@ -187,9 +185,8 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
                   value={values.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`${
-                    darkMode && "bg-gray-800 text-gray-200"
-                  } pl-4 block w-full rounded-md border-0 py-1 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
+                  className={`${darkMode && "bg-gray-800 text-gray-200"
+                    } pl-4 block w-full rounded-md border-0 py-1 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                 />
                 {errors.name && touched.name ? (
                   <p className="text-xs text-center text-red-700">
@@ -208,7 +205,7 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
                   Bio
                 </label>
                 <div className="text-sm">
-                  <div className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <div className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
                     Edit
                   </div>
                 </div>
@@ -222,9 +219,8 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
                   value={values.bio}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`${
-                    darkMode && "bg-gray-800 text-gray-200"
-                  } pl-4 block w-full rounded-md border-0 py-1 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
+                  className={`${darkMode && "bg-gray-800 text-gray-200"
+                    } pl-4 block w-full rounded-md border-0 py-1 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                 />
                 {errors.bio && touched.bio ? (
                   <p className="text-xs text-center text-red-700">
@@ -243,7 +239,7 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
                   Email
                 </label>
                 <div className="text-sm">
-                  <div className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <div className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
                     Edit
                   </div>
                 </div>
@@ -257,9 +253,8 @@ const EditForm: React.FC<stateType> = ({ setIsOpen }: any) => {
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`${
-                    darkMode && "bg-gray-800 text-gray-200"
-                  } pl-4 block w-full rounded-md border-0 py-1 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
+                  className={`${darkMode && "bg-gray-800 text-gray-200"
+                    } pl-4 block w-full rounded-md border-0 py-1 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                 />
                 {errors.email && touched.email ? (
                   <p className="text-xs text-center text-red-700">

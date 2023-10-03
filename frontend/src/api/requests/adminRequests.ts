@@ -1,7 +1,6 @@
 import { api } from "../instance/admin";
 
 const blockFunction = () => {
-  console.log("blocked user - - -")
   localStorage.removeItem('adminToken');
   location.reload()
 }

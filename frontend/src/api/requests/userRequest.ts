@@ -1,7 +1,12 @@
 
+import { toast } from "react-toastify";
 import { api } from "../instance/user";
 
 const blockFunction = () => {
+  toast.error("Account action blocked", {
+    position: toast.POSITION.TOP_CENTER,
+    hideProgressBar: true,
+  });
   localStorage.removeItem('token');
   // location.reload()
 }
@@ -9,7 +14,6 @@ const blockFunction = () => {
 export const userRequest = {
   
   getUserById: async (id: string) => {
-    console.log("id found - ", id)
     const response = await api.get(`/user/find/${id}`);
     if(response.data.status == "blocked") {
       blockFunction()
