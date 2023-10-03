@@ -6,6 +6,7 @@ import { HttpStatus } from "../../../types/httpStatus";
 import { userDataInterface } from "../../../types/interface/userInterface";
 import User from "../../database/models/userModel";
 
+
 export const userAuthMiddleware = async (req: CustomRequest, res: Response, next: NextFunction) => {
 
   try {
@@ -27,7 +28,7 @@ export const userAuthMiddleware = async (req: CustomRequest, res: Response, next
     req.userId = payload.userId;
     next();
   } catch (error) {
-    res.json({ status: "failed", message: "Internal server error" })
+    res.json({ status: "blocked", message: "Internal server error" })
   }
 };
 

@@ -21,7 +21,7 @@ const confirmEmail = (email: string, userId: string, token: string): Promise<boo
         product: {
           // Customize the product details
           name: 'TWIDDLE Web Application ',
-          link: 'https://your-product.com'
+          link: 'https://www.twiddles.online'
         }
       });
 

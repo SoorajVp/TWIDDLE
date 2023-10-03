@@ -13,7 +13,7 @@ const ErrorElement = () => {
         <div>
 
           <div className="flex justify-center items-center w-full">
-            <img className="" width="330px" src="../../../../public/search-image.png" alt="Loading" />
+            <img className="" width="330px" src="search-image.png" alt="Loading" />
           </div>
 
           <p className="text-lg font-medium text-red-500"> <span className="text-5xl text-blue-500 font-bold pr-2">{status ?? 404}</span> {statusText ?? "Not Found"}</p>
