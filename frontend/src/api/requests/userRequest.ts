@@ -1,12 +1,7 @@
 
-import { toast } from "react-toastify";
 import { api } from "../instance/user";
 
 const blockFunction = () => {
-  toast.error("Account action blocked", {
-    position: toast.POSITION.TOP_CENTER,
-    hideProgressBar: true,
-  });
   localStorage.removeItem('token');
   // location.reload()
 }
